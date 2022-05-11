@@ -1,15 +1,16 @@
 const express = require('express');
 const app = express();
 const tokenChecker = require('./tokenChecker.js');
-const authentication = require('./authentication.js');
 const account = require('./account.js');
 const signup = require('./signup.js');
+var cors = require('cors');
 
 /**
  * Configure Express.js parsing middleware
  */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 
 /**
@@ -17,19 +18,8 @@ app.use(express.urlencoded({ extended: true }));
  */
 app.use('/', express.static('static'));
 
-
 /**
- * Authentication routing and middleware
- */
-app.use('/api/v1/authentications', authentication);
-
-/**
- * Signup routing and middleware
- */
-app.use('/api/v1/signup', signup);
-
-/**
- * Authentication routing and middleware
+ * Manage account(authentications, signUp, modify) routing and middleware
 */
 app.use('/api/v1/account', account);
 

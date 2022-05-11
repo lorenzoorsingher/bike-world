@@ -34,7 +34,7 @@ export class SignUpComponent {
     if(this.verifyPsw(psw, psw2) == true){
       const params = new HttpParams().set("email", email).set("psw", psw).set("target", target);
       //console.log(params);
-      await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/signup', params).pipe(map( data => { 
+      await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/account/signUp', params).pipe(map( data => { 
         if(data.success == false){
             // @ts-ignore
             document.getElementById("signUpErrorMessage").style.display = 'block';

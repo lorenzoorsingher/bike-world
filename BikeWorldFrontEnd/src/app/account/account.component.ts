@@ -22,7 +22,6 @@ export class AccountComponent implements OnInit {
   setAccountInfo(){
       // @ts-ignore
     const params = new HttpParams().set("email", sessionStorage.getItem("email"))
-    //console.log(params);
     lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/account', {params}).pipe(map( data => { 
 
     if(data.success == false){
@@ -31,12 +30,13 @@ export class AccountComponent implements OnInit {
         // @ts-ignore
         document.getElementById("manageAccountErrorMessage").innerHTML = data.message;
     } else {
+        console.log(data.psw);
         // @ts-ignore
         document.getElementById("email").value = data.email;
         // @ts-ignore
-        document.getElementById("psw").value = data.password;
+        document.getElementById("psw").value = data.psw;
         // @ts-ignore
-        document.getElementById("psw2").value = data.password;
+        document.getElementById("psw2").value = data.psw;
         // @ts-ignore
         document.getElementById("target").value = data.target;
     }
@@ -62,17 +62,12 @@ export class AccountComponent implements OnInit {
     if(this.verifyPsw(psw, psw2) == true){
         const params = new HttpParams().set("email", email).set("psw", psw).set("target", target);
         //console.log(params);
-        await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/account', params).pipe(map( data => { 
+        await lastValueFrom(this.http.put<any>('http://localhost:8080/api/v1/account', params).pipe(map( data => { 
           // @ts-ignore
           document.getElementById("manageAccountErrorMessage").style.display = 'block';
-        if(data.success == false){
             // @ts-ignore
             document.getElementById("manageAccountErrorMessage").innerHTML = data.message;
-        } else {
-            
-            // @ts-ignore
-            document.getElementById("manageAccountErrorMessage").innerHTML = data.message;
-        }
+        
         })))
     }      
   } 
