@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button
+        class="navbar-toggler"
+        type="button"
+        data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+        <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <a class="navbar-brand mt-2 mt-lg-0" href="#">
+            <img
+            src="../img/logo.png"
+            height="15"
+            alt="World Bike Logo"
+            loading="lazy"
+            />
+        </a>
+        <!-- Left links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+            <a class="nav-link">Punti di noleggio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">Itinerari </a>
+            </li>
+        </ul>
+        <!-- Left links -->
+        </div>
+        <!-- Right elements -->
+        <div class="d-flex align-items-center">
+            <a class="nav-brand" *ngIf="sessionStorageHeader.getItem('userID') == null; then notLoggedIn else loggedIn"> </a>
+        </div>
+        <!-- Right elements -->
+    </div>
+</nav>
+  
+  
+<ng-template #notLoggedIn>
+    <div class="col">
+        <div ngbDropdown class="d-inline-block">
+        <button type="button" class="btn btn-outline-primary" id="login" ngbDropdownToggle>Login</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <div class="px-1 py-3">
+                <div class="mb-3">
+                    <label for="user">Email address</label>
+                    <input type="email" class="form-control" id="email" #email placeholder="Email" autocomplete="email">
+                </div>
+                <div class="mb-3">
+                    <label for="psw">Password</label>
+                    <input type="password" class="form-control" id="psw" #psw placeholder="Password" autocomplete="current-password">
+                </div>
+                <div class="mb-3" id="loginErrorMessage" style="display: none;">
+                    <label style="color: red"> Username o password errati </label>
+                </div>
+                <button class="btn btn-primary" (click)="loginFunction($any(email.value), $any(psw.value))">Sign In</button>
+                <button class="btn btn-primary" [routerLink]="['/signUp']">Sign Up</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</ng-template>
+  
+<ng-template #loggedIn>
+<div class="col">
+    <div ngbDropdown class="d-inline-block">
+    <button type="button" class="btn btn-outline-primary" id="userManagement" ngbDropdownToggle>{{sessionStorageHeader.getItem("email")}}</button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem (click)="logout()">Logout</button>
+        <button ngbDropdownItem [routerLink]="['/account']"> Manage account </button>
+        <button ngbDropdownItem [routerLink]="['/admin']" *ngIf="checkPermissions()"> Administration </button>
+    </div>
+    </div>
+</div>
+</ng-template>

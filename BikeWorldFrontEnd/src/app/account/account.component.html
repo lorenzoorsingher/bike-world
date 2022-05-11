@@ -1,0 +1,30 @@
+<div>
+    <h3 style="color: red;">Cambia Dati</h3>
+    <form (submit)="edit($any(email.value), $any(psw.value), $any(psw2.value), $any(target.value),$event)">
+        <div>
+            <label for="email">Inserire email*</label>
+            <input type="text" id="email" #email disabled>
+        </div>
+        <div>
+            <label for="password">Inserire password*</label>
+            <input type="password" id="psw" #psw required>
+        </div>
+        <div>
+            <label for="password2">Confermare password*</label>
+            <input type="password" id="psw2" #psw2 required>
+        </div>
+        <div>
+            <label for="target">Inserire target</label>
+            <select name="target" id="target" #target>
+                <option value="Principiante">Principiante</option>
+                <option value="Intermedio">Intermedio</option>
+                <option value="Esperto">Esperto</option>
+              </select>
+        </div>
+        <h5> * campi obbligatori </h5>
+        <button type="submit">Crea Nuovo Account</button>
+        <div class="mb-3" style="color: red" id="manageAccountErrorMessage" style="display: none;">
+            
+        </div>
+    </form>
+</div>
