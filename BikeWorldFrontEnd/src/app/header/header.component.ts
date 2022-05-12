@@ -19,11 +19,11 @@ export class HeaderComponent {
 
   }
 
-  async loginFunction(email: string, psw:string){
-    const params = new HttpParams().set('email', email).set('psw', psw);
+  async loginFunction(username: string, psw:string){
+    const params = new HttpParams().set('username', username).set('psw', psw);
     await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/account/authentication', { params }).pipe(map(data => {
         if(data.success == true) {
-            this.sessionStorageHeader.setItem("email", data.email);
+            this.sessionStorageHeader.setItem("username", data.username);
             this.sessionStorageHeader.setItem("userID", data.id);
             this.sessionStorageHeader.setItem("permissions", data.permissions);
         } else {
@@ -35,7 +35,7 @@ export class HeaderComponent {
 
   logout(){
     this.sessionStorageHeader.removeItem("userID");
-    this.sessionStorageHeader.removeItem("email");
+    this.sessionStorageHeader.removeItem("username");
     this.sessionStorageHeader.removeItem("permissions");
     this.router.navigate(['/']);    
   }

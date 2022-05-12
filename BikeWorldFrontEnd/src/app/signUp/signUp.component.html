@@ -1,6 +1,10 @@
 <div>
     <h3 style="color: red;">REGISTRATI</h3>
-    <form (submit)="create($any(email.value), $any(psw.value), $any(psw2.value), $any(target.value),$event)">
+    <form (submit)="create($any(username.value), $any(email.value), $any(psw.value), $any(psw2.value), $any(target.value),$event)">
+        <div>
+            <label for="username">Inserire username*</label>
+            <input type="text" id="username" #username required>
+        </div>
         <div>
             <label for="email">Inserire email*</label>
             <input type="text" id="email" #email required>

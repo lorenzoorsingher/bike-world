@@ -1,9 +1,13 @@
 <div>
     <h3 style="color: red;">Cambia Dati</h3>
-    <form (submit)="edit($any(email.value), $any(psw.value), $any(psw2.value), $any(target.value),$event)">
+    <form (submit)="edit($any(username.value), $any(email.value), $any(psw.value), $any(psw2.value), $any(target.value),$event)">
+        <div>
+            <label for="username">Inserire username*</label>
+            <input type="text" id="username" #username disabled>
+        </div>
         <div>
             <label for="email">Inserire email*</label>
-            <input type="text" id="email" #email disabled>
+            <input type="text" id="email" #email required>
         </div>
         <div>
             <label for="password">Inserire password*</label>
@@ -22,7 +26,7 @@
               </select>
         </div>
         <h5> * campi obbligatori </h5>
-        <button type="submit">Crea Nuovo Account</button>
+        <button type="submit">Modifica account</button>
         <div class="mb-3" style="color: red" id="manageAccountErrorMessage" style="display: none;">
             
         </div>

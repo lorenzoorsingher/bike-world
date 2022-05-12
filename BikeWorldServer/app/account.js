@@ -14,7 +14,7 @@ router.get('/authentication', async function(req, res) {
 	
 	// find the user
 	let user = await User.findOne({
-		email: req.query.email
+		username: req.query.username
 	}).exec();
 	
 	// user not found
@@ -32,7 +32,7 @@ router.get('/authentication', async function(req, res) {
 	// if user is found and password is right create a token
 	var payload = {
 		permissions: user.permissions,
-		email: user.email,
+		username: user.username,
 		id: user._id
 		// other data encrypted in the token	
 	}
@@ -48,7 +48,7 @@ router.get('/authentication', async function(req, res) {
 		message: 'Enjoy your token!',
 		token: token,
 		permissions: user.permissions,
-		email: user.email,
+		username: user.username,
 		id: user._id,
 		self: "api/v1/" + user._id
 	});
@@ -66,7 +66,7 @@ router.post('/signUp', async function(req, res) {
 
 	// find the user
 	let userAlreadyExists = await User.findOne({
-		email: req.body.email
+		username: req.body.username
 	}).exec();
 	
 	// user already exists
@@ -76,19 +76,19 @@ router.post('/signUp', async function(req, res) {
 	}
 
     //save user in the db
-    const newUser = new User({email: req.body.email, psw: req.body.psw, permissions: false, target: req.body.target});
+    const newUser = new User({username: req.body.username, email: req.body.email, psw: req.body.psw, permissions: false, target: req.body.target});
     await newUser.save();
 
     ////////Si può togliere??? Mi serve ottenere l'id
     // find the user to get the ID      
 	let user = await User.findOne({
-		email: newUser.email
+		username: newUser.username
 	}).exec();
 	
 	// if user is found and password is right create a token
 	var payload = {
 		permissions: user.permissions,
-		email: user.email,
+		username: user.username,
 		id: user._id
 		// other data encrypted in the token	
 	}
@@ -104,7 +104,7 @@ router.post('/signUp', async function(req, res) {
 		message: 'Signup completed!',
 		token: token,
 		permissions: user.permissions,
-		email: user.email,
+		username: user.username,
 		id: user._id,
 		self: "api/v1/" + user._id
 	});
@@ -123,7 +123,7 @@ router.get('', async function(req, res) {
 	
 	// find the user
 	let user = await User.findOne({
-		email: req.query.email
+		username: req.query.username
 	}).exec();
 	
 	// user not found
@@ -136,7 +136,7 @@ router.get('', async function(req, res) {
 	var payload = {
 		target: user.target,
 		permissions: user.permissions,
-		email: user.email,
+		username: user.username,
 		id: user._id
 		// other data encrypted in the token	
 	}
@@ -154,6 +154,7 @@ router.get('', async function(req, res) {
 		target: user.target,
 		permissions: user.permissions,
 		email: user.email,
+		username: user.username,
 		psw: user.psw,
 		id: user._id,
 		self: "api/v1/" + user._id
@@ -171,20 +172,19 @@ router.put('', async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Accept, Origin');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
-	console.log(req.body.email)
     //update user in the db
-	await User.updateOne({'email': req.body.email}, {$set: {'psw': req.body.psw, 'target': req.body.target}});
+	await User.updateOne({'username': req.body.username}, {$set: {'email': req.body.email,'psw': req.body.psw, 'target': req.body.target}});
 
     ////////Si può togliere??? Mi serve ottenere l'id
     // find the user to get the ID      
 	let user = await User.findOne({
-		email: req.body.email
+		username: req.body.username
 	}).exec();
 	
 	// if user is found and password is right create a token
 	var payload = {
 		permissions: user.permissions,
-		email: user.email,
+		username: user.username,
 		id: user._id
 		// other data encrypted in the token	
 	}
@@ -200,7 +200,7 @@ router.put('', async function(req, res) {
 		message: 'Information updated!',
 		token: token,
 		permissions: user.permissions,
-		email: user.email,
+		username: user.username,
 		id: user._id,
 		self: "api/v1/" + user._id
 	});

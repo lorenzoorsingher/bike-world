@@ -21,7 +21,7 @@ export class AccountComponent implements OnInit {
 
   setAccountInfo(){
       // @ts-ignore
-    const params = new HttpParams().set("email", sessionStorage.getItem("email"))
+    const params = new HttpParams().set("username", sessionStorage.getItem("username"))
     lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/account', {params}).pipe(map( data => { 
 
     if(data.success == false){
@@ -30,7 +30,8 @@ export class AccountComponent implements OnInit {
         // @ts-ignore
         document.getElementById("manageAccountErrorMessage").innerHTML = data.message;
     } else {
-        console.log(data.psw);
+        // @ts-ignore
+        document.getElementById("username").value = data.username;
         // @ts-ignore
         document.getElementById("email").value = data.email;
         // @ts-ignore
@@ -55,12 +56,12 @@ export class AccountComponent implements OnInit {
     }      
   }
 
-  async edit(email: string, psw: string, psw2:string, target: string, event:any){
+  async edit(username: string, email: string, psw: string, psw2:string, target: string, event:any){
     event.preventDefault();
     // @ts-ignore
     document.getElementById("manageAccountErrorMessage").style.display = 'none';
     if(this.verifyPsw(psw, psw2) == true){
-        const params = new HttpParams().set("email", email).set("psw", psw).set("target", target);
+        const params = new HttpParams().set("username", username).set("email", email).set("psw", psw).set("target", target);
         //console.log(params);
         await lastValueFrom(this.http.put<any>('http://localhost:8080/api/v1/account', params).pipe(map( data => { 
           // @ts-ignore

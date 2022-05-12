@@ -27,12 +27,12 @@ export class SignUpComponent {
     }      
   }
 
-  async create(email: string, psw: string, psw2:string, target: string, event:any){
+  async create(username: string, email: string, psw: string, psw2:string, target: string, event:any){
     event.preventDefault();
     // @ts-ignore
     document.getElementById("signUpErrorMessage").style.display = 'none';
     if(this.verifyPsw(psw, psw2) == true){
-      const params = new HttpParams().set("email", email).set("psw", psw).set("target", target);
+      const params = new HttpParams().set("username", username).set("email", email).set("psw", psw).set("target", target);
       //console.log(params);
       await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/account/signUp', params).pipe(map( data => { 
         if(data.success == false){
@@ -41,7 +41,7 @@ export class SignUpComponent {
             // @ts-ignore
             document.getElementById("signUpErrorMessage").innerHTML = data.message;
         } else{
-            sessionStorage.setItem("email", data.email);
+            sessionStorage.setItem("username", data.username);
             sessionStorage.setItem("userID", data.id);
             sessionStorage.setItem("permissions", data.permissions);
         }

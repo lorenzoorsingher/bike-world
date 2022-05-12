@@ -24,7 +24,7 @@
         <!-- Left links -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-            <a class="nav-link">Punti di noleggio</a>
+                <a class="nav-link">Punti di noleggio</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link">Itinerari </a>
@@ -48,8 +48,8 @@
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
             <div class="px-1 py-3">
                 <div class="mb-3">
-                    <label for="user">Email address</label>
-                    <input type="email" class="form-control" id="email" #email placeholder="Email" autocomplete="email">
+                    <label for="user">Username</label>
+                    <input type="text" class="form-control" id="username" #username placeholder="Username">
                 </div>
                 <div class="mb-3">
                     <label for="psw">Password</label>
@@ -58,7 +58,7 @@
                 <div class="mb-3" id="loginErrorMessage" style="display: none;">
                     <label style="color: red"> Username o password errati </label>
                 </div>
-                <button class="btn btn-primary" (click)="loginFunction($any(email.value), $any(psw.value))">Sign In</button>
+                <button class="btn btn-primary" (click)="loginFunction($any(username.value), $any(psw.value))">Sign In</button>
                 <button class="btn btn-primary" [routerLink]="['/signUp']">Sign Up</button>
             </div>
         </div>
@@ -69,7 +69,7 @@
 <ng-template #loggedIn>
 <div class="col">
     <div ngbDropdown class="d-inline-block">
-    <button type="button" class="btn btn-outline-primary" id="userManagement" ngbDropdownToggle>{{sessionStorageHeader.getItem("email")}}</button>
+    <button type="button" class="btn btn-outline-primary" id="userManagement" ngbDropdownToggle>{{sessionStorageHeader.getItem("username")}}</button>
     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button ngbDropdownItem (click)="logout()">Logout</button>
         <button ngbDropdownItem [routerLink]="['/account']"> Manage account </button>

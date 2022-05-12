@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const tokenChecker = require('./tokenChecker.js');
 const account = require('./account.js');
-const signup = require('./signup.js');
 var cors = require('cors');
 
 /**
@@ -22,6 +21,7 @@ app.use('/', express.static('static'));
  * Manage account(authentications, signUp, modify) routing and middleware
 */
 app.use('/api/v1/account', account);
+
 
 /* Default 404 handler */
 app.use((req, res) => {
