@@ -1,0 +1,63 @@
+<style>
+.sidebar {
+    float: left;
+    margin-left: 1%;
+    width: 19%;
+    height: 100%;
+  }
+
+  .map{
+    float: left;
+    margin-left: 1%;
+    width: 49%;
+  }
+
+  .content{
+    float: right;
+    margin-left: 1%;
+    width: 29%;
+  }
+</style>
+
+<div>
+    <div class="sidebar">
+        <ul *ngFor="let element of rentalPoints">
+            <li  (click)="selectRentalPoint($event)" id="{{element.name}}"> {{element.name}}: {{element.address}}</li>
+        </ul>
+    </div>
+    <div class="map">
+        <!-- this creates a google map on the page with the given lat/lng from -->
+        <!-- the component as the initial center of the map: -->
+        <agm-map [latitude]="latP1" [longitude]="lngP1">
+            <agm-marker [latitude]="latP1" [longitude]="lngP1"></agm-marker>
+            <agm-marker [latitude]="latP2" [longitude]="lngP2"></agm-marker>
+        </agm-map>
+        <!--<iframe src="https://maps.google.com/maps?q=Tangesir%20Dates%20Products&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" width=300 height=150 allowfullscreen></iframe>-->
+        <a *ngIf="addItemOptions() == true">
+            <form (submit)="newRentalPoint($any(name.value), $any(address.value), $any(lat.value), $any(lng.value), $any(bikeNumber.value),$event)">
+                Inserire nome: <input type="text" id="name" #name required><br>
+                Inserire indirizzo: <input type="text" id="address" #address required><br>
+                Inserire latitudine: <input type="text" id="lat" #lat required><br>
+                Inserire longitudine: <input type="text" id="lng" #lng required><br>
+                Inserire numero di bici: <input type="text" id="bikeNumber" #bikeNumber required><br>
+                <button type="submit">Crea Nuovo Rental Point</button>
+            </form>
+        </a>
+    </div>
+    <div class="content">
+        <br><br>
+        <div id="rentalShopSelected"></div> 
+        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" (click)="removeRentalPoint()">Remove rental point</button>
+        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" (click)="allowRentalPointChange()">Change rental point info</button>
+        <a *ngIf="change">
+            <form (submit)="changeRentalPoint($any(nameChange.value), $any(addressChange.value), $any(latChange.value), $any(lngChange.value), $any(bikeNumberChange.value),$event)">
+                Inserire nome: <input type="text" id="nameChange" #nameChange disabled><br>
+                Inserire indirizzo: <input type="text" id="addressChange" #addressChange required><br>
+                Inserire latitudine: <input type="text" id="latChange" #latChange required><br>
+                Inserire longitudine: <input type="text" id="lngChange" #lngChange required><br>
+                Inserire numero di bici: <input type="text" id="bikeNumberChange" #bikeNumberChange required><br>
+                <button type="submit">Modifica Rental Point</button>
+            </form>
+        </a>     
+    </div>
+</div>

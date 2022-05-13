@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const tokenChecker = require('./tokenChecker.js');
 const account = require('./account.js');
+const rental = require('./rental.js');
 var cors = require('cors');
 
 /**
@@ -22,6 +23,10 @@ app.use('/', express.static('static'));
 */
 app.use('/api/v1/account', account);
 
+/**
+ * Manage rental(add rental point, get rental point, modify) routing and middleware
+*/
+app.use('/api/v1/rental', rental);
 
 /* Default 404 handler */
 app.use((req, res) => {
