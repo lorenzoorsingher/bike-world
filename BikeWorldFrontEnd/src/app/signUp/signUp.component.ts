@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpParams } from '@angular/common/http' 
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http' 
 import { lastValueFrom, map } from 'rxjs';
 
 
@@ -32,9 +32,15 @@ export class SignUpComponent {
     // @ts-ignore
     document.getElementById("signUpErrorMessage").style.display = 'none';
     if(this.verifyPsw(psw, psw2) == true){
-      const params = new HttpParams().set("username", username).set("email", email).set("psw", psw).set("target", target);
+      const body = {
+        "username": username,
+        "email": email,
+        "password": psw,
+        "target": target
+      };
+      const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
       //console.log(params);
-      await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/account/signUp', params).pipe(map( data => { 
+      await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/users/signUp', body, {headers: headers}).pipe(map( data => { 
         if(data.success == false){
             // @ts-ignore
             document.getElementById("signUpErrorMessage").style.display = 'block';
@@ -44,6 +50,7 @@ export class SignUpComponent {
             sessionStorage.setItem("username", data.username);
             sessionStorage.setItem("userID", data.id);
             sessionStorage.setItem("permissions", data.permissions);
+            sessionStorage.setItem("token", data.token);
         }
       })))
     }      
