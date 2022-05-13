@@ -10,10 +10,8 @@ import { lastValueFrom, map } from 'rxjs';
 })
 export class RentalPointComponent  {
     title = 'My first AGM project';
-    latP1 = 46.06698;
-    lngP1 = 11.15503;
-    latP2 = 46.129417;
-    lngP2 = 11.242521;
+    latC = 46.06698;
+    lngC = 11.15503;
     rentalPoints: RentalPoint[] | undefined; 
     selectedRentalName: string = "";
     change = false;
@@ -34,22 +32,6 @@ export class RentalPointComponent  {
     this.getRentalPoints();
     this.selectRentalPoint(undefined);          
   }
-
-  allowRentalPointChange(){
-    this.change = true;
-    let rentalPoint = this.getRentalPoint();
-
-    // @ts-ignore
-    document.getElementById("nameChange").value = rentalPoint.name;
-    // @ts-ignore
-    document.getElementById("addressChange").value = rentalPoint.address;
-    // @ts-ignore
-    document.getElementById("latChange").value = rentalPoint.lat;
-    // @ts-ignore
-    document.getElementById("lngChange").value = rentalPoint.lng;
-    // @ts-ignore
-    document.getElementById("bikeNumberChange").value = rentalPoint.bikeNUmber;
-  }
   
   async changeRentalPoint(name: string, address: string, lat: number, lng:number, bikeNumber: number, event:any){
     event.preventDefault()
@@ -65,9 +47,18 @@ export class RentalPointComponent  {
     this.selectRentalPoint(undefined);        
   }
 
+  async removeRentalPoint(){  
+    const params = new HttpParams().set('name', this.selectedRentalName)
+    await lastValueFrom(this.http.delete<any>('http://localhost:8080/api/v1/rental', {params} ).pipe(map(data => {
+        
+    })));
+    this.selectedRentalName = "";
+    this.getRentalPoints();
+    this.selectRentalPoint(undefined);  
+  }
+
   async getRentalPoints(){
       await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/rental').pipe(map(data => {
-        console.log(data.rentalPoints);
         let i;
         this.rentalPoints = new Array(data.rentalPoints.length);
         
@@ -81,6 +72,22 @@ export class RentalPointComponent  {
 
   addItemOptions(){
     return sessionStorage.getItem("permissions") != undefined && sessionStorage.getItem("permissions") == 'true';
+  }
+
+  allowRentalPointChange(){
+    this.change = true;
+    let rentalPoint = this.getRentalPoint();
+
+    // @ts-ignore
+    document.getElementById("nameChange").value = rentalPoint.name;
+    // @ts-ignore
+    document.getElementById("addressChange").value = rentalPoint.address;
+    // @ts-ignore
+    document.getElementById("latChange").value = rentalPoint.lat;
+    // @ts-ignore
+    document.getElementById("lngChange").value = rentalPoint.lng;
+    // @ts-ignore
+    document.getElementById("bikeNumberChange").value = rentalPoint.bikeNUmber;
   }
 
   getRentalPoint(){
@@ -102,33 +109,50 @@ export class RentalPointComponent  {
     if(event != undefined){
       this.selectedRentalName = event.target.id;
     }
-    let rentalInfo = "";
-    let rentalPoint = this.getRentalPoint();    
+    if(this.selectedRentalName != ""){
+      let rentalInfo = "";
+      let rentalPoint = this.getRentalPoint();    
 
-    // @ts-ignore
-    rentalInfo = "Nome negozio: " + rentalPoint.name + "<br>Indirizzo: "+ rentalPoint.address + "<br>Numero di bici disponibili: "+ rentalPoint.bikeNUmber;
+      // @ts-ignore
+      rentalInfo = "Nome negozio: " + rentalPoint.name + "<br>Indirizzo: "+ rentalPoint.address + "<br>Numero di bici disponibili: "+ rentalPoint.bikeNUmber;
 
-    // @ts-ignore  
-    document.getElementById("rentalShopSelected").innerHTML = rentalInfo;
+      // @ts-ignore  
+      document.getElementById("rentalShopSelected").innerHTML = rentalInfo;
+    }
     
   }
 
-  async removeRentalPoint(){  
-    const params = new HttpParams().set('name', this.selectedRentalName)
-    await lastValueFrom(this.http.delete<any>('http://localhost:8080/api/v1/rental', {params} ).pipe(map(data => {
-        
-    })));
-    this.selectedRentalName = "";
-    this.getRentalPoints();
+  showMarkerInfo(event: any){
+    let lat = event.latitude;
+    let lng = event.longitude;
+    let rentalPoint;
+
+    // @ts-ignore
+    for(let i = 0; i < this.rentalPoints.length; i++){
+      // @ts-ignore
+      if(this.rentalPoints[i].lat == lat && this.rentalPoints[i].lng == lng){
+          // @ts-ignore
+          rentalPoint = this.rentalPoints[i];
+      }
+    }
+    
+    let rentalInfo = "";  
+    // @ts-ignore
+    rentalInfo = "Nome negozio: " + rentalPoint.name + "<br>Indirizzo: "+ rentalPoint.address + "<br>Numero di bici disponibili: "+ rentalPoint.bikeNUmber;
+    // @ts-ignore  
+    document.getElementById("rentalShopSelected").innerHTML = rentalInfo;   
+    
   }
+
+  
 }
 
 class RentalPoint{
   id: string | undefined;
   name: string | undefined;
   address: string | undefined;
-  lat: number | undefined;
-  lng: number | undefined;
+  lat: number = 0;
+  lng: number = 0;
   bikeNUmber: number | undefined;
 
   constructor(id: string, name: string, address: string, lat: number, lng: number, bikeNumber: number){

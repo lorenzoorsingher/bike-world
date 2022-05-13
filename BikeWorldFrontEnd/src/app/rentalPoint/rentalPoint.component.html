@@ -28,9 +28,8 @@
     <div class="map">
         <!-- this creates a google map on the page with the given lat/lng from -->
         <!-- the component as the initial center of the map: -->
-        <agm-map [latitude]="latP1" [longitude]="lngP1">
-            <agm-marker [latitude]="latP1" [longitude]="lngP1"></agm-marker>
-            <agm-marker [latitude]="latP2" [longitude]="lngP2"></agm-marker>
+        <agm-map [latitude]="latC" [longitude]="lngC">
+                <agm-marker [latitude]="element.lat" [longitude]="element.lng"  *ngFor="let element of rentalPoints" (markerClick)="showMarkerInfo($event)"></agm-marker>
         </agm-map>
         <!--<iframe src="https://maps.google.com/maps?q=Tangesir%20Dates%20Products&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" width=300 height=150 allowfullscreen></iframe>-->
         <a *ngIf="addItemOptions() == true">
@@ -45,7 +44,6 @@
         </a>
     </div>
     <div class="content">
-        <br><br>
         <div id="rentalShopSelected"></div> 
         <button *ngIf="addItemOptions() == true && selectedRentalName != ''" (click)="removeRentalPoint()">Remove rental point</button>
         <button *ngIf="addItemOptions() == true && selectedRentalName != ''" (click)="allowRentalPointChange()">Change rental point info</button>

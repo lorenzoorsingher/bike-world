@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
 import { HeaderComponent } from './header/header.component';
 import { RentalPointComponent } from './rentalPoint/rentalPoint.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { RentalPointComponent } from './rentalPoint/rentalPoint.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AgmCoreModule.forRoot({ apiKey: ''})
+    AgmCoreModule.forRoot({ apiKey: ''}),
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
