@@ -21,6 +21,14 @@
 
 <div>
     <div class="sidebar">
+        <h3>Filtra elementi</h3>
+            <label for="typeFilter">Scegliere tipo</label>
+            <select name="typeFilter" id="typeFilter" #typeFilter (change)="filterTypeBased($event)">
+                <option value="">Entrambi</option>
+                <option value="Negozio">Negozio</option>
+                <option value="Automatico">Automatico</option>                    
+            </select>
+        <hr>
         <ul *ngFor="let element of rentalPoints">
             <li  (click)="selectRentalPoint($event)" id="{{element.name}}"> {{element.name}}: {{element.address}}</li>
         </ul>
@@ -33,11 +41,18 @@
         </agm-map>
         <!--<iframe src="https://maps.google.com/maps?q=Tangesir%20Dates%20Products&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" width=300 height=150 allowfullscreen></iframe>-->
         <a *ngIf="addItemOptions() == true">
-            <form (submit)="newRentalPoint($any(name.value), $any(address.value), $any(lat.value), $any(lng.value), $any(bikeNumber.value),$event)">
+            <form (submit)="newRentalPoint($any(name.value), $any(address.value), $any(lat.value), $any(lng.value), $any(typeRentalPoint.value), $any(bikeNumber.value),$event)">
                 Inserire nome: <input type="text" id="name" #name required><br>
                 Inserire indirizzo: <input type="text" id="address" #address required><br>
                 Inserire latitudine: <input type="text" id="lat" #lat required><br>
                 Inserire longitudine: <input type="text" id="lng" #lng required><br>
+                <div>
+                    <label for="typeRentalPoint">Inserire tipo</label>
+                    <select name="typeRentalPoint" id="typeRentalPoint" #typeRentalPoint>
+                        <option value="Negozio">Negozio</option>
+                        <option value="Automatico">Automatico</option>                    
+                      </select>
+                </div>
                 Inserire numero di bici: <input type="text" id="bikeNumber" #bikeNumber required><br>
                 <button type="submit">Crea Nuovo Rental Point</button>
             </form>
@@ -47,15 +62,21 @@
         <div id="rentalShopSelected"></div> 
         <button *ngIf="addItemOptions() == true && selectedRentalName != ''" (click)="removeRentalPoint()">Remove rental point</button>
         <button *ngIf="addItemOptions() == true && selectedRentalName != ''" (click)="allowRentalPointChange()">Change rental point info</button>
-        <a *ngIf="change">
-            <form (submit)="changeRentalPoint($any(nameChange.value), $any(addressChange.value), $any(latChange.value), $any(lngChange.value), $any(bikeNumberChange.value),$event)">
-                Inserire nome: <input type="text" id="nameChange" #nameChange disabled><br>
-                Inserire indirizzo: <input type="text" id="addressChange" #addressChange required><br>
-                Inserire latitudine: <input type="text" id="latChange" #latChange required><br>
-                Inserire longitudine: <input type="text" id="lngChange" #lngChange required><br>
-                Inserire numero di bici: <input type="text" id="bikeNumberChange" #bikeNumberChange required><br>
-                <button type="submit">Modifica Rental Point</button>
-            </form>
-        </a>     
+        
+        <form id="changeRentalPointForm" style="display: none;" (submit)="changeRentalPoint($any(nameChange.value), $any(addressChange.value), $any(latChange.value), $any(lngChange.value), $any(typeRentalPointChange.value), $any(bikeNumberChange.value),$event)">
+            Inserire nome: <input type="text" id="nameChange" #nameChange disabled><br>
+            Inserire indirizzo: <input type="text" id="addressChange" #addressChange required><br>
+            Inserire latitudine: <input type="text" id="latChange" #latChange required><br>
+            Inserire longitudine: <input type="text" id="lngChange" #lngChange required><br>
+            <div>
+                <label for="typeRentalPointChange">Inserire tipo</label>
+                <select name="typeRentalPointChange" id="typeRentalPointChange" #typeRentalPointChange>
+                    <option value="Negozio">Negozio</option>
+                    <option value="Automatico">Automatico</option>                    
+                  </select>
+            </div>
+            Inserire numero di bici: <input type="text" id="bikeNumberChange" #bikeNumberChange required><br>
+            <button type="submit">Modifica Rental Point</button>
+        </form>           
     </div>
 </div>

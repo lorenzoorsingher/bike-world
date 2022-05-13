@@ -7,5 +7,6 @@ module.exports = mongoose.model('RentalPoint', new Schema({
     address: String,
 	lat: Number,
 	lng: Number,
-	bikeNumber: Number
+	type: String,
+	bikeNumber: Number	//max bike number available
 }));

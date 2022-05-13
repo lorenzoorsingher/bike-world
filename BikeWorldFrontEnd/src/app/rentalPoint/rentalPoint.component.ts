@@ -14,16 +14,15 @@ export class RentalPointComponent  {
     lngC = 11.15503;
     rentalPoints: RentalPoint[] | undefined; 
     selectedRentalName: string = "";
-    change = false;
 
   constructor(private http: HttpClient) {
     this.getRentalPoints();
   }   
 
-  async newRentalPoint(name: string, address: string, lat: number, lng:number, bikeNumber: number, event:any){
+  async newRentalPoint(name: string, address: string, lat: number, lng:number, type:string, bikeNumber: number, event:any){
     event.preventDefault()
     
-    const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("bikeNumber", bikeNumber);
+    const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type).set("bikeNumber", bikeNumber);
     //console.log(params);
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/rental', params).pipe(map( data => { 
        
@@ -33,17 +32,18 @@ export class RentalPointComponent  {
     this.selectRentalPoint(undefined);          
   }
   
-  async changeRentalPoint(name: string, address: string, lat: number, lng:number, bikeNumber: number, event:any){
+  async changeRentalPoint(name: string, address: string, lat: number, lng:number, type: string, bikeNumber: number, event:any){
     event.preventDefault()
     
-    const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("bikeNumber", bikeNumber);
+    const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type).set("bikeNumber", bikeNumber);
     //console.log(params);
     await lastValueFrom(this.http.put<any>('http://localhost:8080/api/v1/rental', params).pipe(map( data => { 
        
     })))
 
-    this.change = false;  
-    this.getRentalPoints(); 
+    // @ts-ignore
+    document.getElementById("changeRentalPointForm").style.display = 'none';  
+    await this.getRentalPoints(); 
     this.selectRentalPoint(undefined);        
   }
 
@@ -53,7 +53,7 @@ export class RentalPointComponent  {
         
     })));
     this.selectedRentalName = "";
-    this.getRentalPoints();
+    await this.getRentalPoints();
     this.selectRentalPoint(undefined);  
   }
 
@@ -64,7 +64,7 @@ export class RentalPointComponent  {
         
         if (data.rentalPoints.length > 0) {
           for (i = 0; i < data.rentalPoints.length; i++) {
-            this.rentalPoints[i] = new RentalPoint(data.rentalPoints[i].id, data.rentalPoints[i].name, data.rentalPoints[i].address, data.rentalPoints[i].lat, data.rentalPoints[i].lng, data.rentalPoints[i].bikeNumber);
+            this.rentalPoints[i] = new RentalPoint(data.rentalPoints[i].id, data.rentalPoints[i].name, data.rentalPoints[i].address, data.rentalPoints[i].lat, data.rentalPoints[i].lng, data.rentalPoints[i].type, data.rentalPoints[i].bikeNumber);
           }
         }
       })));
@@ -75,7 +75,8 @@ export class RentalPointComponent  {
   }
 
   allowRentalPointChange(){
-    this.change = true;
+    // @ts-ignore
+    document.getElementById("changeRentalPointForm").style.display = 'block';
     let rentalPoint = this.getRentalPoint();
 
     // @ts-ignore
@@ -86,6 +87,8 @@ export class RentalPointComponent  {
     document.getElementById("latChange").value = rentalPoint.lat;
     // @ts-ignore
     document.getElementById("lngChange").value = rentalPoint.lng;
+    // @ts-ignore
+    document.getElementById("typeRentalPointChange").value = rentalPoint.type;
     // @ts-ignore
     document.getElementById("bikeNumberChange").value = rentalPoint.bikeNUmber;
   }
@@ -107,14 +110,17 @@ export class RentalPointComponent  {
 
   selectRentalPoint(event: any){
     if(event != undefined){
+      console.log("YEs");
       this.selectedRentalName = event.target.id;
     }
+    console.log(event);
+    console.log(this.selectedRentalName);
     if(this.selectedRentalName != ""){
       let rentalInfo = "";
       let rentalPoint = this.getRentalPoint();    
 
       // @ts-ignore
-      rentalInfo = "Nome negozio: " + rentalPoint.name + "<br>Indirizzo: "+ rentalPoint.address + "<br>Numero di bici disponibili: "+ rentalPoint.bikeNUmber;
+      rentalInfo = "Nome negozio: " + rentalPoint.name + "<br>Indirizzo: "+ rentalPoint.address + "<br>Tipo: "+ rentalPoint.type + "<br>Numero di bici disponibili: "+ rentalPoint.bikeNUmber;
 
       // @ts-ignore  
       document.getElementById("rentalShopSelected").innerHTML = rentalInfo;
@@ -138,10 +144,24 @@ export class RentalPointComponent  {
     
     let rentalInfo = "";  
     // @ts-ignore
-    rentalInfo = "Nome negozio: " + rentalPoint.name + "<br>Indirizzo: "+ rentalPoint.address + "<br>Numero di bici disponibili: "+ rentalPoint.bikeNUmber;
+    rentalInfo = "Nome negozio: " + rentalPoint.name + "<br>Indirizzo: "+ rentalPoint.address + "<br>Tipo: "+ rentalPoint.type + "<br>Numero di bici disponibili: "+ rentalPoint.bikeNUmber;
     // @ts-ignore  
     document.getElementById("rentalShopSelected").innerHTML = rentalInfo;   
     
+  }
+
+  async filterTypeBased(event: any){
+    const params = new HttpParams().set('type', event.target.value)
+    await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/rental/type', {params}).pipe(map(data => {
+        let i;
+        this.rentalPoints = new Array(data.rentalPoints.length);
+        
+        if (data.rentalPoints.length > 0) {
+          for (i = 0; i < data.rentalPoints.length; i++) {
+            this.rentalPoints[i] = new RentalPoint(data.rentalPoints[i].id, data.rentalPoints[i].name, data.rentalPoints[i].address, data.rentalPoints[i].lat, data.rentalPoints[i].lng, data.rentalPoints[i].type, data.rentalPoints[i].bikeNumber);
+          }
+        }
+      })));
   }
 
   
@@ -153,14 +173,16 @@ class RentalPoint{
   address: string | undefined;
   lat: number = 0;
   lng: number = 0;
+  type: string | undefined;
   bikeNUmber: number | undefined;
 
-  constructor(id: string, name: string, address: string, lat: number, lng: number, bikeNumber: number){
+  constructor(id: string, name: string, address: string, lat: number, lng: number, type: string, bikeNumber: number){
     this.id = id;
     this.name = name;
     this.address = address;
     this.lat = lat;
     this.lng = lng;
+    this.type = type;
     this.bikeNUmber = bikeNumber;
   }
 

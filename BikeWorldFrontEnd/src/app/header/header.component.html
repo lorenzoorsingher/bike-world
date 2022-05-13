@@ -28,6 +28,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link">Itinerari </a>
+            </li>            
+            <li class="nav-item">
+                <a class="nav-link" *ngIf="checkPermissions()" [routerLink]="['/bike']">Biciclette</a>
             </li>
         </ul>
         <!-- Left links -->
@@ -73,7 +76,6 @@
     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button ngbDropdownItem (click)="logout()">Logout</button>
         <button ngbDropdownItem [routerLink]="['/account']"> Manage account </button>
-        <button ngbDropdownItem [routerLink]="['/admin']" *ngIf="checkPermissions()"> Administration </button>
     </div>
     </div>
 </div>
