@@ -1,18 +1,17 @@
 const app = require('./app/app.js');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
 
 /**
  * https://devcenter.heroku.com/articles/preparing-a-codebase-for-heroku-deployment#4-listen-on-the-correct-port
  */
 const port = process.env.PORT || 8080;
 
-
 /**
  * Configure mongoose
  */
 // mongoose.Promise = global.Promise;
-//app.locals.db = mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
-app.locals.db = mongoose.connect('mongodb+srv://admin:admin@bikeworlddb.vdued.mongodb.net/BikeWorldDB?retryWrites=true&w=majority')
+app.locals.db = mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
 .then ( () => {
     
     console.log("Connected to Database");

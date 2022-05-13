@@ -1,11 +1,20 @@
 const express = require('express');
 const app = express();
-const tokenChecker = require('./tokenChecker.js');
-const account = require('./routes/account.js');
 var cors = require('cors');
+
+const verifyToken = require('./middleware/auth.js');
+
+const user = require('./routes/user.js');
 
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+
+/**
+ * Configure Express.js parsing middleware
+ */
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 const swaggerOptions = {
     definition: {
@@ -27,22 +36,14 @@ app.use(
 );
 
 /**
- * Configure Express.js parsing middleware
- */
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-
-
-/**
  * Serve front-end static files
  */
 app.use('/', express.static('static'));
 
 /**
- * Manage account(authentications, signUp, modify) routing and middleware
-*/
-app.use('/api/v1/account', account);
+ * Routes
+ */
+app.use('/api/v1/users', user);
 
 /* Default 404 handler */
 app.use((req, res) => {
