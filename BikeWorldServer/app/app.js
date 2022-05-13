@@ -1,8 +1,30 @@
 const express = require('express');
 const app = express();
 const tokenChecker = require('./tokenChecker.js');
-const account = require('./account.js');
+const account = require('./routes/account.js');
 var cors = require('cors');
+
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
+const swaggerOptions = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Bike World',
+        version: '1',
+      },
+    },
+    baseDir: __dirname,
+    apis: ['./app/routes/*.js']
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use(
+    "/api/v1/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec)
+);
 
 /**
  * Configure Express.js parsing middleware
@@ -22,7 +44,6 @@ app.use('/', express.static('static'));
 */
 app.use('/api/v1/account', account);
 
-
 /* Default 404 handler */
 app.use((req, res) => {
     res.status(404);
@@ -31,9 +52,3 @@ app.use((req, res) => {
 
 
 module.exports = app;
-
-
-
-
-
-

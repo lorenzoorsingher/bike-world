@@ -1,11 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const User = require('./models/user'); // get our mongoose model
+const User = require('../models/user'); // get our mongoose model
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
-// ---------------------------------------------------------
-// route to authenticate and get a new token
-// ---------------------------------------------------------
+/**
+ * @openapi
+ * /api/v1/account/authentication:
+ *   get:
+ *     description: route to authenticate and get a new token
+ *     responses:
+ *       200:
+ *         description: Returns a token.
+ *       400:
+ *         description: 
+ */
 router.get('/authentication', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -19,13 +27,13 @@ router.get('/authentication', async function(req, res) {
 	
 	// user not found
 	if (!user) {
-		res.json({ success: false, message: 'Authentication failed. User not found.' });	
+		res.status(400).json({ success: false, message: 'Authentication failed. User not found.' });	
 		return;	//to stop the execution of the function	
 	}
 	
 	// check if password matches
 	if (user.psw != req.query.psw) {
-		res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+		res.status(400).json({ success: false, message: 'Authentication failed. Wrong password.' });
 		return;	//to stop the execution of the function	
 	}
 	
@@ -43,21 +51,27 @@ router.get('/authentication', async function(req, res) {
 	var token = jwt.sign(payload, SUPER_SECRET, options);
 	//var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
 	
-	res.json({
+	res.status(200).json({
+		self: "api/v1/" + user._id,
 		success: true,
 		message: 'Enjoy your token!',
 		token: token,
 		permissions: user.permissions,
 		username: user.username,
-		id: user._id,
-		self: "api/v1/" + user._id
+		id: user._id
 	});
 
 });
 
-// ---------------------------------------------------------
-// route to signUp
-// ---------------------------------------------------------
+/**
+ * @openapi
+ * /api/v1/account/signUp:
+ *   get:
+ *     description: route to signup
+ *     responses:
+ *       200:
+ *         description: Returns a token.
+ */
 router.post('/signUp', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -112,9 +126,15 @@ router.post('/signUp', async function(req, res) {
 });
 
 
-// ---------------------------------------------------------
-// route to get account info
-// ---------------------------------------------------------
+/**
+ * @openapi
+ * /api/v1/account/:
+ *   get:
+ *     description: Get Account info
+ *     responses:
+ *       200:
+ *         description:
+ */
 router.get('', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -163,9 +183,15 @@ router.get('', async function(req, res) {
 });
 
 
-// ---------------------------------------------------------
-// route to update account info
-// ---------------------------------------------------------
+/**
+ * @openapi
+ * /api/v1/account/:
+ *   put:
+ *     description: Update Account info
+ *     responses:
+ *       200:
+ *         description: Returns a token.
+ */
 router.put('', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
