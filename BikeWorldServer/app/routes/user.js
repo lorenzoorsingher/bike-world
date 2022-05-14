@@ -28,7 +28,7 @@ router.post('/login', async function(req, res) {
 	// find the user
 	let user = await User.findOne({
 		username: username
-	}).exec();
+	});
 	
 	// user not found
 	if (!user) {
@@ -73,7 +73,7 @@ router.post('/signUp', async function(req, res) {
 	// find the user
 	let userAlreadyExists = await User.findOne({
 		username: req.body.username
-	}).exec();
+	});
 	
 	// user already exists
 	if (userAlreadyExists) {
