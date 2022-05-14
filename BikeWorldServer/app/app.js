@@ -3,6 +3,7 @@ const app = express();
 const tokenChecker = require('./tokenChecker.js');
 const account = require('./account.js');
 const rental = require('./rental.js');
+const bike = require('./bike.js');
 var cors = require('cors');
 
 /**
@@ -24,9 +25,14 @@ app.use('/', express.static('static'));
 app.use('/api/v1/account', account);
 
 /**
- * Manage rental(add rental point, get rental point, modify) routing and middleware
+ * Manage rental(add rental point, get rental point, modify, remove filter rental point) routing and middleware
 */
 app.use('/api/v1/rental', rental);
+
+/**
+ * Manage bike(add rental bike, get rental point, remove) routing and middleware
+*/
+app.use('/api/v1/bike', bike);
 
 /* Default 404 handler */
 app.use((req, res) => {

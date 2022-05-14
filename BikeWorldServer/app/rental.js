@@ -24,7 +24,7 @@ router.post('', async function(req, res) {
 	}
 
     //save user in the db
-    const newRentalPoint = new RentalPoint({name: req.body.name, address: req.body.address, lat: parseFloat(req.body.lat), lng: parseFloat(req.body.lng), bikeNumber: parseInt(req.body.bikeNumber)});
+    const newRentalPoint = new RentalPoint({name: req.body.name, address: req.body.address, lat: parseFloat(req.body.lat), lng: parseFloat(req.body.lng), type: req.body.type,bikeNumber: 0});
     await newRentalPoint.save();
 
 	res.json({
@@ -50,6 +50,20 @@ router.get('', async function(req, res) {
 });
 
 // ---------------------------------------------------------
+// route to get rental point name
+// ---------------------------------------------------------
+router.get('/name', async function(req, res) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+	
+	// find the rental points
+	let rentalPoints = await RentalPoint.find( { }, { name : 1}).exec();
+	res.json({rentalPoints});
+});
+
+// ---------------------------------------------------------
 // route to delete rental point
 // ---------------------------------------------------------
 router.delete('', async function(req, res) {
@@ -65,6 +79,7 @@ router.delete('', async function(req, res) {
 		message: 'Rental Point deleted!'
 	});
 });
+
 // ---------------------------------------------------------
 // route to update rental point info
 // ---------------------------------------------------------
@@ -75,13 +90,30 @@ router.put('', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
     //update rental point in the db
-	await RentalPoint.updateOne({'name': req.body.name}, {$set: {'address': req.body.address,'lat': req.body.lat, 'lng': req.body.lng, 'bikeNumber': req.body.bikeNumber}});
+	await RentalPoint.updateOne({'name': req.body.name}, {$set: {'address': req.body.address,'lat': req.body.lat, 'lng': req.body.lng, 'type': req.body.type}});
 
 	res.json({
 		success: true,
 		message: 'Rental point info updated!'
 	});
 
+});
+
+// ---------------------------------------------------------
+// route to get rental point
+// ---------------------------------------------------------
+router.get('/type', async function(req, res) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+	
+	let type = req.query.type;
+	console.log(type);
+	// find the rental points
+	let rentalPoints = await RentalPoint.find( { 'type': type }).exec();	
+	console.log(rentalPoints);
+	res.json({rentalPoints});
 });
 
 module.exports = router;

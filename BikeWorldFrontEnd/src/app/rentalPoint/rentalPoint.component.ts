@@ -19,10 +19,10 @@ export class RentalPointComponent  {
     this.getRentalPoints();
   }   
 
-  async newRentalPoint(name: string, address: string, lat: number, lng:number, type:string, bikeNumber: number, event:any){
+  async newRentalPoint(name: string, address: string, lat: number, lng:number, type:string, event:any){
     event.preventDefault()
     
-    const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type).set("bikeNumber", bikeNumber);
+    const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
     //console.log(params);
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/rental', params).pipe(map( data => { 
        
@@ -32,10 +32,10 @@ export class RentalPointComponent  {
     this.selectRentalPoint(undefined);          
   }
   
-  async changeRentalPoint(name: string, address: string, lat: number, lng:number, type: string, bikeNumber: number, event:any){
+  async changeRentalPoint(name: string, address: string, lat: number, lng:number, type: string, event:any){
     event.preventDefault()
     
-    const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type).set("bikeNumber", bikeNumber);
+    const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
     //console.log(params);
     await lastValueFrom(this.http.put<any>('http://localhost:8080/api/v1/rental', params).pipe(map( data => { 
        
@@ -110,11 +110,8 @@ export class RentalPointComponent  {
 
   selectRentalPoint(event: any){
     if(event != undefined){
-      console.log("YEs");
       this.selectedRentalName = event.target.id;
     }
-    console.log(event);
-    console.log(this.selectedRentalName);
     if(this.selectedRentalName != ""){
       let rentalInfo = "";
       let rentalPoint = this.getRentalPoint();    

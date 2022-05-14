@@ -1,0 +1,45 @@
+<style>
+    .bikeList {
+        float: left;
+        margin-left: 1%;
+        width: 48%;
+        height: 100%;
+      }
+    
+      .bike{
+        float: right;
+        margin-left: 1%;
+        width: 49%;
+      }
+</style>
+
+<div>
+    <div class="bikeList">
+        <h2>Biciclette</h2>
+        <ul *ngFor="let element of bikes">
+            <li  (click)="selectBike($event)" id="{{element.code}}"> {{element.code}} {{element.model}}: {{element.rentalPointName}}</li>
+        </ul>    
+    </div>
+    <div class="bike" *ngIf="selectedBikeCode == ''; then addBike; else bikeSelected"></div>
+</div>
+
+<ng-template #bikeSelected>
+    <div id="bikeInfo"></div>
+    <button (click)="repareBike()">Repare bike</button>
+    <button (click)="removeBike()">Delete bike</button>
+</ng-template>
+
+<ng-template #addBike>
+    <form (submit)="newBike($any(code.value), $any(model.value), $any(type.value), $any(rentalPointName.value),$event)">
+        Inserire codice: <input type="text" id="code" #code required><br>
+        Inserire modello: <input type="text" id="model" #model required><br>
+        Inserire tipo: <input type="text" id="type" #type required><br>
+        <div>
+            <label for="rentalPointName">Scegliere punto di noleggio</label>
+            <select name="rentalPointName" id="rentalPointName" #rentalPointName >
+                <option value="{{rental}}" *ngFor="let rental of rentalName">{{rental}}</option>              
+            </select>
+        </div>
+        <button type="submit">Crea nuova bici</button>
+    </form>
+</ng-template>
