@@ -123,6 +123,24 @@ export class BikeComponent {
     }
   }
 
+  async researchBikeCode(event: any){
+    if(event.target.value != ""){
+      // @ts-ignore
+      const params = new HttpParams().set('code', event.target.value) 
+      await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/bike/code', { params }).pipe(map(data => {      
+        this.bikes = undefined;
+        
+        if (data.bike != null) {
+          this.bikes = new Array(1);
+          this.bikes[0] = new Bike(data.bike.code, data.bike.model, data.bike.type, data.bike.rentalPointName, data.bike.state);
+        } 
+      })));
+    }else{
+      this.getBikes();
+    }
+
+  }
+
 }
 
 class Bike{

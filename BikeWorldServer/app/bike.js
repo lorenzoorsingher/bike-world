@@ -59,6 +59,20 @@ router.get('', async function(req, res) {
 });
 
 // ---------------------------------------------------------
+// route to get bike searched by code
+// ---------------------------------------------------------
+router.get('/code', async function(req, res) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+	
+	// find the bike
+	let bike = await Bike.findOne( { 'code': req.query.code }).exec();
+	res.json({bike});
+});
+
+// ---------------------------------------------------------
 // route to delete bike
 // ---------------------------------------------------------
 router.delete('', async function(req, res) {

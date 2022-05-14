@@ -16,6 +16,8 @@
 <div>
     <div class="bikeList">
         <h2>Biciclette</h2>
+        Ricerca per codice <input type="text" id="codeSearch" #codeSearch (change)="researchBikeCode($event)"><br>
+        
         <ul *ngFor="let element of bikes">
             <li  (click)="selectBike($event)" id="{{element.code}}"> {{element.code}} {{element.model}}: {{element.rentalPointName}}</li>
         </ul>
