@@ -109,6 +109,9 @@ export class RentalPointComponent  {
   }
 
   selectRentalPoint(event: any){
+    // @ts-ignore
+    document.getElementById("changeRentalPointForm").style.display = 'none';
+
     if(event != undefined){
       this.selectedRentalName = event.target.id;
     }

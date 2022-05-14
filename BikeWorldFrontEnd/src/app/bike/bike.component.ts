@@ -83,7 +83,7 @@ export class BikeComponent {
     })))
 
     await this.getBikes(); 
-    this.selectBike(undefined);        
+    this.selectBike(undefined);     
   }
 
   async removeBike(){ 
@@ -95,24 +95,32 @@ export class BikeComponent {
     })));
     this.selectedBikeCode = "";
     await this.getBikes();
-    this.selectBike(undefined);  
+    this.selectBike(undefined);
+    // @ts-ignore
+    document.getElementById("bikeInfoModule").style.display = 'none';  
   }
   
   selectBike(event: any){
+    // @ts-ignore
+    document.getElementById("bikeInfoModule").style.display = 'block';
+
     if(event != undefined){
       this.selectedBikeCode = event.target.id;
-    }
+    }  
+
     if(this.selectedBikeCode != ""){
       let bikeInfo = "";
       let bike = this.getBike();    
 
       // @ts-ignore
-      bikeInfo = "Codice bici: " + bike.code + "<br>Modello: "+ bike.model + "<br>Tipo: "+ bike.type + "<br>Stato: "+ bike.state + "<br>Nome punto di ritiro: " + bike?.rentalPointName;
+      bikeInfo = "Codice bici: " + bike.code + "<br>Modello: "+ bike.model + "<br>Tipo: "+ bike.type + "<br>Stato: "; 
+      // @ts-ignore
+      if(bike.state == true){ bikeInfo += "utilizzabile "} else { bikeInfo += "in riparazione "}
+      bikeInfo += "<br>Nome punto di ritiro: " + bike?.rentalPointName;
 
       // @ts-ignore  
       document.getElementById("bikeInfo").innerHTML = bikeInfo;
     }
-    
   }
 
 }
