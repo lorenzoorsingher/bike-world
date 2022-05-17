@@ -17,7 +17,7 @@
     <h3>Elenco prenotazioni</h3>
     <div class="bookingStyle">    
         <ul *ngFor="let element of bookings">
-            <li (click)="selectBooking($event)" id="{{element._id}}"> {{element.username}}: {{element.day}}/{{element.month}}/{{element.year}} {{element.rentalPointName}}</li>
+            <li (click)="selectBooking($event)" id="{{element._id}}"> {{element.username}}: {{element.date}} {{element.rentalPointName}}</li>
         </ul>
     </div>
     <div class="content">        
@@ -26,14 +26,13 @@
                 <h4>Prenotazione</h4>
                     <div id="bookingInfo"></div>
                     <button (click)="removeBooking()">Delete booking</button>
+                    <br><hr><br>
                 <br>
             </div>
             <form
-                (submit)="newBooking($any(day.value), $any(month.value), $any(year.value), $any(rentalPointName.value), $any(bikeCode.value),$event)">
+                (submit)="newBooking($any(date.value), $any(rentalPointName.value), $any(bikeCode.value),$event)">
                     <h4>Crea nuova prenotazione</h4>
-                    Giorno: <input type="text" id="day" #day required>
-                    Mese: <input type="text" id="month" #month required><br>
-                    Anno: <input type="text" id="year" #year required><br>
+                    Data: <input type="date" id="date" name="date" #date>
                 <div>
                     <label for="rentalPointName">Scegliere il punto di ritiro</label>
                     <select name="rentalPointName" id="rentalPointName" #rentalPointName (change)="getBikes($event)">

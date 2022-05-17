@@ -19,11 +19,11 @@ export class BookingComponent {
     this.getRentalPoints();
   }
 
-  async newBooking(day: string, month: string, year: number, rentalPointName: string, bikeCode: string, event: any) {
+  async newBooking(date: Date, rentalPointName: string, bikeCode: string, event: any) {
     event.preventDefault()
 
     // @ts-ignore
-    const params = new HttpParams().set("username", sessionStorage.getItem("username")).set("day", parseInt(day)).set("month", parseInt(month)).set("year", parseInt(year)).set("bikeCode", bikeCode).set("rentalPointName", rentalPointName);
+    const params = new HttpParams().set("username", sessionStorage.getItem("username")).set("date", date).set("bikeCode", bikeCode).set("rentalPointName", rentalPointName);
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/booking', params).pipe(map(data => {
         if(data.success == false){
             // @ts-ignore
@@ -43,7 +43,7 @@ export class BookingComponent {
 
       if (data.bookings.length > 0) {
         for (i = 0; i < data.bookings.length; i++) {
-          this.bookings[i] = new Booking(data.bookings[i]._id, data.bookings[i].username, data.bookings[i].day, data.bookings[i].month, data.bookings[i].year, data.bookings[i].bikeCode, data.bookings[i].rentalPointName);
+          this.bookings[i] = new Booking(data.bookings[i]._id, data.bookings[i].username, data.bookings[i].date, data.bookings[i].bikeCode, data.bookings[i].rentalPointName);
         }
       }
     })));
@@ -118,7 +118,7 @@ export class BookingComponent {
           let booking = this.getBooking();    
     
           // @ts-ignore
-          bookingInfo = "<br>Data: " + booking.day + "/"+ booking.month + "/"+ booking.year + "<br>Bici: " + booking.bikeCode + "<br>Punto noleggio: " + booking.rentalPointName + "<br><hr><br>"; 
+          bookingInfo = "<br>Data: " + booking.date + "<br>Bici: " + booking.bikeCode + "<br>Punto noleggio: " + booking.rentalPointName; 
         
     
           // @ts-ignore  
@@ -132,18 +132,14 @@ export class BookingComponent {
 class Booking {
     _id: any | undefined;
     username: string | undefined;
-	day: number | undefined;
-	month: number | undefined;
-    year: number | undefined;
+	date: Date | undefined;
     bikeCode: string | undefined;
     rentalPointName: string | undefined; 
 
-  constructor(_id: any, username: string, day: number, month: number, year: number, bikeCode: string, rentalPointName: string) {
+  constructor(_id: any, username: string, date: Date, bikeCode: string, rentalPointName: string) {
     this._id = _id;
     this.username = username;
-    this.day = day;
-    this.month = month;
-    this.year = year;
+    this.date = date;
     this.bikeCode = bikeCode;
     this.rentalPointName = rentalPointName;
   }

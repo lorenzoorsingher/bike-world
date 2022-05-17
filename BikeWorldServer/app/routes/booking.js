@@ -16,9 +16,7 @@ router.post('', async function(req, res) {
 
     //get all booking for that specific day and rental point
     const bookingNumber = await Booking.count({
-        day: req.body.day,
-        month: req.body.month,
-        year: req.body.year,
+        date: req.body.date,
         rentalPointName: req.body.rentalPointName
     })
 
@@ -33,7 +31,7 @@ router.post('', async function(req, res) {
     }    
 
     //save booking in the db
-    const newBooking = new Booking({username: req.body.username, day: req.body.day, month: req.body.month, year: req.body.year, bikeCode: req.body.bikeCode, rentalPointName: req.body.rentalPointName});
+    const newBooking = new Booking({username: req.body.username, date: req.body.date, bikeCode: req.body.bikeCode, rentalPointName: req.body.rentalPointName});
     await newBooking.save();
     
 	res.json({
@@ -57,7 +55,6 @@ router.get('', async function(req, res) {
 
 	// get the bookings
 	let bookings = await Booking.find( { 'username': username }).exec();	
-    console.log(bookings);
 	res.json({bookings});
 });
 
