@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Bike = require('./models/bike'); // get bike mongoose model
 const RentalPoint = require('./models/rentalPoint'); // get our mongoose model
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
@@ -74,6 +75,10 @@ router.delete('', async function(req, res) {
 	
 	// remove the rental points
 	await RentalPoint.deleteOne( { name: req.query.name}).exec();
+
+	// remove all bike associated to this rental point
+	await Bike.deleteMany( { rentalPointName: req.query.name}).exec();
+
 	res.json({
 		success: true,
 		message: 'Rental Point deleted!'

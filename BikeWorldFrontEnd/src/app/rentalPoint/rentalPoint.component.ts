@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http' 
-import { lastValueFrom, map } from 'rxjs';
+import { lastValueFrom, map, Observable } from 'rxjs';
+import {AgmMap, MapsAPILoader  } from '@agm/core';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class RentalPointComponent  {
     rentalPoints: RentalPoint[] | undefined; 
     selectedRentalName: string = "";
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private apiloader: MapsAPILoader) {
     this.getRentalPoints();
   }   
 
@@ -23,7 +24,6 @@ export class RentalPointComponent  {
     event.preventDefault()
     
     const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
-    //console.log(params);
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/rental', params).pipe(map( data => { 
        
     })))
@@ -36,7 +36,6 @@ export class RentalPointComponent  {
     event.preventDefault()
     
     const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
-    //console.log(params);
     await lastValueFrom(this.http.put<any>('http://localhost:8080/api/v1/rental', params).pipe(map( data => { 
        
     })))
@@ -124,6 +123,9 @@ export class RentalPointComponent  {
 
       // @ts-ignore  
       document.getElementById("rentalShopSelected").innerHTML = rentalInfo;
+    } else {
+      // @ts-ignore  
+      document.getElementById("rentalShopSelected").innerHTML = "";
     }
     
   }
@@ -151,6 +153,8 @@ export class RentalPointComponent  {
   }
 
   async filterTypeBased(event: any){
+    if(event.target. value != ""){
+    let del = true;
     const params = new HttpParams().set('type', event.target.value)
     await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/rental/type', {params}).pipe(map(data => {
         let i;
@@ -159,12 +163,23 @@ export class RentalPointComponent  {
         if (data.rentalPoints.length > 0) {
           for (i = 0; i < data.rentalPoints.length; i++) {
             this.rentalPoints[i] = new RentalPoint(data.rentalPoints[i].id, data.rentalPoints[i].name, data.rentalPoints[i].address, data.rentalPoints[i].lat, data.rentalPoints[i].lng, data.rentalPoints[i].type, data.rentalPoints[i].bikeNumber);
+            if(this.rentalPoints[i].name == this.selectedRentalName){
+              del = false;
+            }
           }
         }
       })));
+
+      if(del == true){
+        this.selectedRentalName = "";
+        // @ts-ignore  
+        document.getElementById("rentalShopSelected").innerHTML = "";
+      }
+    } else {
+      this.getRentalPoints();
+    }
   }
 
-  
 }
 
 class RentalPoint{

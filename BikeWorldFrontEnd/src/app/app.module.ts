@@ -19,7 +19,7 @@ import { BikeComponent } from './bike/bike.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AgmCoreModule.forRoot({ apiKey: ''}),
+    AgmCoreModule.forRoot({ apiKey: '', libraries: ['places']}),
     NgbModule
   ],
   providers: [],
