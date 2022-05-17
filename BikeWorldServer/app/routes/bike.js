@@ -68,10 +68,8 @@ router.get('/rentalPoint', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	let rentalPointName = req.query.rentalPointName;
-	console.log(rentalPointName)
 	// get the bikes
-	let bikes = await Bike.find( { 'rentalPointName' : rentalPointName }).exec();
-	console.log(bikes);	
+	let bikes = await Bike.find( { 'rentalPointName' : rentalPointName }).exec();	
 	res.json({bikes});
 });
 

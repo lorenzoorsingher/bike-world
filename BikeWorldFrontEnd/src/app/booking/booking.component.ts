@@ -92,7 +92,23 @@ export class BookingComponent {
         return booking;
     }
 
-    selectBooking(event: any){    
+    async removeBooking(){ 
+        // @ts-ignore
+        const params = new HttpParams().set('_id', this.selectedBookingId); 
+        await lastValueFrom(this.http.delete<any>('http://localhost:8080/api/v1/booking', {params} ).pipe(map(data => {
+            
+        })));
+        this.selectedBookingId = "";
+        await this.getBookings();
+        this.selectBooking(undefined);
+        // @ts-ignore
+        document.getElementById("bookingInfoModule").style.display = 'none';  
+    }
+
+    selectBooking(event: any){   
+        // @ts-ignore
+        document.getElementById("bookingInfoModule").style.display = 'block';
+        
         if(event != undefined){
           this.selectedBookingId = event.target.id;
         }  
@@ -102,7 +118,7 @@ export class BookingComponent {
           let booking = this.getBooking();    
     
           // @ts-ignore
-          bookingInfo = "<h4>Prenotazione selezionata</h4> <br>Data: " + booking.day + "/"+ booking.month + "/"+ booking.year + "<br>Bici: " + booking.bikeCode + "<br>Punto noleggio: " + booking.rentalPointName + "<br><hr><br>"; 
+          bookingInfo = "<br>Data: " + booking.day + "/"+ booking.month + "/"+ booking.year + "<br>Bici: " + booking.bikeCode + "<br>Punto noleggio: " + booking.rentalPointName + "<br><hr><br>"; 
         
     
           // @ts-ignore  

@@ -22,7 +22,12 @@
     </div>
     <div class="content">        
         <a>
-            <div id="bookingInfo"></div>
+            <div id="bookingInfoModule" style="display: none;">
+                <h4>Prenotazione</h4>
+                    <div id="bookingInfo"></div>
+                    <button (click)="removeBooking()">Delete booking</button>
+                <br>
+            </div>
             <form
                 (submit)="newBooking($any(day.value), $any(month.value), $any(year.value), $any(rentalPointName.value), $any(bikeCode.value),$event)">
                     <h4>Crea nuova prenotazione</h4>
