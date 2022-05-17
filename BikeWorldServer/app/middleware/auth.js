@@ -1,11 +1,9 @@
-const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const jwt = require("jsonwebtoken");
 
-const tokenChecker = function(req, res, next) {
-	
-	// check header or url parameters or post parameters for token
-	var token = req.body.token || req.query.token || req.headers['x-access-token'];
+const verifyToken = (req, res, next) => {
+    const token = req.body.token || req.query.token || req.headers["x-access-token"];
 
-	// if there is no token
+    // if there is no token
 	if (!token) {
 		return res.status(401).send({ 
 			success: false,
@@ -14,7 +12,7 @@ const tokenChecker = function(req, res, next) {
 	}
 
 	// decode token, verifies secret and checks exp
-	jwt.verify(token, process.env.SUPER_SECRET, function(err, decoded) {			
+	jwt.verify(token, process.env.TOKEN_SECRET, function(err, decoded) {			
 		if (err) {
 			return res.status(403).send({
 				success: false,
@@ -26,7 +24,6 @@ const tokenChecker = function(req, res, next) {
 			next();
 		}
 	});
-	
 };
 
-module.exports = tokenChecker
+module.exports = verifyToken;
