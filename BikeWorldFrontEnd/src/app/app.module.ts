@@ -7,17 +7,20 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
 import { HeaderComponent } from './header/header.component';
 import { RentalPointComponent } from './rentalPoint/rentalPoint.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { BikeComponent } from './bike/bike.component';
 
 @NgModule({
   declarations: [
     AppComponent,HeaderComponent,
-    RentalPointComponent
+    RentalPointComponent, BikeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AgmCoreModule.forRoot({ apiKey: ''})
+    AgmCoreModule.forRoot({ apiKey: '', libraries: ['places']}),
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

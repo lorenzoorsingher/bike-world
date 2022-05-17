@@ -1,1 +1,85 @@
-<p>rental-point works!</p>
+<style>
+    .sidebar {
+        float: left;
+        margin-left: 1%;
+        width: 19%;
+        height: 100%;
+    }
+
+    .map {
+        float: left;
+        margin-left: 1%;
+        width: 49%;
+    }
+
+    .content {
+        float: right;
+        margin-left: 1%;
+        width: 29%;
+    }
+</style>
+
+<div>
+    <div class="sidebar">
+        <h3>Filtra elementi</h3>
+        <label for="typeFilter">Scegliere tipo</label>
+        <select name="typeFilter" id="typeFilter" #typeFilter (change)="filterTypeBased($event)">
+            <option value="">Entrambi</option>
+            <option value="Negozio">Negozio</option>
+            <option value="Automatico">Automatico</option>
+        </select>
+        <hr>
+        <ul *ngFor="let element of rentalPoints">
+            <li (click)="selectRentalPoint($event)" id="{{element.name}}"> {{element.name}}: {{element.address}}</li>
+        </ul>
+    </div>
+    <div class="map">
+        <!-- this creates a google map on the page with the given lat/lng from -->
+        <!-- the component as the initial center of the map: -->
+        <agm-map [latitude]="latC" [longitude]="lngC">
+            <agm-marker [latitude]="element.lat" [longitude]="element.lng" *ngFor="let element of rentalPoints"
+                (markerClick)="showMarkerInfo($event)"></agm-marker>
+        </agm-map>
+        <!--<iframe src="https://maps.google.com/maps?q=Tangesir%20Dates%20Products&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" width=300 height=150 allowfullscreen></iframe>-->
+        <a *ngIf="addItemOptions() == true">
+            <form
+                (submit)="newRentalPoint($any(name.value), $any(address.value), $any(lat.value), $any(lng.value), $any(typeRentalPoint.value), $event)">
+                Inserire nome: <input type="text" id="name" #name required><br>
+                Inserire indirizzo: <input type="text" id="address" #address required><br>
+                Inserire latitudine: <input type="text" id="lat" #lat required><br>
+                Inserire longitudine: <input type="text" id="lng" #lng required><br>
+                <div>
+                    <label for="typeRentalPoint">Inserire tipo</label>
+                    <select name="typeRentalPoint" id="typeRentalPoint" #typeRentalPoint>
+                        <option value="Negozio">Negozio</option>
+                        <option value="Automatico">Automatico</option>
+                    </select>
+                </div>
+                <button type="submit">Crea Nuovo Rental Point</button>
+            </form>
+        </a>
+    </div>
+    <div class="content">
+        <div id="rentalShopSelected"></div>
+        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" (click)="removeRentalPoint()">Remove rental
+            point</button>
+        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" (click)="allowRentalPointChange()">Change
+            rental point info</button>
+
+        <form id="changeRentalPointForm" style="display: none;"
+            (submit)="changeRentalPoint($any(nameChange.value), $any(addressChange.value), $any(latChange.value), $any(lngChange.value), $any(typeRentalPointChange.value), $event)">
+            Inserire nome: <input type="text" id="nameChange" #nameChange disabled><br>
+            Inserire indirizzo: <input type="text" id="addressChange" #addressChange required><br>
+            Inserire latitudine: <input type="text" id="latChange" #latChange required><br>
+            Inserire longitudine: <input type="text" id="lngChange" #lngChange required><br>
+            <div>
+                <label for="typeRentalPointChange">Inserire tipo</label>
+                <select name="typeRentalPointChange" id="typeRentalPointChange" #typeRentalPointChange>
+                    <option value="Negozio">Negozio</option>
+                    <option value="Automatico">Automatico</option>
+                </select>
+            </div>
+            <button type="submit">Modifica Rental Point</button>
+        </form>
+    </div>
+</div>
