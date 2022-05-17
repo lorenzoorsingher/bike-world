@@ -1,13 +1,12 @@
 const express = require('express');
 const app = express();
-const tokenChecker = require('./tokenChecker.js');
+const tokenChecker = require('./utils/tokenGenerator.js');
 //const account = require('./user.js');
-const rental = require('./rental.js');
-const bike = require('./bike.js');
+const rental = require('./routes/rental.js');
+const bike = require('./routes/bike.js');
+const booking = require('./routes/booking.js');
 
 var cors = require('cors');
-
-const verifyToken = require('./middleware/auth.js');
 
 const user = require('./routes/user.js');
 
@@ -54,6 +53,11 @@ app.use('/', express.static('static'));
  * Manage rental(add rental point, get rental point, modify, remove filter rental point) routing and middleware
 */
 app.use('/api/v1/rental', rental);
+
+/**
+ * Manage booking routing and middleware
+*/
+app.use('/api/v1/booking', booking);
 
 /**
  * Manage bike(add rental bike, get rental point, remove) routing and middleware

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Bike = require('./models/bike'); // get bike mongoose model
-const RentalPoint = require('./models/rentalPoint'); // get our mongoose model
+const Bike = require('../models/bike'); // get bike mongoose model
+const RentalPoint = require('../models/rentalPoint'); // get our mongoose model
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 // ---------------------------------------------------------
@@ -114,10 +114,9 @@ router.get('/type', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	let type = req.query.type;
-	console.log(type);
+	
 	// find the rental points
 	let rentalPoints = await RentalPoint.find( { 'type': type }).exec();	
-	console.log(rentalPoints);
 	res.json({rentalPoints});
 });
 

@@ -15,8 +15,8 @@ export class BikeComponent {
   rentalName: string[] | undefined;
 
   constructor(private router: Router, private _ActivatedRoute: ActivatedRoute, private http: HttpClient) {
-    this.getBikes();
     this.getRentalPointsName();
+    this.getBikes();    
   } 
 
   async getRentalPointsName(){

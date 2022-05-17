@@ -24,6 +24,7 @@ export class HeaderComponent {
       "username": username,      
       "password": psw
     };
+    
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/users/login', body, {headers: headers}).pipe(map(data => {
         if(data.success == true) {

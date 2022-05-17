@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const Bike = require('./models/bike'); // get our mongoose model
-const RentalPoint = require('./models/rentalPoint'); // get our mongoose model
+const Bike = require('../models/bike'); // get our mongoose model
+const RentalPoint = require('../models/rentalPoint'); // get our mongoose model
+const Booking = require('../models/booking.js') // get booking model
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 // ---------------------------------------------------------
-// route to add new bike
+// route to add new booking
 // ---------------------------------------------------------
 router.post('', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,39 +14,38 @@ router.post('', async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
-    // find the rental Point
-	let bikeAlreadyExists = await Bike.findOne({
-		code: req.body.code
-	}).exec();
-	
-	// bike already exists
-	if (bikeAlreadyExists) {
-		res.json({ success: false, message: 'Creation bike failed. Bike already exists.' });
-		return;	//to stop the execution of the function	
-	}
+    //get all booking for that specific day and rental point
+    const bookingNumber = await Booking.count({
+        day: req.body.day,
+        month: req.body.month,
+        year: req.body.year,
+        rentalPointName: req.body.rentalPointName
+    })
 
-    //save user in the db
-    const newBike = new Bike({code: req.body.code, model: req.body.model, type: req.body.type, rentalPointName: req.body.rentalPointName, state: true});
-    await newBike.save();
-
-	//find the rental Point
+    //find the rental Point
 	let rentalPoint = await RentalPoint.findOne({
 		name: req.body.rentalPointName
 	}).exec();
 
-	//add bike from rental Point
-	await RentalPoint.updateOne({'name': rentalPoint.name}, {$set: {'bikeNumber': rentalPoint.bikeNumber + 1}});
+    if(rentalPoint.bikeNumber - bookingNumber == 0){
+        res.json({ success: false, message: 'Non ci sono biciclette disponibili'});
+		return;	//to stop the execution of the function	
+    }    
 
+    //save booking in the db
+    const newBooking = new Booking({username: req.body.username, day: req.body.day, month: req.body.month, year: req.body.year, bikeCode: req.body.bikeCode, rentalPointName: req.body.rentalPointName});
+    await newBooking.save();
+    
 	res.json({
 		success: true,
-		message: 'New Bike added!'
+		message: 'New Booking added!'
 	});
 
 });
 
 
 // ---------------------------------------------------------
-// route to get bikes
+// route to get bookings
 // ---------------------------------------------------------
 router.get('', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -53,9 +53,12 @@ router.get('', async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
-	// get the bikes
-	let bikes = await Bike.find( { }).exec();	
-	res.json({bikes});
+    let username = req.query.username;
+
+	// get the bookings
+	let bookings = await Booking.find( { 'username': username }).exec();	
+    console.log(bookings);
+	res.json({bookings});
 });
 
 // ---------------------------------------------------------

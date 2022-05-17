@@ -1,0 +1,51 @@
+<style>
+    .bookingStyle {
+        float: left;
+        margin-left: 1%;
+        width: 49%;
+        height: 100%;
+    }
+
+    .content {
+        float: right;
+        margin-left: 1%;
+        width: 49%;
+    }
+</style>
+
+<div>
+    <h3>Elenco prenotazioni</h3>
+    <div class="bookingStyle">    
+        <ul *ngFor="let element of bookings">
+            <li (click)="selectBooking($event)" id="{{element._id}}"> {{element.username}}: {{element.day}}/{{element.month}}/{{element.year}} {{element.rentalPointName}}</li>
+        </ul>
+    </div>
+    <div class="content">        
+        <a>
+            <div id="bookingInfo"></div>
+            <form
+                (submit)="newBooking($any(day.value), $any(month.value), $any(year.value), $any(rentalPointName.value), $any(bikeCode.value),$event)">
+                    <h4>Crea nuova prenotazione</h4>
+                    Giorno: <input type="text" id="day" #day required>
+                    Mese: <input type="text" id="month" #month required><br>
+                    Anno: <input type="text" id="year" #year required><br>
+                <div>
+                    <label for="rentalPointName">Scegliere il punto di ritiro</label>
+                    <select name="rentalPointName" id="rentalPointName" #rentalPointName (change)="getBikes($event)">
+                        <option value="{{rental.name}}" *ngFor="let rental of rentalPoints">{{rental.name}}: {{rental.address}}</option>              
+                    </select>
+                </div>
+                <div>
+                    <label for="bikeCode">Scegliere la bicicletta</label>
+                    <select name="bikeCode" id="bikeCode" #bikeCode >
+                        <option value="{{bike.code}}" *ngFor="let bike of bikes">{{bike.code}} {{bike.model}}: {{bike.rentalPointName}}</option>              
+                    </select>
+                </div>
+                
+                <button type="submit">Crea prenotazione</button>
+            </form>
+            <div id="errorMessage"></div>
+        </a>
+        
+    </div>
+</div>

@@ -9,11 +9,12 @@ import { HeaderComponent } from './header/header.component';
 import { RentalPointComponent } from './rentalPoint/rentalPoint.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { BikeComponent } from './bike/bike.component';
+import { BookingComponent } from './booking/booking.component';
 
 @NgModule({
   declarations: [
     AppComponent,HeaderComponent,
-    RentalPointComponent, BikeComponent
+    RentalPointComponent, BikeComponent, BookingComponent
   ],
   imports: [
     BrowserModule,

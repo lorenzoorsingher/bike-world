@@ -5,6 +5,7 @@ import { SignUpComponent } from "./signUp/signUp.component";
 import { userLoggedGuard } from "./guards/userLoggedGuard.component";
 import { RentalPointComponent } from "./rentalPoint/rentalPoint.component";
 import { BikeComponent } from "./bike/bike.component";
+import { BookingComponent } from "./booking/booking.component";
 
 
 // @ts-ignore
@@ -13,7 +14,8 @@ export const appRoutes: Routes =  [
   { path: "signUp", component: SignUpComponent},
   { path: "account", component: AccountComponent, canActivate: [userLoggedGuard]},
   { path: "rentalPoint", component: RentalPointComponent},
-  { path: "bike", component: BikeComponent}
+  { path: "bike", component: BikeComponent},
+  { path: "booking", component: BookingComponent}
 ];
 
 @NgModule({
