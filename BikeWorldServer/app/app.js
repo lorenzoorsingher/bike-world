@@ -1,13 +1,13 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+const path = require('path');
+
 const tokenChecker = require('./utils/tokenGenerator.js');
-//const account = require('./user.js');
+
 const rental = require('./routes/rental.js');
 const bike = require('./routes/bike.js');
 const booking = require('./routes/booking.js');
-
-var cors = require('cors');
-
 const user = require('./routes/user.js');
 
 const swaggerJsdoc = require("swagger-jsdoc");
@@ -40,16 +40,6 @@ app.use(
 );
 
 /**
- * Serve front-end static files
- */
-app.use('/', express.static('static'));
-
-/**
- * Manage account(authentications, signUp, modify) routing and middleware
-*/
-//app.use('/api/v1/account', account);
-
-/**
  * Manage rental(add rental point, get rental point, modify, remove filter rental point) routing and middleware
 */
 app.use('/api/v1/rental', rental);
@@ -64,9 +54,15 @@ app.use('/api/v1/booking', booking);
 */
 app.use('/api/v1/bike', bike);
 
-/* Routes
+/**
+ * Manage user
  */
 app.use('/api/v1/users', user);
+
+/**
+ * Serve front-end static files
+ */
+app.use('/', express.static(path.join(__dirname + '../../../BikeWorldFrontEnd/dist/bike-world-front-end')));
 
 /* Default 404 handler */
 app.use((req, res) => {

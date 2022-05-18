@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http' 
 import { lastValueFrom, map } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class BikeComponent {
   } 
 
   async getRentalPointsName(){
-    await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/rental/name').pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/name`).pipe(map(data => {
       let i;
       this.rentalName = new Array(data.rentalPoints.length);
     
@@ -33,7 +34,7 @@ export class BikeComponent {
 }
 
   async getBikes(){
-    await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/bike').pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bike`).pipe(map(data => {
       let i;
       this.bikes = new Array(data.bikes.length);
       
@@ -65,7 +66,7 @@ export class BikeComponent {
     
     const params = new HttpParams().set("code", code).set("model", model).set("type", type).set("rentalPointName", rentalPointName);
     //console.log(params);
-    await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/bike', params).pipe(map( data => { 
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bike`, params).pipe(map( data => { 
        console.log(data);
     })))
 
@@ -79,7 +80,7 @@ export class BikeComponent {
     
     // @ts-ignore
     const params = new HttpParams().set("code", this.selectedBikeCode).set("rentalPointName", bike.rentalPointName);    
-    await lastValueFrom(this.http.put<any>('http://localhost:8080/api/v1/bike', params).pipe(map( data => { 
+    await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/bike`, params).pipe(map( data => { 
        
     })))
 
@@ -91,7 +92,7 @@ export class BikeComponent {
     let bike = this.getBike();
     // @ts-ignore
     const params = new HttpParams().set('code', this.selectedBikeCode).set("rentalPointName", bike.rentalPointName); 
-    await lastValueFrom(this.http.delete<any>('http://localhost:8080/api/v1/bike', {params} ).pipe(map(data => {
+    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/bike`, {params} ).pipe(map(data => {
         
     })));
     this.selectedBikeCode = "";
@@ -128,7 +129,7 @@ export class BikeComponent {
     if(event.target.value != ""){
       // @ts-ignore
       const params = new HttpParams().set('code', event.target.value) 
-      await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/bike/code', { params }).pipe(map(data => {      
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bike/code`, { params }).pipe(map(data => {      
         this.bikes = undefined;
         
         if (data.bike != null) {

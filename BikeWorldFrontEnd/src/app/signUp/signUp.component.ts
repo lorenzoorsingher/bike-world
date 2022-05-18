@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http' 
 import { lastValueFrom, map } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class SignUpComponent {
       };
       const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
       //console.log(params);
-      await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/users/signUp', body, {headers: headers}).pipe(map( data => { 
+      await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/users/signUp`, body, {headers: headers}).pipe(map( data => { 
         if(data.success == false){
             // @ts-ignore
             document.getElementById("signUpErrorMessage").style.display = 'block';
