@@ -3,6 +3,8 @@ const router = express.Router();
 const Bike = require('../models/bike'); // get bike mongoose model
 const RentalPoint = require('../models/rentalPoint'); // get our mongoose model
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const Booking = require('../models/booking.js') // get booking model
+const { db } = require('../models/bike');
 
 // ---------------------------------------------------------
 // route to add new rental point
@@ -105,7 +107,7 @@ router.put('', async function(req, res) {
 });
 
 // ---------------------------------------------------------
-// route to get rental point
+// route to get rental point based on the type
 // ---------------------------------------------------------
 router.get('/type', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -118,6 +120,37 @@ router.get('/type', async function(req, res) {
 	// find the rental points
 	let rentalPoints = await RentalPoint.find( { 'type': type }).exec();	
 	res.json({rentalPoints});
+});
+
+// ---------------------------------------------------------
+// route to get rental point based on the bike availability
+// ---------------------------------------------------------
+router.get('/date', async function(req, res) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+	
+	let dateSearch = req.query.date;
+	// find the rental points
+	let rentalPoints = await RentalPoint.find( { }).exec();
+
+	//find booking	
+	let bookings = await Booking.aggregate([
+		{ $match: { date: { $gte: new Date(dateSearch),
+			$lte: new Date(dateSearch) }}}, 
+		{ $group : { _id : "$rentalPointName", count : { $sum : 1 } } }
+	  ]);
+	
+	for(let i = 0; i < bookings.length; i++){
+		for(let y = 0; y < rentalPoints.length; y++){
+			if(bookings[i]._id == rentalPoints[y].name){
+				rentalPoints[y].bikeNumber -= bookings[i].count;
+			}
+		}
+	}
+	res.json({rentalPoints});
+
 });
 
 module.exports = router;

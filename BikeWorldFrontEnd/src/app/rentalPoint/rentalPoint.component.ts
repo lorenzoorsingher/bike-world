@@ -180,6 +180,28 @@ export class RentalPointComponent {
     }
   }
 
+  async filterDataBased(event: any) {
+    if (event.target.value != "") {
+      const params = new HttpParams().set('date', event.target.value)
+      await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/rental/date', { params }).pipe(map(data => {
+        
+        let i;
+        this.rentalPoints = new Array(data.rentalPoints.length);
+
+        if (data.rentalPoints.length > 0) {
+          for (i = 0; i < data.rentalPoints.length; i++) {
+            this.rentalPoints[i] = new RentalPoint(data.rentalPoints[i].id, data.rentalPoints[i].name, data.rentalPoints[i].address, data.rentalPoints[i].lat, data.rentalPoints[i].lng, data.rentalPoints[i].type, data.rentalPoints[i].bikeNumber);
+          }
+        }
+      })));
+
+      this.selectRentalPoint(undefined);
+    } else {
+      this.getRentalPoints();
+    }
+    
+  }
+
 }
 
 class RentalPoint {

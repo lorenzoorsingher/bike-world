@@ -21,7 +21,6 @@ export class BookingComponent {
 
   async newBooking(date: Date, rentalPointName: string, bikeCode: string, event: any) {
     event.preventDefault()
-
     // @ts-ignore
     const params = new HttpParams().set("username", sessionStorage.getItem("username")).set("date", date).set("bikeCode", bikeCode).set("rentalPointName", rentalPointName);
     await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/booking', params).pipe(map(data => {
@@ -132,7 +131,7 @@ export class BookingComponent {
 class Booking {
     _id: any | undefined;
     username: string | undefined;
-	date: Date | undefined;
+	  date: Date | undefined;
     bikeCode: string | undefined;
     rentalPointName: string | undefined; 
 

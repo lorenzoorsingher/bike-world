@@ -28,6 +28,8 @@
             <option value="Negozio">Negozio</option>
             <option value="Automatico">Automatico</option>
         </select>
+        <label for="dataFilter">Scegliere data</label>
+        <input type="date" id="date" name="date" #date (change)="filterDataBased($event)">
         <hr>
         <ul *ngFor="let element of rentalPoints">
             <li (click)="selectRentalPoint($event)" id="{{element.name}}"> {{element.name}}: {{element.address}}</li>
