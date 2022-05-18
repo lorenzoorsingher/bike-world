@@ -33,16 +33,17 @@
                 (submit)="newBooking($any(date.value), $any(rentalPointName.value), $any(bikeCode.value),$event)">
                     <h4>Crea nuova prenotazione</h4>
                     Data: <input type="date" id="date" name="date" #date>
-                <div>
-                    <label for="rentalPointName">Scegliere il punto di ritiro</label>
-                    <select name="rentalPointName" id="rentalPointName" #rentalPointName (change)="getBikes($event)">
-                        <option value="{{rental.name}}" *ngFor="let rental of rentalPoints">{{rental.name}}: {{rental.address}}</option>              
-                    </select>
-                </div>
+                    <div>
+                        <label for="rentalPointName">Scegliere il punto di ritiro</label>
+                        <select name="rentalPointName" id="rentalPointName" #rentalPointName>
+                            <option value="{{rental.name}}" *ngFor="let rental of rentalPoints">{{rental.name}}: {{rental.address}}</option>              
+                        </select>
+                    </div>
+                    <button type="button" (click)="getBikes($any(date.value), $any(rentalPointName.value))">Cerca biciclette disponibili</button>
                 <div>
                     <label for="bikeCode">Scegliere la bicicletta</label>
                     <select name="bikeCode" id="bikeCode" #bikeCode >
-                        <option value="{{bike.code}}" *ngFor="let bike of bikes">{{bike.code}} {{bike.model}}: {{bike.rentalPointName}}</option>              
+                        <option value="{{bike.code}}" *ngFor="let bike of bikes">{{bike.code}} {{bike.model}}: {{bike.type}}</option>              
                     </select>
                 </div>
                 

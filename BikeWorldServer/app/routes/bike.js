@@ -58,20 +58,6 @@ router.get('', async function(req, res) {
 	res.json({bikes});
 });
 
-// ---------------------------------------------------------
-// route to get bikes of a rentalPoint
-// ---------------------------------------------------------
-router.get('/rentalPoint', async function(req, res) {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-	
-	let rentalPointName = req.query.rentalPointName;
-	// get the bikes
-	let bikes = await Bike.find( { 'rentalPointName' : rentalPointName }).exec();	
-	res.json({bikes});
-});
 
 // ---------------------------------------------------------
 // route to get bike searched by code

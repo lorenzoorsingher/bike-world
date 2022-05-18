@@ -62,10 +62,10 @@ export class BookingComponent {
     })));
   }
 
-  async getBikes(event: any){
+  async getBikes(date: Date, rentalPointName: string){
     // @ts-ignore
-    const params = new HttpParams().set("rentalPointName", event.target.value);
-    await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/bike/rentalPoint', {params}).pipe(map(data => {
+    const params = new HttpParams().set("rentalPointName", rentalPointName).set("date", date);
+    await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/booking/bikeAvailable', {params}).pipe(map(data => {
       let i;
       this.bikes = new Array(data.bikes.length);
       

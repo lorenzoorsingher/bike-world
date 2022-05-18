@@ -15,7 +15,8 @@ export const appRoutes: Routes =  [
   { path: "account", component: AccountComponent, canActivate: [userLoggedGuard]},
   { path: "rentalPoint", component: RentalPointComponent},
   { path: "bike", component: BikeComponent},
-  { path: "booking", component: BookingComponent}
+  { path: "booking", component: BookingComponent},
+  { path: "", redirectTo: "rentalPoint", pathMatch: "full"}
 ];
 
 @NgModule({
