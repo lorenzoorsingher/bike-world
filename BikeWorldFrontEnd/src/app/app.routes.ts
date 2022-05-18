@@ -6,6 +6,7 @@ import { userLoggedGuard } from "./guards/userLoggedGuard.component";
 import { RentalPointComponent } from "./rentalPoint/rentalPoint.component";
 import { BikeComponent } from "./bike/bike.component";
 import { BookingComponent } from "./booking/booking.component";
+import { adminGuard } from "./guards/adminGuard.component";
 
 
 // @ts-ignore
@@ -14,7 +15,7 @@ export const appRoutes: Routes =  [
   { path: "signUp", component: SignUpComponent},
   { path: "account", component: AccountComponent, canActivate: [userLoggedGuard]},
   { path: "rentalPoint", component: RentalPointComponent},
-  { path: "bike", component: BikeComponent},
+  { path: "bike", component: BikeComponent, canActivate: [adminGuard]},
   { path: "booking", component: BookingComponent},
   { path: "", redirectTo: "rentalPoint", pathMatch: "full"}
 ];
@@ -24,6 +25,6 @@ export const appRoutes: Routes =  [
     RouterModule.forRoot(appRoutes)
   ],
   exports: [RouterModule],
-  providers: [userLoggedGuard]
+  providers: [userLoggedGuard, adminGuard]
 })
 export class AppRoutingModule { }
