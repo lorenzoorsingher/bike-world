@@ -30,8 +30,10 @@ router.post('', async function(req, res) {
 		return;	//to stop the execution of the function	
     }    
 
+    let releaseCode = Math.floor(Math.random()*1000000);
+
     //save booking in the db
-    const newBooking = new Booking({username: req.body.username, date: req.body.date, bikeCode: req.body.bikeCode, rentalPointName: req.body.rentalPointName});
+    const newBooking = new Booking({username: req.body.username, date: req.body.date, bikeCode: req.body.bikeCode, releaseBikeCode: releaseCode, rentalPointName: req.body.rentalPointName});
     await newBooking.save();
     
 	res.json({

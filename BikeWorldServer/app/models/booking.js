@@ -6,5 +6,6 @@ module.exports = mongoose.model('Booking', new Schema({
 	username: String,
 	date: Date,
     bikeCode: String,
+    releaseBikeCode: Number,
     rentalPointName: String
 }));

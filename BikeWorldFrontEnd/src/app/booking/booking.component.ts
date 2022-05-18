@@ -42,7 +42,7 @@ export class BookingComponent {
 
       if (data.bookings.length > 0) {
         for (i = 0; i < data.bookings.length; i++) {
-          this.bookings[i] = new Booking(data.bookings[i]._id, data.bookings[i].username, data.bookings[i].date, data.bookings[i].bikeCode, data.bookings[i].rentalPointName);
+          this.bookings[i] = new Booking(data.bookings[i]._id, data.bookings[i].username, data.bookings[i].date, data.bookings[i].bikeCode, data.bookings[i].releaseBikeCode, data.bookings[i].rentalPointName);
         }
       }
     })));
@@ -117,7 +117,7 @@ export class BookingComponent {
           let booking = this.getBooking();    
     
           // @ts-ignore
-          bookingInfo = "<br>Data: " + booking.date + "<br>Bici: " + booking.bikeCode + "<br>Punto noleggio: " + booking.rentalPointName; 
+          bookingInfo = "<br>Data: " + booking.date + "<br>Bici: " + booking.bikeCode + "<br>Punto noleggio: " + booking.rentalPointName + "<br>Codice di sblocco: <b>" + booking.releaseCode + "</b>"; 
         
     
           // @ts-ignore  
@@ -133,13 +133,15 @@ class Booking {
     username: string | undefined;
 	  date: Date | undefined;
     bikeCode: string | undefined;
+    releaseCode: number | undefined;
     rentalPointName: string | undefined; 
 
-  constructor(_id: any, username: string, date: Date, bikeCode: string, rentalPointName: string) {
+  constructor(_id: any, username: string, date: Date, bikeCode: string, releaseCode: number, rentalPointName: string) {
     this._id = _id;
     this.username = username;
     this.date = date;
     this.bikeCode = bikeCode;
+    this.releaseCode = releaseCode;
     this.rentalPointName = rentalPointName;
   }
 }
