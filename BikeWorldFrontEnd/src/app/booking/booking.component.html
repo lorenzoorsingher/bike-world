@@ -14,40 +14,40 @@
 </style>
 
 <div>
-    <h3>Elenco prenotazioni</h3>
+    <h4>Lista prenotazioni</h4>
     <div class="bookingStyle">    
-        <ul *ngFor="let element of bookings">
-            <li (click)="selectBooking($event)" id="{{element._id}}"> {{element.username}}: {{element.date}} {{element.rentalPointName}}</li>
+        <ul class="list-group" *ngFor="let element of bookings">
+            <li class="list-group-item" style="width:300px;" (click)="selectBooking($event)" id="{{element._id}}"> {{element.username}}: {{element.date}} {{element.rentalPointName}}</li>
         </ul>
     </div>
     <div class="content">        
         <a>
             <div id="bookingInfoModule" style="display: none;">
                 <h4>Prenotazione</h4>
-                    <div id="bookingInfo"></div>
-                    <button (click)="removeBooking()">Delete booking</button>
-                    <br><hr><br>
-                <br>
+                <div id="bookingInfo"></div>
+                <button class="btn btn-danger" (click)="removeBooking()">Delete booking</button>
+                <br><hr><br>
             </div>
             <form
                 (submit)="newBooking($any(date.value), $any(rentalPointName.value), $any(bikeCode.value),$event)">
                     <h4>Crea nuova prenotazione</h4>
-                    Data: <input type="date" id="date" name="date" #date>
+                    <b>Data:</b> <input type="date" class="form-control" style="width: 300px;" id="date" name="date" #date (change)="getBikes()">
                     <div>
-                        <label for="rentalPointName">Scegliere il punto di ritiro</label>
-                        <select name="rentalPointName" id="rentalPointName" #rentalPointName>
+                        <label for="rentalPointName"><b>Scegliere il punto di ritiro</b></label>
+                        <select class="form-select" style="width:300px" name="rentalPointName" id="rentalPointName" #rentalPointName (change)="getBikes()">
                             <option value="{{rental.name}}" *ngFor="let rental of rentalPoints">{{rental.name}}: {{rental.address}}</option>              
                         </select>
                     </div>
-                    <button type="button" (click)="getBikes($any(date.value), $any(rentalPointName.value))">Cerca biciclette disponibili</button>
+                <br><br>
                 <div>
-                    <label for="bikeCode">Scegliere la bicicletta</label>
-                    <select name="bikeCode" id="bikeCode" #bikeCode >
+                    <label for="bikeCode"><b>Scegliere la bicicletta</b></label>                    
+                    <select class="form-select" style="width:300px" name="bikeCode" id="bikeCode" #bikeCode >
                         <option value="{{bike.code}}" *ngFor="let bike of bikes">{{bike.code}} {{bike.model}}: {{bike.type}} </option>              
                     </select>
+                    <div id="bikeNumberError" style="color:red"></div>
                 </div>
                 
-                <button type="submit">Crea prenotazione</button>
+                <button class="btn btn-success" type="submit">Crea prenotazione</button>
             </form>
             <div id="errorMessage"></div>
         </a>

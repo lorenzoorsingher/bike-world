@@ -24,13 +24,13 @@
         <!-- Left links -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/rentalPoint']">Punti di noleggio</a>
+                <a class="nav-link" [routerLink]="['/rentalPoint']"><h4>Punti di noleggio</h4></a>
             </li>  
             <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/booking']">Prenotazioni</a>
+                <a class="nav-link" [routerLink]="['/booking']"><h4>Prenotazioni</h4></a>
             </li>         
             <li class="nav-item">
-                <a class="nav-link" *ngIf="checkPermissions()" [routerLink]="['/bike']">Biciclette</a>
+                <a class="nav-link" *ngIf="checkPermissions()" [routerLink]="['/bike']"> <h4>Biciclette</h4></a>
             </li>
         </ul>
         <!-- Left links -->
@@ -49,7 +49,7 @@
         <div ngbDropdown class="d-inline-block">
         <button type="button" class="btn btn-outline-primary" id="login" ngbDropdownToggle>Login</button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <div class="px-1 py-3">
+            <div class="px-0 py-3">
                 <div class="mb-3">
                     <label for="user">Username</label>
                     <input type="text" class="form-control" id="username" #username placeholder="Username">
@@ -74,9 +74,8 @@
     <div ngbDropdown class="d-inline-block">
     <button type="button" class="btn btn-outline-primary" id="userManagement" ngbDropdownToggle>{{sessionStorageHeader.getItem("username")}}</button>
     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button>ciao</button>
-        <button ngbDropdownItem (click)="logout()">Logout</button>
-        <button ngbDropdownItem [routerLink]="['/account']"> Manage account </button>
+        <a ngbDropdownItem> <button class="btn btn-danger" (click)="logout()">Logout</button></a>
+        <a ngbDropdownItem> <button class="btn btn-info" [routerLink]="['/account']"> Manage account </button></a>
     </div>
     </div>
 </div>

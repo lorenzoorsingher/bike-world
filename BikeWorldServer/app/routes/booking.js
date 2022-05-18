@@ -80,7 +80,7 @@ router.get('/bikeAvailable', async function(req, res) {
     }
 
 	// get the bikes
-	let allBikes = await Bike.find( { 'rentalPointName' : rentalPointName }).exec();	
+	let allBikes = await Bike.find( { 'rentalPointName' : rentalPointName, 'state': true }).exec();	
     let bikes = [];
 
     for(let i = 0; i < allBikes.length; i++){

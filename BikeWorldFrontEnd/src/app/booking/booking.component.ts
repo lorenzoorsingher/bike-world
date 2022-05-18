@@ -61,20 +61,40 @@ export class BookingComponent {
     })));
   }
 
-  async getBikes(date: Date, rentalPointName: string){
+  async getBikes(){
     // @ts-ignore
-    const params = new HttpParams().set("rentalPointName", rentalPointName).set("date", date);
-    await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/booking/bikeAvailable', {params}).pipe(map(data => {
-      let i;
-      this.bikes = new Array(data.bikes.length);
-      
-      if (data.bikes.length > 0) {
-        for (i = 0; i < data.bikes.length; i++) {
-          this.bikes[i] = new Bike(data.bikes[i].code, data.bikes[i].model, data.bikes[i].type, data.bikes[i].rentalPointName, data.bikes[i].state);
-        }
+    let date = document.getElementById("date").value;
+    // @ts-ignore
+    let rentalPointName =  document.getElementById("rentalPointName").value;
+    // @ts-ignore  
+    document.getElementById("bikeNumberError").innerHTML = "";
+    
+    if(date){
+      if(new Date(date) > new Date()){
+        // @ts-ignore
+        const params = new HttpParams().set("rentalPointName", rentalPointName).set("date", date);
+        await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/booking/bikeAvailable', {params}).pipe(map(data => {
+          let i;
+          this.bikes = new Array(data.bikes.length);
+          
+          if (data.bikes.length > 0) {
+            for (i = 0; i < data.bikes.length; i++) {
+              this.bikes[i] = new Bike(data.bikes[i].code, data.bikes[i].model, data.bikes[i].type, data.bikes[i].rentalPointName, data.bikes[i].state);
+            }
+          } else {
+            // @ts-ignore  
+            document.getElementById("bikeNumberError").innerHTML = "Nessuna bicicletta disponibile per i dati inseriti";
+          }
+        })));
+      } else{
+        // @ts-ignore  
+      document.getElementById("bikeNumberError").innerHTML = "Inserisci una data futura";
       }
-    })));
+    }else{
+      // @ts-ignore  
+      document.getElementById("bikeNumberError").innerHTML = "Inserisci una data";
     }
+  }
 
     getBooking(){
         let booking = undefined;
@@ -117,15 +137,13 @@ export class BookingComponent {
           let booking = this.getBooking();    
     
           // @ts-ignore
-          bookingInfo = "<br>Data: " + booking.date + "<br>Bici: " + booking.bikeCode + "<br>Punto noleggio: " + booking.rentalPointName + "<br>Codice di sblocco: <b>" + booking.releaseCode + "</b>"; 
+          bookingInfo = "<b>Data:</b> " + booking.date + "<br><b>Bici:</b> " + booking.bikeCode + "<br><b>Punto noleggio:</b> " + booking.rentalPointName + "<br><b>Codice di sblocco:</b> <i>" + booking.releaseCode + "</i>"; 
         
     
           // @ts-ignore  
           document.getElementById("bookingInfo").innerHTML = bookingInfo;
         }
       }
-
-
 }
 
 class Booking {

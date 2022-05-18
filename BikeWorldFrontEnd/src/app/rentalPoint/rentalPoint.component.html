@@ -21,18 +21,20 @@
 
 <div>
     <div class="sidebar">
-        <h3>Filtra elementi</h3>
+        <h4>Filtra elementi</h4>
         <label for="typeFilter">Scegliere tipo</label>
-        <select name="typeFilter" id="typeFilter" #typeFilter (change)="filterTypeBased($event)">
+        <select class="form-select" style="width:300px" name="typeFilter" id="typeFilter" #typeFilter (change)="filterTypeBased($event)">
             <option value="">Entrambi</option>
             <option value="Negozio">Negozio</option>
             <option value="Automatico">Automatico</option>
         </select>
+        <br>
         <label for="dataFilter">Scegliere data</label>
-        <input type="date" id="date" name="date" #date (change)="filterDataBased($event)">
+        <input type="date" class="form-control" id="date" name="date" #date (change)="filterDataBased($event)">
         <hr>
-        <ul *ngFor="let element of rentalPoints">
-            <li (click)="selectRentalPoint($event)" id="{{element.name}}"> {{element.name}}: {{element.address}}</li>
+        <h4>Lista punti noleggio</h4>
+        <ul class="list-group" *ngFor="let element of rentalPoints">
+            <li class="list-group-item" style="width:300px;" (click)="selectRentalPoint($event)" id="{{element.name}}"> {{element.name}}: {{element.address}}</li>
         </ul>
     </div>
     <div class="map">
@@ -42,46 +44,47 @@
             <agm-marker [latitude]="element.lat" [longitude]="element.lng" *ngFor="let element of rentalPoints"
                 (markerClick)="showMarkerInfo($event)"></agm-marker>
         </agm-map>
-        <!--<iframe src="https://maps.google.com/maps?q=Tangesir%20Dates%20Products&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" width=300 height=150 allowfullscreen></iframe>-->
-        <a *ngIf="addItemOptions() == true">
+        <div id="rentalShopSelected"></div>
+        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" class="btn btn-danger" (click)="removeRentalPoint()">Remove rental point</button>
+        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" class="btn btn-info" (click)="allowRentalPointChange()">Change rental point info</button>
+       
+    </div>
+    <div class="content">
+        <a *ngIf="addItemOptions() == true" id="addRentalForm" style="display: block;">
             <form
                 (submit)="newRentalPoint($any(name.value), $any(address.value), $any(lat.value), $any(lng.value), $any(typeRentalPoint.value), $event)">
-                Inserire nome: <input type="text" id="name" #name required><br>
-                Inserire indirizzo: <input type="text" id="address" #address required><br>
-                Inserire latitudine: <input type="text" id="lat" #lat required><br>
-                Inserire longitudine: <input type="text" id="lng" #lng required><br>
+                <h4>Aggiungi Punto di noleggio</h4>
+                Inserire nome: <input type="text" class="form-control" style="width:300px;" id="name" #name required><br>
+                Inserire indirizzo: <input type="text" class="form-control" style="width: 300px;" id="address" #address required><br>
+                Inserire latitudine: <input type="text" class="form-control" style="width: 300px;" id="lat" #lat required><br>
+                Inserire longitudine: <input type="text" class="form-control" style="width: 300px;" id="lng" #lng required><br>
                 <div>
                     <label for="typeRentalPoint">Inserire tipo</label>
-                    <select name="typeRentalPoint" id="typeRentalPoint" #typeRentalPoint>
+                    <select class="form-select" style="width:300px" name="typeRentalPoint" id="typeRentalPoint" #typeRentalPoint>
                         <option value="Negozio">Negozio</option>
                         <option value="Automatico">Automatico</option>
                     </select>
                 </div>
-                <button type="submit">Crea Nuovo Rental Point</button>
+                <button class="btn btn-success" type="submit">Crea Nuovo Rental Point</button>
             </form>
         </a>
-    </div>
-    <div class="content">
-        <div id="rentalShopSelected"></div>
-        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" (click)="removeRentalPoint()">Remove rental
-            point</button>
-        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" (click)="allowRentalPointChange()">Change
-            rental point info</button>
-
+         <br><br>
         <form id="changeRentalPointForm" style="display: none;"
             (submit)="changeRentalPoint($any(nameChange.value), $any(addressChange.value), $any(latChange.value), $any(lngChange.value), $any(typeRentalPointChange.value), $event)">
-            Inserire nome: <input type="text" id="nameChange" #nameChange disabled><br>
-            Inserire indirizzo: <input type="text" id="addressChange" #addressChange required><br>
-            Inserire latitudine: <input type="text" id="latChange" #latChange required><br>
-            Inserire longitudine: <input type="text" id="lngChange" #lngChange required><br>
+            <h4>Modifica Punto di noleggio</h4>
+            Inserire nome: <input type="text" class="form-control-plaintext" id="nameChange" #nameChange disabled><br>
+            Inserire indirizzo: <input type="text" class="form-control" style="width: 300px;" id="addressChange" #addressChange required><br>
+            Inserire latitudine: <input type="text" class="form-control" style="width: 300px;" id="latChange" #latChange required><br>
+            Inserire longitudine: <input type="text" class="form-control" style="width: 300px;" id="lngChange" #lngChange required><br>
             <div>
                 <label for="typeRentalPointChange">Inserire tipo</label>
-                <select name="typeRentalPointChange" id="typeRentalPointChange" #typeRentalPointChange>
+                <select class="form-select" style="width:300px" name="typeRentalPointChange" id="typeRentalPointChange" #typeRentalPointChange>
                     <option value="Negozio">Negozio</option>
                     <option value="Automatico">Automatico</option>
                 </select>
             </div>
-            <button type="submit">Modifica Rental Point</button>
+            <button class="btn btn-success" type="submit">Modifica Rental Point</button>
+            <button class="btn btn-danger" type="button" (click)="annullaModifica()">Annulla Modifica</button>
         </form>
     </div>
 </div>

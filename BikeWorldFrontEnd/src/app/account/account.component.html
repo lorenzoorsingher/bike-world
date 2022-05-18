@@ -2,31 +2,31 @@
     <h3 style="color: red;">Cambia Dati</h3>
     <form (submit)="edit($any(username.value), $any(email.value), $any(psw.value), $any(psw2.value), $any(target.value),$event)">
         <div>
-            <label for="username">Inserire username*</label>
-            <input type="text" id="username" #username disabled>
+            <label for="username"><b>Inserire username*</b></label>
+            <input type="text" class="form-control-plaintext" style="width: 300px;" id="username" #username disabled>
         </div>
         <div>
-            <label for="email">Inserire email*</label>
-            <input type="text" id="email" #email required>
+            <label for="email"><b>Inserire email*</b></label>
+            <input type="text" class="form-control" style="width: 300px;" id="email" #email required>
         </div>
         <div>
-            <label for="password">Inserire password*</label>
-            <input type="password" id="psw" #psw required>
+            <label for="password"><b>Inserire password*</b></label>
+            <input type="password" class="form-control" style="width: 300px;" id="psw" #psw required>
         </div>
         <div>
-            <label for="password2">Confermare password*</label>
-            <input type="password" id="psw2" #psw2 required>
+            <label for="password2"><b>Confermare password*</b></label>
+            <input type="password" class="form-control" style="width: 300px;" id="psw2" #psw2 required>
         </div>
         <div>
-            <label for="target">Inserire target</label>
-            <select name="target" id="target" #target>
+            <label for="target"><b>Inserire target</b></label>
+            <select class="form-select" style="width:300px" name="target" id="target" #target>
                 <option value="Principiante">Principiante</option>
                 <option value="Intermedio">Intermedio</option>
                 <option value="Esperto">Esperto</option>
               </select>
         </div>
-        <h5> * campi obbligatori </h5>
-        <button type="submit">Modifica account</button>
+        <b> * campi obbligatori </b><br>
+        <button class="btn btn-success" type="submit">Modifica account</button>
         <div class="mb-3" style="color: red" id="manageAccountErrorMessage" style="display: none;">
             
         </div>

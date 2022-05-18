@@ -7,5 +7,5 @@ module.exports = mongoose.model('Bike', new Schema({
     model: String,
 	type: String,
 	rentalPointName: String,
-	state: Boolean 	//0 need reparation, 1 is OK
+	state: Boolean 	//false need reparation, true is OK
 }));

@@ -42,6 +42,8 @@ export class RentalPointComponent {
 
     // @ts-ignore
     document.getElementById("changeRentalPointForm").style.display = 'none';
+    // @ts-ignore
+    document.getElementById("addRentalForm").style.display = 'block';
     await this.getRentalPoints();
     this.selectRentalPoint(undefined);
   }
@@ -73,7 +75,16 @@ export class RentalPointComponent {
     return sessionStorage.getItem("permissions") != undefined && sessionStorage.getItem("permissions") == 'true';
   }
 
+  annullaModifica(){
+    // @ts-ignore
+    document.getElementById("changeRentalPointForm").style.display = 'none';
+    // @ts-ignore
+    document.getElementById("addRentalForm").style.display = 'block';
+  }
+
   allowRentalPointChange() {
+    // @ts-ignore
+    document.getElementById("addRentalForm").style.display = 'none';
     // @ts-ignore
     document.getElementById("changeRentalPointForm").style.display = 'block';
     let rentalPoint = this.getRentalPoint();

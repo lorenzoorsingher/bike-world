@@ -15,35 +15,34 @@
 
 <div>
     <div class="bikeList">
-        <h2>Biciclette</h2>
-        Ricerca per codice <input type="text" id="codeSearch" #codeSearch (change)="researchBikeCode($event)"><br>
-        
-        <ul *ngFor="let element of bikes">
-            <li  (click)="selectBike($event)" id="{{element.code}}"> {{element.code}} {{element.model}}: {{element.rentalPointName}}</li>
-        </ul>
-        <button (click)="selectedBikeCode = ''">Aggiungi nuova bici</button>    
+        <h4>Filtra Biciclette</h4>
+        <b>Ricerca per codice </b><input type="text" class="form-control" style="width: 300px;" id="codeSearch" #codeSearch (change)="researchBikeCode($event)"><br>
+        <h4>Lista Biciclette</h4>
+        <ul class="list-group" *ngFor="let element of bikes">
+            <li class="list-group-item" style="width:300px;" (click)="selectBike($event)" id="{{element.code}}"> {{element.code}} {{element.model}}: {{element.rentalPointName}}</li>
+        </ul>  
     </div>
     <div class="bike">
         <div id="bikeInfoModule" style="display: none;">
             <h4>Bicicletta</h4>
             <div id="bikeInfo"></div>
-            <button (click)="repareBike()">Repare bike</button>
-            <button (click)="removeBike()">Delete bike</button>
+            <button class="btn btn-warning" (click)="repareBike()">Repare bike</button>
+            <button class="btn btn-danger" (click)="removeBike()">Delete bike</button>
             <br>
         </div>
 
         <h4>Aggiungi nuova bicicletta</h4>
         <form (submit)="newBike($any(code.value), $any(model.value), $any(type.value), $any(rentalPointName.value),$event)">
-            Inserire codice: <input type="text" id="code" #code required><br>
-            Inserire modello: <input type="text" id="model" #model required><br>
-            Inserire tipo: <input type="text" id="type" #type required><br>
+            <b>Inserire codice: </b> <input type="text" class="form-control" style="width: 300px;" id="code" #code required><br>
+            <b>Inserire modello: </b> <input type="text" class="form-control" style="width: 300px;" id="model" #model required><br>
+            <b>Inserire tipo: </b> <input type="text" class="form-control" style="width: 300px;" id="type" #type required><br>
             <div>
-                <label for="rentalPointName">Scegliere punto di noleggio</label>
-                <select name="rentalPointName" id="rentalPointName" #rentalPointName >
+                <label for="rentalPointName"><b>Scegliere punto di noleggio </b></label>
+                <select class="form-select" style="width:300px" name="rentalPointName" id="rentalPointName" #rentalPointName >
                     <option value="{{rental}}" *ngFor="let rental of rentalName">{{rental}}</option>              
                 </select>
             </div>
-            <button type="submit">Crea nuova bici</button>
+            <button class="btn btn-success" type="submit">Crea nuova bici</button>
         </form>
     </div>
 </div>

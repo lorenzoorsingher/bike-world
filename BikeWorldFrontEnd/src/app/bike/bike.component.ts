@@ -70,6 +70,7 @@ export class BikeComponent {
     })))
 
     this.getBikes();
+    this.selectedBikeCode="";
     this.selectBike(undefined);          
   }
 
@@ -113,10 +114,10 @@ export class BikeComponent {
       let bike = this.getBike();    
 
       // @ts-ignore
-      bikeInfo = "Codice bici: " + bike.code + "<br>Modello: "+ bike.model + "<br>Tipo: "+ bike.type + "<br>Stato: "; 
+      bikeInfo = "<b>Codice bici:</b> " + bike.code + "<br><b>Modello:</b> "+ bike.model + "<br><b>Tipo:</b> "+ bike.type + "<br><b>Stato:</b> "; 
       // @ts-ignore
       if(bike.state == true){ bikeInfo += "utilizzabile "} else { bikeInfo += "in riparazione "}
-      bikeInfo += "<br>Nome punto di ritiro: " + bike?.rentalPointName;
+      bikeInfo += "<br><b>Nome punto di ritiro:</b> " + bike?.rentalPointName;
 
       // @ts-ignore  
       document.getElementById("bikeInfo").innerHTML = bikeInfo;
