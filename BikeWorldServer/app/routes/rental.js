@@ -132,8 +132,8 @@ router.get('/date', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	let dateSearch = req.query.date;
-	// find the rental points
-	let rentalPoints = await RentalPoint.find( { }).exec();
+	// find all the rental points
+	let allRentalPoints = await RentalPoint.find( { }).exec();
 
 	//find booking	
 	let bookings = await Booking.aggregate([
@@ -143,12 +143,21 @@ router.get('/date', async function(req, res) {
 	  ]);
 	
 	for(let i = 0; i < bookings.length; i++){
-		for(let y = 0; y < rentalPoints.length; y++){
-			if(bookings[i]._id == rentalPoints[y].name){
-				rentalPoints[y].bikeNumber -= bookings[i].count;
+		for(let y = 0; y < allRentalPoints.length; y++){
+			if(bookings[i]._id == allRentalPoints[y].name){
+				allRentalPoints[y].bikeNumber -= bookings[i].count;
 			}
 		}
 	}
+
+	let rentalPoints = [];
+
+	for(let i = 0; i < allRentalPoints.length; i++){
+		if(allRentalPoints[i].bikeNumber > 0){
+			rentalPoints.push(allRentalPoints[i]);
+		}
+	}
+
 	res.json({rentalPoints});
 
 });

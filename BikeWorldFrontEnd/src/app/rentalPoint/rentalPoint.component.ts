@@ -101,7 +101,7 @@ export class RentalPointComponent {
     // @ts-ignore
     document.getElementById("typeRentalPointChange").value = rentalPoint.type;
     // @ts-ignore
-    document.getElementById("bikeNumberChange").value = rentalPoint.bikeNUmber;
+    document.getElementById("bikeNumberChange").value = rentalPoint.bikeNumber;
   }
 
   getRentalPoint() {
@@ -158,7 +158,7 @@ export class RentalPointComponent {
 
     let rentalInfo = "";
     // @ts-ignore
-    rentalInfo = "Nome negozio: " + rentalPoint.name + "<br>Indirizzo: " + rentalPoint.address + "<br>Tipo: " + rentalPoint.type + "<br>Numero di bici disponibili: " + rentalPoint.bikeNUmber;
+    rentalInfo = "<b>Nome negozio:</b> " + rentalPoint.name + "<br><b>Indirizzo:</b> " + rentalPoint.address + "<br><b>Tipo:</b> " + rentalPoint.type + "<br><b>Numero di bici disponibili:</b> " + rentalPoint.bikeNumber;
     // @ts-ignore  
     document.getElementById("rentalShopSelected").innerHTML = rentalInfo;
 
@@ -223,7 +223,7 @@ class RentalPoint {
   lat: number = 0;
   lng: number = 0;
   type: string | undefined;
-  bikeNUmber: number | undefined;
+  bikeNumber: number | undefined;
 
   constructor(id: string, name: string, address: string, lat: number, lng: number, type: string, bikeNumber: number) {
     this.id = id;
@@ -232,7 +232,7 @@ class RentalPoint {
     this.lat = lat;
     this.lng = lng;
     this.type = type;
-    this.bikeNUmber = bikeNumber;
+    this.bikeNumber = bikeNumber;
 
   }
 
