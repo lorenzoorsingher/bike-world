@@ -3,6 +3,7 @@ const router = express.Router();
 const Bike = require('../models/bike'); // get our mongoose model
 const RentalPoint = require('../models/rentalPoint'); // get our mongoose model
 const Booking = require('../models/booking.js') // get booking model
+const User = require('../models/user.js'); // get user model
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 // ---------------------------------------------------------
@@ -55,8 +56,16 @@ router.get('', async function(req, res) {
 	
     let username = req.query.username;
 
+    let user = await User.findOne({'username': username});
+
 	// get the bookings
-	let bookings = await Booking.find( { 'username': username }).exec();	
+	let bookings;
+    
+    if(user.permissions == true){
+        bookings = await Booking.find().exec();
+    } else {
+        bookings = await Booking.find( { 'username': username }).exec();
+    }
 	res.json({bookings});
 });
 

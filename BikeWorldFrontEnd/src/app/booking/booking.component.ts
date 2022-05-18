@@ -144,8 +144,12 @@ export class BookingComponent {
           let booking = this.getBooking();    
     
           // @ts-ignore
-          bookingInfo = "<b>Data:</b> " + booking.date + "<br><b>Bici:</b> " + booking.bikeCode + "<br><b>Punto noleggio:</b> " + booking.rentalPointName + "<br><b>Codice di sblocco:</b> <i>" + booking.releaseCode + "</i>"; 
-        
+          let date = ((booking.date).toString()).split("T");
+          // @ts-ignore
+          let arrayDate = (date[0]).split("-");
+
+          // @ts-ignore
+          bookingInfo = "<b>Data:</b> " + arrayDate[2] + "-" + arrayDate[1] + "-" + arrayDate[0] + "<br><b>Punto noleggio:</b> " + booking.rentalPointName + "<br><b>Bici:</b> " + booking.bikeCode + "<br><b>Codice di sblocco:</b> <i>" + booking.releaseCode + "</i>"; 
     
           // @ts-ignore  
           document.getElementById("bookingInfo").innerHTML = bookingInfo;
