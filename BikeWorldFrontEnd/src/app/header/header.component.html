@@ -27,7 +27,7 @@
                 <a class="nav-link" [routerLink]="['/rentalPoint']"><h4>Punti di noleggio</h4></a>
             </li>  
             <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/booking']"><h4>Prenotazioni</h4></a>
+                <a class="nav-link" *ngIf="checkUsersLogged()" [routerLink]="['/booking']"><h4>Prenotazioni</h4></a>
             </li>         
             <li class="nav-item">
                 <a class="nav-link" *ngIf="checkPermissions()" [routerLink]="['/bike']"> <h4>Biciclette</h4></a>

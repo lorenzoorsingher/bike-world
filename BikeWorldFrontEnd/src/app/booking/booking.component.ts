@@ -63,6 +63,9 @@ export class BookingComponent {
 
   async getBikes(){
     // @ts-ignore
+    document.getElementById("bikeNumberError").style.display = 'none'; 
+
+    // @ts-ignore
     let date = document.getElementById("date").value;
     // @ts-ignore
     let rentalPointName =  document.getElementById("rentalPointName").value;
@@ -87,10 +90,14 @@ export class BookingComponent {
           }
         })));
       } else{
-        // @ts-ignore  
+      // @ts-ignore
+      document.getElementById("bikeNumberError").style.display = 'block';  
+      // @ts-ignore  
       document.getElementById("bikeNumberError").innerHTML = "Inserisci una data futura";
       }
     }else{
+      // @ts-ignore
+      document.getElementById("bikeNumberError").style.display = 'block';  
       // @ts-ignore  
       document.getElementById("bikeNumberError").innerHTML = "Inserisci una data";
     }

@@ -16,7 +16,7 @@ export const appRoutes: Routes =  [
   { path: "account", component: AccountComponent, canActivate: [userLoggedGuard]},
   { path: "rentalPoint", component: RentalPointComponent},
   { path: "bike", component: BikeComponent, canActivate: [adminGuard]},
-  { path: "booking", component: BookingComponent},
+  { path: "booking", component: BookingComponent, canActivate: [userLoggedGuard]},
   { path: "", redirectTo: "rentalPoint", pathMatch: "full"}
 ];
 

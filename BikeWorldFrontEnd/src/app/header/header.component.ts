@@ -49,5 +49,9 @@ export class HeaderComponent {
   checkPermissions(){
     return this.sessionStorageHeader.getItem("permissions") == 'true';
   }
+
+  checkUsersLogged(){
+    return this.sessionStorageHeader.getItem("userID") != undefined;
+  }
 }
 

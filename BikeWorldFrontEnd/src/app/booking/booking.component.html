@@ -2,14 +2,14 @@
     .bookingStyle {
         float: left;
         margin-left: 1%;
-        width: 49%;
+        width: 39%;
         height: 100%;
     }
 
     .content {
         float: right;
         margin-left: 1%;
-        width: 49%;
+        width: 59%;
     }
 </style>
 
@@ -17,7 +17,7 @@
     <h4>Lista prenotazioni</h4>
     <div class="bookingStyle">    
         <ul class="list-group" *ngFor="let element of bookings">
-            <li class="list-group-item" style="width:300px;" (click)="selectBooking($event)" id="{{element._id}}"> {{element.username}}: {{element.date}} {{element.rentalPointName}}</li>
+            <li class="list-group-item" style="width:500px;" (click)="selectBooking($event)" id="{{element._id}}"> {{element.username}}: {{element.date}} {{element.rentalPointName}}</li>
         </ul>
     </div>
     <div class="content">        
@@ -44,12 +44,14 @@
                     <select class="form-select" style="width:300px" name="bikeCode" id="bikeCode" #bikeCode >
                         <option value="{{bike.code}}" *ngFor="let bike of bikes">{{bike.code}} {{bike.model}}: {{bike.type}} </option>              
                     </select>
-                    <div id="bikeNumberError" style="color:red"></div>
+                    <br>
+                    <div class="alert alert-danger" style="width:300px; display: none;" id="bikeNumberError" role="alert"></div> 
                 </div>
                 
                 <button class="btn btn-success" type="submit">Crea prenotazione</button>
             </form>
-            <div id="errorMessage"></div>
+            <br><div class="alert alert-danger" style="width:300px; display: none;" id="errorMessage" role="alert"></div>           
+              
         </a>
         
     </div>

@@ -130,7 +130,7 @@ export class RentalPointComponent {
       let rentalPoint = this.getRentalPoint();
 
       // @ts-ignore
-      rentalInfo = "Nome negozio: " + rentalPoint.name + "<br>Indirizzo: " + rentalPoint.address + "<br>Tipo: " + rentalPoint.type + "<br>Numero di bici disponibili: " + rentalPoint.bikeNUmber;
+      rentalInfo = "<b>Nome negozio:</b> " + rentalPoint.name + "<br><b>Indirizzo:</b> " + rentalPoint.address + "<br><b>Tipo:</b> " + rentalPoint.type + "<br><b>Numero di bici disponibili:</b> " + rentalPoint.bikeNumber;
 
       // @ts-ignore  
       document.getElementById("rentalShopSelected").innerHTML = rentalInfo;

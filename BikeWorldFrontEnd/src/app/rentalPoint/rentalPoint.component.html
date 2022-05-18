@@ -22,14 +22,14 @@
 <div>
     <div class="sidebar">
         <h4>Filtra elementi</h4>
-        <label for="typeFilter">Scegliere tipo</label>
+        <label for="typeFilter"><b>Scegliere tipo</b></label>
         <select class="form-select" style="width:300px" name="typeFilter" id="typeFilter" #typeFilter (change)="filterTypeBased($event)">
             <option value="">Entrambi</option>
             <option value="Negozio">Negozio</option>
             <option value="Automatico">Automatico</option>
         </select>
         <br>
-        <label for="dataFilter">Scegliere data</label>
+        <label for="dataFilter"><b>Scegliere data</b></label>
         <input type="date" class="form-control" id="date" name="date" #date (change)="filterDataBased($event)">
         <hr>
         <h4>Lista punti noleggio</h4>
@@ -54,12 +54,12 @@
             <form
                 (submit)="newRentalPoint($any(name.value), $any(address.value), $any(lat.value), $any(lng.value), $any(typeRentalPoint.value), $event)">
                 <h4>Aggiungi Punto di noleggio</h4>
-                Inserire nome: <input type="text" class="form-control" style="width:300px;" id="name" #name required><br>
-                Inserire indirizzo: <input type="text" class="form-control" style="width: 300px;" id="address" #address required><br>
-                Inserire latitudine: <input type="text" class="form-control" style="width: 300px;" id="lat" #lat required><br>
-                Inserire longitudine: <input type="text" class="form-control" style="width: 300px;" id="lng" #lng required><br>
+                <b>Inserire nome:</b> <input type="text" class="form-control" style="width:300px;" id="name" #name required><br>
+                <b>Inserire indirizzo:</b> <input type="text" class="form-control" style="width: 300px;" id="address" #address required><br>
+                <b>Inserire latitudine:</b> <input type="text" class="form-control" style="width: 300px;" id="lat" #lat required><br>
+                <b>Inserire longitudine:</b> <input type="text" class="form-control" style="width: 300px;" id="lng" #lng required><br>
                 <div>
-                    <label for="typeRentalPoint">Inserire tipo</label>
+                    <label for="typeRentalPoint"><b>Inserire tipo</b></label>
                     <select class="form-select" style="width:300px" name="typeRentalPoint" id="typeRentalPoint" #typeRentalPoint>
                         <option value="Negozio">Negozio</option>
                         <option value="Automatico">Automatico</option>
@@ -72,12 +72,12 @@
         <form id="changeRentalPointForm" style="display: none;"
             (submit)="changeRentalPoint($any(nameChange.value), $any(addressChange.value), $any(latChange.value), $any(lngChange.value), $any(typeRentalPointChange.value), $event)">
             <h4>Modifica Punto di noleggio</h4>
-            Inserire nome: <input type="text" class="form-control-plaintext" id="nameChange" #nameChange disabled><br>
-            Inserire indirizzo: <input type="text" class="form-control" style="width: 300px;" id="addressChange" #addressChange required><br>
-            Inserire latitudine: <input type="text" class="form-control" style="width: 300px;" id="latChange" #latChange required><br>
-            Inserire longitudine: <input type="text" class="form-control" style="width: 300px;" id="lngChange" #lngChange required><br>
+            <b>Inserire nome:</b> <input type="text" class="form-control-plaintext" id="nameChange" #nameChange disabled><br>
+            <b>Inserire indirizzo:</b> <input type="text" class="form-control" style="width: 300px;" id="addressChange" #addressChange required><br>
+            <b>Inserire latitudine:</b> <input type="text" class="form-control" style="width: 300px;" id="latChange" #latChange required><br>
+            <b>Inserire longitudine:</b> <input type="text" class="form-control" style="width: 300px;" id="lngChange" #lngChange required><br>
             <div>
-                <label for="typeRentalPointChange">Inserire tipo</label>
+                <label for="typeRentalPointChange"><b>Inserire tipo</b></label>
                 <select class="form-select" style="width:300px" name="typeRentalPointChange" id="typeRentalPointChange" #typeRentalPointChange>
                     <option value="Negozio">Negozio</option>
                     <option value="Automatico">Automatico</option>
