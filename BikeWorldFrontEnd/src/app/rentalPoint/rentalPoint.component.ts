@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { lastValueFrom, map, Observable } from 'rxjs';
 import { AgmMap, MapsAPILoader } from '@agm/core';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class RentalPointComponent {
     event.preventDefault()
 
     const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
-    await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/rental', params).pipe(map(data => {
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
 
     })))
 
@@ -36,7 +37,7 @@ export class RentalPointComponent {
     event.preventDefault()
 
     const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
-    await lastValueFrom(this.http.put<any>('http://localhost:8080/api/v1/rental', params).pipe(map(data => {
+    await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
 
     })))
 
@@ -50,7 +51,7 @@ export class RentalPointComponent {
 
   async removeRentalPoint() {
     const params = new HttpParams().set('name', this.selectedRentalName)
-    await lastValueFrom(this.http.delete<any>('http://localhost:8080/api/v1/rental', { params }).pipe(map(data => {
+    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/rental`, { params }).pipe(map(data => {
 
     })));
     this.selectedRentalName = "";
@@ -59,7 +60,7 @@ export class RentalPointComponent {
   }
 
   async getRentalPoints() {
-    await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/rental').pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental`).pipe(map(data => {
       let i;
       this.rentalPoints = new Array(data.rentalPoints.length);
 
@@ -167,7 +168,7 @@ export class RentalPointComponent {
     if (event.target.value != "") {
       let del = true;
       const params = new HttpParams().set('type', event.target.value)
-      await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/rental/type', { params }).pipe(map(data => {
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/type`, { params }).pipe(map(data => {
         let i;
         this.rentalPoints = new Array(data.rentalPoints.length);
 
@@ -194,7 +195,7 @@ export class RentalPointComponent {
   async filterDataBased(event: any) {
     if (event.target.value != "") {
       const params = new HttpParams().set('date', event.target.value)
-      await lastValueFrom(this.http.get<any>('http://localhost:8080/api/v1/rental/date', { params }).pipe(map(data => {
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/date`, { params }).pipe(map(data => {
         
         let i;
         this.rentalPoints = new Array(data.rentalPoints.length);

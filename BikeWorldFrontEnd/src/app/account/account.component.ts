@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http' 
 import { catchError, lastValueFrom, map, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class AccountComponent implements OnInit {
   setAccountInfo(){
     const headers = new HttpHeaders().set('x-access-token', sessionStorage.getItem('token') ?? "");  
     // @ts-ignore
-    lastValueFrom(this.http.get<any>(`http://localhost:8080/api/v1/users/${sessionStorage.getItem("userID")}`, {headers: headers}).pipe(map( data => { 
+    lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/users/${sessionStorage.getItem("userID")}`, {headers: headers}).pipe(map( data => { 
 
     if(data.success != false){
         // @ts-ignore
@@ -69,7 +70,7 @@ export class AccountComponent implements OnInit {
         };
         const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
         //console.log(params);
-        await lastValueFrom(this.http.put<any>(`http://localhost:8080/api/v1/users/${sessionStorage.getItem("userID")}`, body, {headers: headers}).pipe(map( data => { 
+        await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/users/${sessionStorage.getItem("userID")}`, body, {headers: headers}).pipe(map( data => { 
           // @ts-ignore
           document.getElementById("manageAccountErrorMessage").style.display = 'block';
             // @ts-ignore

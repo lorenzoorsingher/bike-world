@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import {catchError, lastValueFrom, map, of} from "rxjs";
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class HeaderComponent {
     };
     
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    await lastValueFrom(this.http.post<any>('http://localhost:8080/api/v1/users/login', body, {headers: headers}).pipe(map(data => {
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/users/login`, body, {headers: headers}).pipe(map(data => {
         if(data.success == true) {
             this.sessionStorageHeader.setItem("username", data.username);
             this.sessionStorageHeader.setItem("userID", data.id);
