@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http' 
-import { lastValueFrom, map } from 'rxjs';
+import { catchError, lastValueFrom, map, of } from 'rxjs';
 
 
 @Component({
@@ -24,12 +24,7 @@ export class AccountComponent implements OnInit {
     // @ts-ignore
     lastValueFrom(this.http.get<any>(`http://localhost:8080/api/v1/users/${sessionStorage.getItem("userID")}`, {headers: headers}).pipe(map( data => { 
 
-    if(data.success == false){
-        // @ts-ignore
-        document.getElementById("manageAccountErrorMessage").style.display = 'block';
-        // @ts-ignore
-        document.getElementById("manageAccountErrorMessage").innerHTML = data.message;
-    } else {
+    if(data.success != false){
         // @ts-ignore
         document.getElementById("username").value = data.username;
         // @ts-ignore
@@ -41,7 +36,13 @@ export class AccountComponent implements OnInit {
         // @ts-ignore
         document.getElementById("target").value = data.target;
     }
-    }))) 
+    }), catchError((error) => {
+      // @ts-ignore
+      document.getElementById("manageAccountErrorMessage").style.display = 'block';
+      // @ts-ignore
+      document.getElementById("manageAccountErrorMessage").innerHTML = error.error.message;
+      return of([]);
+  }))) 
   }
 
   verifyPsw(psw: string, psw2: string){
@@ -74,7 +75,13 @@ export class AccountComponent implements OnInit {
             // @ts-ignore
             document.getElementById("manageAccountErrorMessage").innerHTML = data.message;
         
-        })))
+        }), catchError((error) => {
+          // @ts-ignore
+          document.getElementById("manageAccountErrorMessage").style.display = 'block';
+          // @ts-ignore
+          document.getElementById("manageAccountErrorMessage").innerHTML = error.error.message;
+          return of([]);
+      })))
     }      
   } 
 

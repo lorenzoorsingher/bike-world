@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import {lastValueFrom, map} from "rxjs";
+import {catchError, lastValueFrom, map, of} from "rxjs";
 import { Router } from '@angular/router';
 
 
@@ -32,11 +32,12 @@ export class HeaderComponent {
             this.sessionStorageHeader.setItem("userID", data.id);
             this.sessionStorageHeader.setItem("permissions", data.permissions);
             this.sessionStorageHeader.setItem("token", data.token);
-        } else {
-            // @ts-ignore
-            document.getElementById("loginErrorMessage").style.display = 'block';
-        }
-    })));
+        } 
+    }), catchError((error) => {
+      // @ts-ignore
+      document.getElementById("loginErrorMessage").style.display = 'block';
+      return of([]);
+  })));
   }
 
   logout(){
