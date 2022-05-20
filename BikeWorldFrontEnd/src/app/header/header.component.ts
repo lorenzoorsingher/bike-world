@@ -20,7 +20,8 @@ export class HeaderComponent {
 
   }
 
-  async loginFunction(username: string, psw:string){
+  async loginFunction(username: string, psw:string, event:any){
+    event.preventDefault();
     const body = {
       "username": username,      
       "password": psw
@@ -28,13 +29,11 @@ export class HeaderComponent {
     
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/users/login`, body, {headers: headers}).pipe(map(data => {
-        if(data.success == true) {
-            this.sessionStorageHeader.setItem("username", data.username);
-            this.sessionStorageHeader.setItem("userID", data.id);
-            this.sessionStorageHeader.setItem("permissions", data.permissions);
-            this.sessionStorageHeader.setItem("token", data.token);
-        } 
-    }), catchError((error) => {
+        this.sessionStorageHeader.setItem("username", data.username);
+        this.sessionStorageHeader.setItem("userID", data.id);
+        this.sessionStorageHeader.setItem("permissions", data.permissions);
+        this.sessionStorageHeader.setItem("token", data.token); 
+    }), catchError(error => {
       // @ts-ignore
       document.getElementById("loginErrorMessage").style.display = 'block';
       return of([]);

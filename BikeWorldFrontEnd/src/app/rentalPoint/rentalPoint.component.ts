@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { lastValueFrom, map, Observable } from 'rxjs';
 import { AgmMap, MapsAPILoader } from '@agm/core';
+import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 
@@ -17,7 +18,7 @@ export class RentalPointComponent {
   rentalPoints: RentalPoint[] | undefined;
   selectedRentalName: string = "";
 
-  constructor(private http: HttpClient, private apiloader: MapsAPILoader) {
+  constructor(private http: HttpClient, private apiloader: MapsAPILoader, private router: Router) {
     this.getRentalPoints();
   }
 
@@ -26,7 +27,7 @@ export class RentalPointComponent {
 
     const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
     await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
-
+      this.router.navigate(['/']);    
     })))
 
     this.getRentalPoints();

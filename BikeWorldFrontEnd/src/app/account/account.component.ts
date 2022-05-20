@@ -24,20 +24,13 @@ export class AccountComponent implements OnInit {
     const headers = new HttpHeaders().set('x-access-token', sessionStorage.getItem('token') ?? "");  
     // @ts-ignore
     lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/users/${sessionStorage.getItem("userID")}`, {headers: headers}).pipe(map( data => { 
-
-    if(data.success != false){
         // @ts-ignore
         document.getElementById("username").value = data.username;
         // @ts-ignore
         document.getElementById("email").value = data.email;
         // @ts-ignore
-        document.getElementById("psw").value = data.psw;
-        // @ts-ignore
-        document.getElementById("psw2").value = data.psw;
-        // @ts-ignore
-        document.getElementById("target").value = data.target;
-    }
-    }), catchError((error) => {
+        document.getElementById("target").value = data.target;    
+    }), catchError(error => {
       // @ts-ignore
       document.getElementById("manageAccountErrorMessage").style.display = 'block';
       // @ts-ignore

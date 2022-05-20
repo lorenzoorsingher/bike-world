@@ -48,7 +48,7 @@ router.get('', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	// find the rental points
-	let rentalPoints = await RentalPoint.find( { }).exec();	
+	let rentalPoints = await RentalPoint.find( { 'bikeNumber': {$gt : 0 }}).exec();	
 	res.json({rentalPoints});
 });
 
@@ -118,7 +118,7 @@ router.get('/type', async function(req, res) {
 	let type = req.query.type;
 	
 	// find the rental points
-	let rentalPoints = await RentalPoint.find( { 'type': type }).exec();	
+	let rentalPoints = await RentalPoint.find( { 'type': type, 'bikeNumber': {$gt : 0 } }).exec();	
 	res.json({rentalPoints});
 });
 

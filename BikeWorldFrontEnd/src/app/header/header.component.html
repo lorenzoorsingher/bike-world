@@ -50,19 +50,21 @@
         <button type="button" class="btn btn-outline-primary" id="login" ngbDropdownToggle>Login</button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
             <div class="px-0 py-3">
-                <div class="mb-3">
-                    <label for="user">Username</label>
-                    <input type="text" class="form-control" id="username" #username placeholder="Username">
-                </div>
-                <div class="mb-3">
-                    <label for="psw">Password</label>
-                    <input type="password" class="form-control" id="psw" #psw placeholder="Password" autocomplete="current-password">
-                </div>
-                <div class="mb-3" id="loginErrorMessage" style="display: none;">
-                    <label style="color: red"> Username o password errati </label>
-                </div>
-                <button class="btn btn-primary" (click)="loginFunction($any(username.value), $any(psw.value))">Sign In</button>
-                <button class="btn btn-primary" [routerLink]="['/signUp']">Sign Up</button>
+                <form (submit)="loginFunction($any(username.value), $any(psw.value), $event)">
+                    <div class="mb-3">
+                        <label for="user">Username</label>
+                        <input type="text" class="form-control" id="username" #username placeholder="Username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="psw">Password</label>
+                        <input type="password" class="form-control" id="psw" #psw placeholder="Password" required>
+                    </div>
+                    <div class="mb-3" id="loginErrorMessage" style="display: none;">
+                        <label style="color: red"> Username o password errati </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <button class="btn btn-primary" [routerLink]="['/signUp']">Sign Up</button>
+                </form>
             </div>
         </div>
         </div>
