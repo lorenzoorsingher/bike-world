@@ -25,7 +25,7 @@ export class RentalPointComponent {
   async newRentalPoint(name: string, address: string, lat: number, lng: number, type: string, event: any) {
     event.preventDefault()
     // @ts-ignore
-    document.getElementById("creationRentalPointError")?.innerHTML = "";
+    document.getElementById("creationRentalPointError")?.style.display = "none";
 
     if(this.checkLatLng(lat, lng) == true){
       const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
@@ -33,17 +33,26 @@ export class RentalPointComponent {
         this.router.navigate(['/']);    
       }), catchError(error => {
         // @ts-ignore
+        document.getElementById("creationRentalPointError")?.style.display = "block";
+        // @ts-ignore
         document.getElementById("creationRentalPointError")?.innerHTML = error.error.message;
         return of([]);
       })))
 
       this.getRentalPoints();
       this.selectRentalPoint(undefined);
+    } else {
+      // @ts-ignore
+      document.getElementById("creationRentalPointError")?.style.display = "block";
+      // @ts-ignore
+      document.getElementById("creationRentalPointError")?.innerHTML = "Valore latitudine o longitudine errati";
     }
   }
 
   async changeRentalPoint(name: string, address: string, lat: number, lng: number, type: string, event: any) {
     event.preventDefault()
+    // @ts-ignore
+    document.getElementById("changeRentalPointError")?.style.display = "none";
 
     if(this.checkLatLng(lat, lng) == true){
       const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
@@ -57,6 +66,11 @@ export class RentalPointComponent {
       document.getElementById("addRentalForm").style.display = 'block';
       await this.getRentalPoints();
       this.selectRentalPoint(undefined);
+    } else {
+        // @ts-ignore
+        document.getElementById("changeRentalPointError")?.style.display = "block";
+        // @ts-ignore
+        document.getElementById("changeRentalPointError")?.innerHTML = "Valore latitudine o longitudine errati";
     }
   }
 
@@ -88,14 +102,7 @@ export class RentalPointComponent {
   }
 
   checkLatLng(lat: number, lng: number){
-
-    if(lat > 90 || lat < -90){
-      // @ts-ignore
-      document.getElementById("creationRentalPointError").innerHTML = "Valore latitudine non corretto";
-      return false;
-    } else if (lng > 180 || lng < -180){
-      // @ts-ignore
-      document.getElementById("creationRentalPointError").innerHTML = "Valore longitudine non corretto";
+    if(lat > 90 || lat < -90 || lng > 180 || lng < -180){
       return false;
     } else {
       return true;
@@ -219,9 +226,13 @@ export class RentalPointComponent {
   }
   
   checkFutureDate(date: Date){
+    // @ts-ignore  
+    document.getElementById("dateError").style.display = "none";
     if(new Date(date) > new Date()){
       return true;      
     } else {
+      // @ts-ignore  
+      document.getElementById("dateError").style.display = "block";
       // @ts-ignore  
       document.getElementById("dateError").innerHTML = "Scegliere una data futura";
       return false;

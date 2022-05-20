@@ -55,6 +55,8 @@ export class AccountComponent implements OnInit {
     event.preventDefault();
     // @ts-ignore
     document.getElementById("manageAccountErrorMessage").style.display = 'none';
+    // @ts-ignore
+    document.getElementById("infoUpdatedMessage").style.display = 'none';
     if(this.verifyPsw(psw, psw2) == true){
         const body = {
           "email": email,
@@ -65,9 +67,9 @@ export class AccountComponent implements OnInit {
         //console.log(params);
         await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/users/${sessionStorage.getItem("userID")}`, body, {headers: headers}).pipe(map( data => { 
           // @ts-ignore
-          document.getElementById("manageAccountErrorMessage").style.display = 'block';
+          document.getElementById("infoUpdatedMessage").style.display = 'block';
             // @ts-ignore
-            document.getElementById("manageAccountErrorMessage").innerHTML = data.message;
+            document.getElementById("infoUpdatedMessage").innerHTML = data.message;
         
         }), catchError((error) => {
           // @ts-ignore

@@ -59,9 +59,7 @@
                         <label for="psw">Password</label>
                         <input type="password" class="form-control" id="psw" #psw placeholder="Password" required>
                     </div>
-                    <div class="mb-3" id="loginErrorMessage" style="display: none;">
-                        <label style="color: red"> Username o password errati </label>
-                    </div>
+                    <div class="alert alert-danger" style="width:300px; display: none;" id="loginErrorMessage" role="alert"></div>    
                     <button type="submit" class="btn btn-primary">Sign In</button>
                     <button class="btn btn-primary" [routerLink]="['/signUp']">Sign Up</button>
                 </form>

@@ -66,11 +66,13 @@ export class BikeComponent {
     
     const params = new HttpParams().set("code", code).set("model", model).set("type", type).set("rentalPointName", rentalPointName);
     // @ts-ignore
-    document.getElementById("creationBikeError")?.innerHTML = "";
+    document.getElementById("creationBikeError").style.display = 'none';
 
     await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bike`, params).pipe(map( data => { 
       this.updateInfoAdd(code);  
     }), catchError(error => {
+      // @ts-ignore
+      document.getElementById("creationBikeError").style.display = 'block';
       // @ts-ignore
       document.getElementById("creationBikeError")?.innerHTML = error.error.message;
       return of([]);

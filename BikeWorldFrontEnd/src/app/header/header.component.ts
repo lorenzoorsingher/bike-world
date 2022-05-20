@@ -36,6 +36,8 @@ export class HeaderComponent {
     }), catchError(error => {
       // @ts-ignore
       document.getElementById("loginErrorMessage").style.display = 'block';
+      // @ts-ignore
+      document.getElementById("loginErrorMessage").innerHTML = "Wrong username or password";
       return of([]);
   })));
   }

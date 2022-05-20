@@ -31,7 +31,7 @@
         <br>
         <label for="dataFilter"><b>Scegliere data</b></label>
         <input type="date" class="form-control" id="date" name="date" #date (change)="filterDataBased($event)">
-        <div id="dateError"></div>
+        <div class="alert alert-danger" style="width:300px; display: none;" id="dateError" role="alert"></div> 
         <hr>
         <h4>Lista punti noleggio</h4>
         <ul class="list-group" *ngFor="let element of rentalPoints">
@@ -40,16 +40,13 @@
         </ul>
     </div>
     <div class="map">
-        <!-- this creates a google map on the page with the given lat/lng from -->
-        <!-- the component as the initial center of the map: -->
         <agm-map [latitude]="latC" [longitude]="lngC">
             <agm-marker [latitude]="element.lat" [longitude]="element.lng" *ngFor="let element of rentalPoints"
                 (markerClick)="showMarkerInfo($event)"></agm-marker>
         </agm-map>
         <div id="rentalShopSelected"></div>
         <button *ngIf="addItemOptions() == true && selectedRentalName != ''" class="btn btn-danger" (click)="removeRentalPoint()">Remove rental point</button>
-        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" class="btn btn-info" (click)="allowRentalPointChange()">Change rental point info</button>
-       
+        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" class="btn btn-info" (click)="allowRentalPointChange()">Change rental point info</button>  
     </div>
     <div class="content">
         <a *ngIf="addItemOptions() == true" id="addRentalForm" style="display: block;">
@@ -68,7 +65,7 @@
                     </select>
                 </div>
                 <button class="btn btn-success" type="submit">Crea Nuovo Rental Point</button>
-                <div id="creationRentalPointError"></div>
+                <div class="alert alert-danger" style="width:300px; display: none;" id="creationRentalPointError" role="alert"></div>       
             </form>
         </a>
          <br><br>
@@ -88,6 +85,7 @@
             </div>
             <button class="btn btn-success" type="submit">Modifica Rental Point</button>
             <button class="btn btn-danger" type="button" (click)="annullaModifica()">Annulla Modifica</button>
+            <div class="alert alert-danger" style="width:300px; display: none;" id="changeRentalPointError" role="alert"></div> 
         </form>
     </div>
 </div>
