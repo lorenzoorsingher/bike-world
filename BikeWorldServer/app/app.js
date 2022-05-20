@@ -10,8 +10,10 @@ const bike = require('./routes/bike.js');
 const booking = require('./routes/booking.js');
 const user = require('./routes/user.js');
 
-const swaggerJsdoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load(path.join(__dirname, '../api-docs.yaml'));
 
 /**
  * Configure Express.js parsing middleware
@@ -21,22 +23,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 const swaggerOptions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Bike World',
-      version: '1',
-    },
-  },
-  baseDir: __dirname,
-  apis: ['./app/routes/*.js']
+  swaggerOptions: {
+      url: "/api/v1/api-docs/swagger.json",
+  }
 };
 
-const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.get("/api/v1/api-docs/swagger.json", (req, res) => res.json(swaggerDocument));
 app.use(
   "/api/v1/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec)
+  swaggerUi.serveFiles(null, swaggerOptions), 
+  swaggerUi.setup(null, swaggerOptions)
 );
 
 /**

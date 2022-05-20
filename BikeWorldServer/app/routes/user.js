@@ -1,22 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user'); // get our mongoose model
-const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const verifyToken = require('../middleware/auth');
 const tokenGenerator = require('../utils/tokenGenerator');
 
-/**
- * @openapi
- * /api/v1/users/login:
- *   post:
- *     description: route to authenticate and get a new token
- *     responses:
- *       200:
- *         description: Returns a token.
- *       400:
- *         description: 
- */
 router.post('/login', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -55,15 +43,6 @@ router.post('/login', async function(req, res) {
 	res.status(400).json({ success: false, message: 'Authentication failed. Wrong username or password.' });
 });
 
-/**
- * @openapi
- * /api/v1/users/signUp:
- *   post:
- *     description: route to signup
- *     responses:
- *       200:
- *         description: Returns a token.
- */
 router.post('/signUp', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -104,16 +83,6 @@ router.post('/signUp', async function(req, res) {
 	});
 });
 
-
-/**
- * @openapi
- * /api/v1/users/{id}:
- *   get:
- *     description: Get Account info
- *     responses:
- *       200:
- *         description:
- */
 router.get('/:id', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -142,16 +111,6 @@ router.get('/:id', verifyToken, async function(req, res) {
 	});
 });
 
-
-/**
- * @openapi
- * /api/v1/users/{id}:
- *   put:
- *     description: Update User info
- *     responses:
- *       200:
- *         description: 
- */
 router.put('/:id', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
