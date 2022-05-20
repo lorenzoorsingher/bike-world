@@ -86,8 +86,10 @@ export class BookingComponent {
               this.bikes[i] = new Bike(data.bikes[i].code, data.bikes[i].model, data.bikes[i].type, data.bikes[i].rentalPointName, data.bikes[i].state);
             }
           } else {
+            // @ts-ignore
+            document.getElementById("bikeNumberError").style.display = 'block';  
             // @ts-ignore  
-            document.getElementById("bikeNumberError").innerHTML = "Nessuna bicicletta disponibile per i dati inseriti";
+            document.getElementById("bikeNumberError").innerHTML = "Nessuna bicicletta disponibile";
           }
         })));
       } else{
