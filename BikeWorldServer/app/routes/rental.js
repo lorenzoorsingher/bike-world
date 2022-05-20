@@ -22,7 +22,7 @@ router.post('', async function(req, res) {
 	
 	// rental point already exists
 	if (rentalPointAlreadyExists) {
-		res.json({ success: false, message: 'Creation rental point failed. Rental point already exists.' });
+		res.status(409).json({ success: false, message: 'Creation rental point failed. Rental point already exists.' });
 		return;	//to stop the execution of the function	
 	}
 
@@ -30,7 +30,7 @@ router.post('', async function(req, res) {
     const newRentalPoint = new RentalPoint({name: req.body.name, address: req.body.address, lat: parseFloat(req.body.lat), lng: parseFloat(req.body.lng), type: req.body.type,bikeNumber: 0});
     await newRentalPoint.save();
 
-	res.json({
+	res.status(200).json({
 		success: true,
 		message: 'New Rental Point added!'
 	});

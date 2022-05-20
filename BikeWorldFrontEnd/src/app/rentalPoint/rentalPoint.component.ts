@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { lastValueFrom, map, Observable } from 'rxjs';
+import { catchError, lastValueFrom, map, Observable, of } from 'rxjs';
 import { AgmMap, MapsAPILoader } from '@agm/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -24,10 +24,16 @@ export class RentalPointComponent {
 
   async newRentalPoint(name: string, address: string, lat: number, lng: number, type: string, event: any) {
     event.preventDefault()
+    // @ts-ignore
+    document.getElementById("creationRentalPointError")?.innerHTML = "";
 
     const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
     await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
       this.router.navigate(['/']);    
+    }), catchError(error => {
+      // @ts-ignore
+      document.getElementById("creationRentalPointError")?.innerHTML = error.error.message;
+      return of([]);
     })))
 
     this.getRentalPoints();
@@ -140,7 +146,6 @@ export class RentalPointComponent {
       // @ts-ignore  
       document.getElementById("rentalShopSelected").innerHTML = "";
     }
-
   }
 
   showMarkerInfo(event: any) {
@@ -156,7 +161,8 @@ export class RentalPointComponent {
         rentalPoint = this.rentalPoints[i];
       }
     }
-
+    // @ts-ignore
+    this.selectedRentalName = rentalPoint?.name;
     let rentalInfo = "";
     // @ts-ignore
     rentalInfo = "<b>Nome negozio:</b> " + rentalPoint.name + "<br><b>Indirizzo:</b> " + rentalPoint.address + "<br><b>Tipo:</b> " + rentalPoint.type + "<br><b>Numero di bici disponibili:</b> " + rentalPoint.bikeNumber;
