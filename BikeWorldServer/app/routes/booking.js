@@ -15,29 +15,13 @@ router.post('', async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
-    //get all booking for that specific day and rental point
-    const bookingNumber = await Booking.count({
-        date: req.body.date,
-        rentalPointName: req.body.rentalPointName
-    })
-
-    //find the rental Point
-	let rentalPoint = await RentalPoint.findOne({
-		name: req.body.rentalPointName
-	}).exec();
-
-    if(rentalPoint.bikeNumber - bookingNumber == 0){
-        res.json({ success: false, message: 'Non ci sono biciclette disponibili'});
-		return;	//to stop the execution of the function	
-    }    
-
     let releaseCode = Math.floor(Math.random()*1000000);
 
     //save booking in the db
     const newBooking = new Booking({username: req.body.username, date: req.body.date, bikeCode: req.body.bikeCode, releaseBikeCode: releaseCode, rentalPointName: req.body.rentalPointName});
     await newBooking.save();
     
-	res.json({
+	res.status(200).json({
 		success: true,
 		message: 'New Booking added!'
 	});
@@ -66,7 +50,7 @@ router.get('', async function(req, res) {
     } else {
         bookings = await Booking.find( { 'username': username }).exec();
     }
-	res.json({bookings});
+	res.status(200).json({bookings});
 });
 
 // ---------------------------------------------------------
@@ -98,7 +82,7 @@ router.get('/bikeAvailable', async function(req, res) {
         }
     }
 
-	res.json({bikes});
+	res.status(200).json({bikes});
 });
 
 // ---------------------------------------------------------
@@ -113,7 +97,7 @@ router.delete('', async function(req, res) {
 	// remove the booking
 	await Booking.deleteOne( { _id: req.query._id}).exec();
 
-	res.json({
+	res.status(200).json({
 		success: true,
 		message: 'Booking deleted!'
 	});

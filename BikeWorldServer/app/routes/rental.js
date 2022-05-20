@@ -63,7 +63,7 @@ router.get('/name', async function(req, res) {
 	
 	// find the rental points
 	let rentalPoints = await RentalPoint.find( { }, { name : 1}).exec();
-	res.json({rentalPoints});
+	res.status(200).json({rentalPoints});
 });
 
 // ---------------------------------------------------------
@@ -81,7 +81,7 @@ router.delete('', async function(req, res) {
 	// remove all bike associated to this rental point
 	await Bike.deleteMany( { rentalPointName: req.query.name}).exec();
 
-	res.json({
+	res.status(200).json({
 		success: true,
 		message: 'Rental Point deleted!'
 	});
@@ -119,7 +119,7 @@ router.get('/type', async function(req, res) {
 	
 	// find the rental points
 	let rentalPoints = await RentalPoint.find( { 'type': type, 'bikeNumber': {$gt : 0 } }).exec();	
-	res.json({rentalPoints});
+	res.status(200).json({rentalPoints});
 });
 
 // ---------------------------------------------------------

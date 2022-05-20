@@ -55,7 +55,7 @@ router.get('', async function(req, res) {
 	
 	// get the bikes
 	let bikes = await Bike.find( { }).exec();	
-	res.json({bikes});
+	res.status(200).json({bikes});
 });
 
 
@@ -70,7 +70,7 @@ router.get('/code', async function(req, res) {
 	
 	// find the bike
 	let bike = await Bike.findOne( { 'code': req.query.code }).exec();
-	res.json({bike});
+	res.status(200).json({bike});
 });
 
 // ---------------------------------------------------------
@@ -125,7 +125,7 @@ router.put('', async function(req, res) {
 		//remove bike from rental Point
 		await RentalPoint.updateOne({'name': rentalPoint.name}, {$set: {'bikeNumber': rentalPoint.bikeNumber - 1}});
 
-		res.json({
+		res.status(200).json({
 			success: true,
 			message: 'Bike put in reparation!'
 		});
@@ -136,7 +136,7 @@ router.put('', async function(req, res) {
 		//add bike from rental Point
 		await RentalPoint.updateOne({'name': rentalPoint.name}, {$set: {'bikeNumber': rentalPoint.bikeNumber + 1}});
 
-		res.json({
+		res.status(200).json({
 			success: true,
 			message: 'Bike repared!'
 		});
