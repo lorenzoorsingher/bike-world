@@ -29,7 +29,7 @@ export class RentalPointComponent {
 
     if(this.checkLatLng(lat, lng) == true){
       const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
-      await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
+      await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/rentals`, params).pipe(map(data => {
         this.router.navigate(['/']);    
       }), catchError(error => {
         // @ts-ignore
@@ -56,7 +56,7 @@ export class RentalPointComponent {
 
     if(this.checkLatLng(lat, lng) == true){
       const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
-      await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
+      await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/rentals`, params).pipe(map(data => {
 
       })))
 
@@ -76,7 +76,7 @@ export class RentalPointComponent {
 
   async removeRentalPoint() {
     const params = new HttpParams().set('name', this.selectedRentalName)
-    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/rental`, { params }).pipe(map(data => {
+    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/rentals`, { params }).pipe(map(data => {
 
     })));
     this.selectedRentalName = "";
@@ -85,7 +85,7 @@ export class RentalPointComponent {
   }
 
   async getRentalPoints() {
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental`).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals`).pipe(map(data => {
       let i;
       this.rentalPoints = new Array(data.rentalPoints.length);
 
@@ -201,7 +201,7 @@ export class RentalPointComponent {
     if (event.target.value != "") {
       let del = true;
       const params = new HttpParams().set('type', event.target.value)
-      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/type`, { params }).pipe(map(data => {
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/type`, { params }).pipe(map(data => {
         let i;
         this.rentalPoints = new Array(data.rentalPoints.length);
 
@@ -245,7 +245,7 @@ export class RentalPointComponent {
     if (event.target.value != "") {
       if(this.checkFutureDate(event.target.value)){
       const params = new HttpParams().set('date', event.target.value)
-      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/date`, { params }).pipe(map(data => {
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/date`, { params }).pipe(map(data => {
         
         let i;
         this.rentalPoints = new Array(data.rentalPoints.length);

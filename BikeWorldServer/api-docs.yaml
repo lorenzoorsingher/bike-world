@@ -273,6 +273,14 @@ paths:
   /api/v1/bikes:
     post:
       summary: Add a new bike.
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
       requestBody:
         content:
           application/json:
@@ -292,7 +300,7 @@ paths:
                   type: string
                   example: 'Punto Ritiro Trento nord'
       responses:
-        '200':
+        '201':
           description: Bike added successfully.
           content:
             application/json:
@@ -322,6 +330,14 @@ paths:
   /api/v1/bikes:
     get:
       summary: Get bikes.
+      parameters:  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
       responses:
         '200':
           description: List of the bikes.
@@ -350,15 +366,18 @@ paths:
                     state:
                       type: boolean
                       example: true
-                    __v:
-                      type: integer
-                      description: description ???
-                      example: 0
 
   /api/v1/bikes/code:
     get:
       summary: Get bike searched by code.
-      parameters:
+      parameters:  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
         - name: code
           in: path
           required: true
@@ -392,10 +411,6 @@ paths:
                   state:
                     type: boolean
                     example: true
-                  __v:
-                    type: integer
-                    description: description ???
-                    example: 0                      
 
   /api/v1/bikes:
     delete:
@@ -407,7 +422,14 @@ paths:
           description: The code of the bike to delete.
           schema:
             type: string
-            example: 'Ax26'
+            example: 'Ax26'  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'            
       responses:
         '200':
           description: Bike deleted.
@@ -424,9 +446,17 @@ paths:
                     example: "Bike deleted!"
 
   /api/v1/bikes:
-    put:
+    patch:
       summary: Repare a bike.
       description: Based on the status of a bike, puts or removes it from repair.
+      parameters:  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
       requestBody:
         content:
           application/json:

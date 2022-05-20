@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpParams } from '@angular/common/http' 
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http' 
 import { catchError, lastValueFrom, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -21,7 +21,7 @@ export class BikeComponent {
   } 
 
   async getRentalPointsName(){
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/name`).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/name`).pipe(map(data => {
       let i;
       this.rentalName = new Array(data.rentalPoints.length);
     
@@ -34,13 +34,14 @@ export class BikeComponent {
 }
 
   async getBikes(){
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bike`).pipe(map(data => {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bikes`, {headers: headers}).pipe(map(data => {
       let i;
-      this.bikes = new Array(data.bikes.length);
+      this.bikes = new Array(data.length);
       
-      if (data.bikes.length > 0) {
-        for (i = 0; i < data.bikes.length; i++) {
-          this.bikes[i] = new Bike(data.bikes[i].code, data.bikes[i].model, data.bikes[i].type, data.bikes[i].rentalPointName, data.bikes[i].state);
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          this.bikes[i] = new Bike(data[i].code, data[i].model, data[i].type, data[i].rentalPointName, data[i].state);
         }
       }
     })));
@@ -64,11 +65,12 @@ export class BikeComponent {
   async newBike(code: string, model: string, type:string, rentalPointName: string, event:any){
     event.preventDefault()
     
-    const params = new HttpParams().set("code", code).set("model", model).set("type", type).set("rentalPointName", rentalPointName);
+    const body = { code, model, type, rentalPointName };
     // @ts-ignore
     document.getElementById("creationBikeError").style.display = 'none';
 
-    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bike`, params).pipe(map( data => { 
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bikes`, body, {headers: headers}).pipe(map( data => { 
       this.updateInfoAdd(code);  
     }), catchError(error => {
       // @ts-ignore
@@ -89,8 +91,12 @@ export class BikeComponent {
     let bike = this.getBike();
     
     // @ts-ignore
-    const params = new HttpParams().set("code", this.selectedBikeCode).set("rentalPointName", bike.rentalPointName);    
-    await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/bike`, params).pipe(map( data => { 
+    const body = {
+      code: this.selectedBikeCode,
+      rentalPointName: bike?.rentalPointName
+    };    
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+    await lastValueFrom(this.http.patch<any>(`${environment.apiUrl}/api/v1/bikes`, body, {headers: headers}).pipe(map( data => { 
        
     })))
 
@@ -102,7 +108,8 @@ export class BikeComponent {
     let bike = this.getBike();
     // @ts-ignore
     const params = new HttpParams().set('code', this.selectedBikeCode).set("rentalPointName", bike.rentalPointName); 
-    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/bike`, {params} ).pipe(map(data => {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/bikes`, {params, headers: headers}).pipe(map(data => {
         
     })));
     this.selectedBikeCode = "";
@@ -139,12 +146,13 @@ export class BikeComponent {
     if(event.target.value != ""){
       // @ts-ignore
       const params = new HttpParams().set('code', event.target.value) 
-      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bike/code`, { params }).pipe(map(data => {      
+      const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bikes/code`, { params, headers: headers }).pipe(map(data => {      
         this.bikes = undefined;
         
-        if (data.bike != null) {
+        if (data != null) {
           this.bikes = new Array(1);
-          this.bikes[0] = new Bike(data.bike.code, data.bike.model, data.bike.type, data.bike.rentalPointName, data.bike.state);
+          this.bikes[0] = new Bike(data.code, data.model, data.type, data.rentalPointName, data.state);
         } 
       })));
     }else{

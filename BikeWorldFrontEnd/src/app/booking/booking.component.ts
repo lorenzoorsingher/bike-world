@@ -24,7 +24,7 @@ export class BookingComponent {
     event.preventDefault()
     // @ts-ignore
     const params = new HttpParams().set("username", sessionStorage.getItem("username")).set("date", date).set("bikeCode", bikeCode).set("rentalPointName", rentalPointName);
-    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/booking`, params).pipe(map(data => {
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bookings`, params).pipe(map(data => {
         if(data.success == false){
             // @ts-ignore
             document.getElementById("errorMessage").innerHTML = data.message;
@@ -37,7 +37,7 @@ export class BookingComponent {
   async getBookings() {
     // @ts-ignore
     const params = new HttpParams().set("username", sessionStorage.getItem("username"));
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/booking`, {params}).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bookings`, {params}).pipe(map(data => {
       let i;
       this.bookings = new Array(data.bookings.length);
 
@@ -50,7 +50,7 @@ export class BookingComponent {
   }
 
   async getRentalPoints() {
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental`).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals`).pipe(map(data => {
       let i;
       this.rentalPoints = new Array(data.rentalPoints.length);
 
@@ -77,7 +77,7 @@ export class BookingComponent {
       if(new Date(date) > new Date()){
         // @ts-ignore
         const params = new HttpParams().set("rentalPointName", rentalPointName).set("date", date);
-        await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/booking/bikeAvailable`, {params}).pipe(map(data => {
+        await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bookings/bikeAvailable`, {params}).pipe(map(data => {
           let i;
           this.bikes = new Array(data.bikes.length);
           
@@ -124,7 +124,7 @@ export class BookingComponent {
     async removeBooking(){ 
         // @ts-ignore
         const params = new HttpParams().set('_id', this.selectedBookingId); 
-        await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/booking`, {params} ).pipe(map(data => {
+        await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/bookings`, {params} ).pipe(map(data => {
             
         })));
         this.selectedBookingId = "";
