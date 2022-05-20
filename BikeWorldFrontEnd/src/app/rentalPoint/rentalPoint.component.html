@@ -31,6 +31,7 @@
         <br>
         <label for="dataFilter"><b>Scegliere data</b></label>
         <input type="date" class="form-control" id="date" name="date" #date (change)="filterDataBased($event)">
+        <div id="dateError"></div>
         <hr>
         <h4>Lista punti noleggio</h4>
         <ul class="list-group" *ngFor="let element of rentalPoints">

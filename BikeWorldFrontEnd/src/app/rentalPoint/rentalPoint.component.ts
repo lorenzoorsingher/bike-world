@@ -27,33 +27,37 @@ export class RentalPointComponent {
     // @ts-ignore
     document.getElementById("creationRentalPointError")?.innerHTML = "";
 
-    const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
-    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
-      this.router.navigate(['/']);    
-    }), catchError(error => {
-      // @ts-ignore
-      document.getElementById("creationRentalPointError")?.innerHTML = error.error.message;
-      return of([]);
-    })))
+    if(this.checkLatLng(lat, lng) == true){
+      const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
+      await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
+        this.router.navigate(['/']);    
+      }), catchError(error => {
+        // @ts-ignore
+        document.getElementById("creationRentalPointError")?.innerHTML = error.error.message;
+        return of([]);
+      })))
 
-    this.getRentalPoints();
-    this.selectRentalPoint(undefined);
+      this.getRentalPoints();
+      this.selectRentalPoint(undefined);
+    }
   }
 
   async changeRentalPoint(name: string, address: string, lat: number, lng: number, type: string, event: any) {
     event.preventDefault()
 
-    const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
-    await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
+    if(this.checkLatLng(lat, lng) == true){
+      const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
+      await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
 
-    })))
+      })))
 
-    // @ts-ignore
-    document.getElementById("changeRentalPointForm").style.display = 'none';
-    // @ts-ignore
-    document.getElementById("addRentalForm").style.display = 'block';
-    await this.getRentalPoints();
-    this.selectRentalPoint(undefined);
+      // @ts-ignore
+      document.getElementById("changeRentalPointForm").style.display = 'none';
+      // @ts-ignore
+      document.getElementById("addRentalForm").style.display = 'block';
+      await this.getRentalPoints();
+      this.selectRentalPoint(undefined);
+    }
   }
 
   async removeRentalPoint() {
@@ -81,6 +85,21 @@ export class RentalPointComponent {
 
   addItemOptions() {
     return sessionStorage.getItem("permissions") != undefined && sessionStorage.getItem("permissions") == 'true';
+  }
+
+  checkLatLng(lat: number, lng: number){
+
+    if(lat > 90 || lat < -90){
+      // @ts-ignore
+      document.getElementById("creationRentalPointError").innerHTML = "Valore latitudine non corretto";
+      return false;
+    } else if (lng > 180 || lng < -180){
+      // @ts-ignore
+      document.getElementById("creationRentalPointError").innerHTML = "Valore longitudine non corretto";
+      return false;
+    } else {
+      return true;
+    }
   }
 
   annullaModifica(){
@@ -198,9 +217,22 @@ export class RentalPointComponent {
       this.getRentalPoints();
     }
   }
+  
+  checkFutureDate(date: Date){
+    if(new Date(date) > new Date()){
+      return true;      
+    } else {
+      // @ts-ignore  
+      document.getElementById("dateError").innerHTML = "Scegliere una data futura";
+      return false;
+    }
+  }
 
   async filterDataBased(event: any) {
+    // @ts-ignore  
+    document.getElementById("dateError").innerHTML = "";
     if (event.target.value != "") {
+      if(this.checkFutureDate(event.target.value)){
       const params = new HttpParams().set('date', event.target.value)
       await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/date`, { params }).pipe(map(data => {
         
@@ -215,6 +247,7 @@ export class RentalPointComponent {
       })));
 
       this.selectRentalPoint(undefined);
+      } 
     } else {
       this.getRentalPoints();
     }

@@ -99,7 +99,7 @@ router.put('', async function(req, res) {
     //update rental point in the db
 	await RentalPoint.updateOne({'name': req.body.name}, {$set: {'address': req.body.address,'lat': req.body.lat, 'lng': req.body.lng, 'type': req.body.type}});
 
-	res.json({
+	res.status(200).json({
 		success: true,
 		message: 'Rental point info updated!'
 	});
@@ -158,7 +158,7 @@ router.get('/date', async function(req, res) {
 		}
 	}
 
-	res.json({rentalPoints});
+	res.status(200).json({rentalPoints});
 
 });
 
