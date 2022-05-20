@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http' 
-import { lastValueFrom, map } from 'rxjs';
+import { catchError, lastValueFrom, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
@@ -65,14 +65,22 @@ export class BikeComponent {
     event.preventDefault()
     
     const params = new HttpParams().set("code", code).set("model", model).set("type", type).set("rentalPointName", rentalPointName);
-    //console.log(params);
-    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bike`, params).pipe(map( data => { 
-       console.log(data);
-    })))
+    // @ts-ignore
+    document.getElementById("creationBikeError")?.innerHTML = "";
 
-    this.getBikes();
-    this.selectedBikeCode="";
-    this.selectBike(undefined);          
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bike`, params).pipe(map( data => { 
+      this.updateInfoAdd(code);  
+    }), catchError(error => {
+      // @ts-ignore
+      document.getElementById("creationBikeError")?.innerHTML = error.error.message;
+      return of([]);
+    })))          
+  }
+
+  async updateInfoAdd(code: string){
+    await this.getBikes();
+    this.selectedBikeCode=code;
+    this.selectBike(undefined);  
   }
 
   async repareBike(){

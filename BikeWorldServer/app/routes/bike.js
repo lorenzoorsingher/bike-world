@@ -20,7 +20,7 @@ router.post('', async function(req, res) {
 	
 	// bike already exists
 	if (bikeAlreadyExists) {
-		res.json({ success: false, message: 'Creation bike failed. Bike already exists.' });
+		res.status(409).json({ success: false, message: 'Creation bike failed. Bike already exists.' });
 		return;	//to stop the execution of the function	
 	}
 
@@ -36,7 +36,7 @@ router.post('', async function(req, res) {
 	//add bike from rental Point
 	await RentalPoint.updateOne({'name': rentalPoint.name}, {$set: {'bikeNumber': rentalPoint.bikeNumber + 1}});
 
-	res.json({
+	res.status(200).json({
 		success: true,
 		message: 'New Bike added!'
 	});
@@ -81,7 +81,7 @@ router.delete('', async function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-	console.log(req.query.code);
+	
 	// remove the bike
 	await Bike.deleteOne( { code: req.query.code}).exec();
 
@@ -93,7 +93,7 @@ router.delete('', async function(req, res) {
 	//remove bike from rental Point
 	await RentalPoint.updateOne({'name': rentalPoint.name}, {$set: {'bikeNumber': rentalPoint.bikeNumber - 1}});
 
-	res.json({
+	res.status(200).json({
 		success: true,
 		message: 'Bike deleted!'
 	});
