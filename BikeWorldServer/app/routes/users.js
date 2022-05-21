@@ -12,6 +12,11 @@ router.post('/login', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
 	const { username, password } = req.body;
+
+	if(!username || !password){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
 	
 	// find the user
 	let user = await User.findOne({
@@ -48,6 +53,11 @@ router.post('/signUp', async function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
+
+	if(!req.body.username || !req.body.password || !req.body.email || !req.body.target){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
 
 	// find the user
 	let userAlreadyExists = await User.findOne({
@@ -89,6 +99,11 @@ router.get('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
+	if(!req.params.id){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
 	const loggedUserId = req.loggedUser.user_id;
 	
 	// check if a user is trying to retrive another user informations
@@ -117,6 +132,11 @@ router.put('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Accept, Origin');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
+	if(!req.params.id || !req.body.password || !req.body.email || !req.body.target){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
 	let pswHash = await bcrypt.hash(req.body.password, 10);
 
 	const loggedUserId = req.loggedUser.user_id;

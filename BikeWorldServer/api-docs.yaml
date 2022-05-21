@@ -67,8 +67,21 @@ paths:
                     type: boolean
                     example: false
                   message: 
-                    type: string
+                    type: string  
                     example: 'Authentication failed. User not found.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
         '400':
           description: Wrong username or password.
           content: 
@@ -133,6 +146,19 @@ paths:
                   self: 
                     type: string
                     example: '/api/v1/users/627fb15a85bebd50ab3197a5'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
         '409':
           description: Signup failed. User already exists.
           content: 
@@ -191,6 +217,19 @@ paths:
                   permissions: 
                     type: boolean
                     example: false
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
         '403':
           description: Unauthorized. You can access only your informations.
           content: 
@@ -279,6 +318,19 @@ paths:
                   self: 
                     type: string
                     example: '/api/v1/users/627fb15a85bebd50ab3197a5'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
         '403':
           description: Unauthorized. You can update only your informations.
           content: 
@@ -428,6 +480,20 @@ paths:
                   message: 
                     type: string
                     example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
 
   /api/v1/bikes:
     get:
@@ -584,6 +650,20 @@ paths:
                   message: 
                     type: string
                     example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
 
   /api/v1/bikes:
     delete:
@@ -655,7 +735,21 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Failed to authenticate token.'                    
+                    example: 'Failed to authenticate token.'     
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
 
   /api/v1/bikes:
     patch:
@@ -728,7 +822,20 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Failed to authenticate token.'                    
+                    example: 'Failed to authenticate token.'   
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
 
   ###################
   # route rental
@@ -845,6 +952,20 @@ paths:
                   message: 
                     type: string
                     example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
 
   /api/v1/rentals:
     get:
@@ -975,6 +1096,20 @@ paths:
                   message: 
                     type: string
                     example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
 
   /api/v1/rentals/{id}:
     put:
@@ -1068,6 +1203,20 @@ paths:
                   message: 
                     type: string
                     example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
 
   /api/v1/rentals/type:
     get:
@@ -1114,6 +1263,21 @@ paths:
                     self:
                       type: string
                       example: "/api/v1/rentals/627fb874a991e0a164e063ac"  
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
+
 
   /api/v1/rentals/date:
     get:
@@ -1160,6 +1324,19 @@ paths:
                     self:
                       type: string
                       example: "/api/v1/rentals/627fb874a991e0a164e063ac"  
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
 
   ###################
   # route bookings
@@ -1257,18 +1434,25 @@ paths:
                   message: 
                     type: string
                     example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
 
   /api/v1/bookings:
     get:
       summary: Get bookings of a specific user (all if admin).
       parameters:
-        - name: username
-          in: query
-          required: true
-          description: The username.
-          schema:
-            type: string
-            example: 'User1'
         - name: x-access-token
           in: header
           required: true
@@ -1414,6 +1598,20 @@ paths:
                   message: 
                     type: string
                     example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
 
   /api/v1/bookings/{id}:
     delete:
@@ -1486,3 +1684,16 @@ paths:
                   message: 
                     type: string
                     example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'

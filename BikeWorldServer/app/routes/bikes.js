@@ -14,6 +14,11 @@ router.post('', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
+	if(!req.body.code || !req.body.model || !body.type || !req.body.rentalPointName){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
 	let bikeAlreadyExists = await Bike.findOne({
 		code: req.body.code
 	});
@@ -93,6 +98,11 @@ router.get('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
+	if(!req.params.id){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
 	// find the bike
 	let bike = await Bike.findById(req.params.id);
 	if(bike == null){
@@ -123,6 +133,11 @@ router.delete('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
+	if(!req.params.id){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
 	// remove the bike
 	let bike = await Bike.findById(req.params.id);
 	if(bike == null){
@@ -159,6 +174,11 @@ router.patch('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Accept, Origin');
     res.setHeader('Access-Control-Allow-Credentials', true);
+	
+	if(!req.params.id){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
 	
 	// find the bike
 	let bike = await Bike.findById(req.params.id);

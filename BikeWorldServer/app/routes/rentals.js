@@ -14,6 +14,11 @@ router.post('', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
+	if(!req.body.name || !req.body.address || isNaN(parseFloat(req.body.lat)) || isNaN(parseFloat(req.body.lng)) || !req.body.type){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
     // find the rental Point
 	let rentalPointAlreadyExists = await RentalPoint.findOne({
 		name: req.body.name
@@ -100,6 +105,11 @@ router.delete('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
+	if(!req.params.id){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
 	let rental = await RentalPoint.findById(req.params.id);
 	if(rental == null){
         res.status(404).json({
@@ -128,6 +138,11 @@ router.put('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Accept, Origin');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
+	if(!req.params.id || !req.body.address || !req.body.lat || !req.body.lng || !req.body.type){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
     //update rental point in the db
 	let result = await RentalPoint.updateOne({'_id': req.params.id}, 
 								{$set: {
@@ -159,6 +174,11 @@ router.get('/type', async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
+	if(!req.query.type){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+	
 	let type = req.query.type;
 	
 	// find the rental points
@@ -186,6 +206,11 @@ router.get('/date', async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
+	if(!req.query.date){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
 	let dateSearch = req.query.date;
 	// find all the rental points
 	let allRentalPoints = await RentalPoint.find({ }).exec();

@@ -13,6 +13,11 @@ router.post('', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
+    if(!req.body.date || !req.body.bikeCode || !req.body.rentalPointName){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
     const releaseCode = Math.floor(Math.random()*1000000);
     const username = req.loggedUser.username;
     
@@ -65,7 +70,7 @@ router.get('', verifyToken, async function(req, res) {
             bikeCode: booking.bikeCode,
             releaseBikeCode: booking.releaseBikeCode,
             rentalPointName: booking.rentalPointName,
-            self: "/api/v1/bookings/" + newBooking._id
+            self: "/api/v1/bookings/" + booking._id
         }
     }));
 });
@@ -79,6 +84,11 @@ router.get('/bikeAvailable', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
+    if(!req.query.rentalPointName || !req.query.date){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+    
 	let rentalPointName = req.query.rentalPointName;
     let date = req.query.date;
 
@@ -110,6 +120,11 @@ router.delete('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
+
+    if(!req.params.id){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
 
 	let result = await Booking.deleteOne({ _id: req.params.id});
     
