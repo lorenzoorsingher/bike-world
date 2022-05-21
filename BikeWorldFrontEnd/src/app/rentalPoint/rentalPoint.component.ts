@@ -4,6 +4,7 @@ import { catchError, lastValueFrom, map, Observable, of } from 'rxjs';
 import { AgmMap, MapsAPILoader } from '@agm/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { ConditionalExpr } from '@angular/compiler';
 
 
 @Component({
@@ -13,8 +14,8 @@ import { environment } from 'src/environments/environment';
 })
 export class RentalPointComponent {
   title = 'My first AGM project';
-  latC = 46.06698;
-  lngC = 11.15503;
+  latC = 45.4654219;
+  lngC = 9.1859243;
   rentalPoints: RentalPoint[] | undefined;
   selectedRentalName: string = "";
 
@@ -237,6 +238,26 @@ export class RentalPointComponent {
       document.getElementById("dateError").innerHTML = "Scegliere una data futura";
       return false;
     }
+  }
+
+  async filterZoneBased(event: any){
+    
+    const params = new HttpParams().set('latitude', event.lat).set("longitude", event.lng);
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/zone`, { params }).pipe(map(data => {      
+      let i;
+      this.rentalPoints = new Array(data.rentalPoints.length);
+      if (data.rentalPoints.length > 0) {
+        for (i = 0; i < data.rentalPoints.length; i++) {
+          this.rentalPoints[i] = new RentalPoint(data.rentalPoints[i].id, data.rentalPoints[i].name, data.rentalPoints[i].address, data.rentalPoints[i].lat, data.rentalPoints[i].lng, data.rentalPoints[i].type, data.rentalPoints[i].bikeNumber);
+        }
+      }
+    })));
+
+    this.selectRentalPoint(undefined);
+  }
+
+  deleteFilterZoneBased(){
+    this.getRentalPoints();
   }
 
   async filterDataBased(event: any) {

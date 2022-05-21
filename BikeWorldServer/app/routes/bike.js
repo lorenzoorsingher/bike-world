@@ -110,7 +110,7 @@ router.put('', async function(req, res) {
 	
 	// find the bike
 	let bike = await Bike.findOne({
-		name: req.body.code
+		code: req.body.code
 	}).exec();
 
 	//find the rental Point
