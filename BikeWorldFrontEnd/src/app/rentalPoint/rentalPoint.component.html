@@ -31,6 +31,9 @@
         <br>
         <label for="dataFilter"><b>Scegliere data</b></label>
         <input type="date" class="form-control" id="date" name="date" #date (change)="filterDataBased($event)">
+        <br>
+        <label for="zoneFilter"><b>Rimuovi filtro per zona</b></label>
+        <button type="submit" class="btn btn-danger" id="zone" name="zone" #zone (click)="deleteFilterZoneBased()">Rimuovi</button>
         <div class="alert alert-danger" style="width:300px; display: none;" id="dateError" role="alert"></div> 
         <hr>
         <h4>Lista punti noleggio</h4>
@@ -40,7 +43,7 @@
         </ul>
     </div>
     <div class="map">
-        <agm-map [latitude]="latC" [longitude]="lngC">
+        <agm-map [latitude]="latC" [longitude]="lngC" id="mappa" (centerChange)="filterZoneBased($event)">
             <agm-marker [latitude]="element.lat" [longitude]="element.lng" *ngFor="let element of rentalPoints"
                 (markerClick)="showMarkerInfo($event)"></agm-marker>
         </agm-map>

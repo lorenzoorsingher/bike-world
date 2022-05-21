@@ -198,6 +198,25 @@ router.get('/type', async function(req, res) {
 });
 
 // ---------------------------------------------------------
+// route to get rental point based on the type
+// ---------------------------------------------------------
+router.get('/zone', async function(req, res) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+	
+	let lat = parseFloat(req.query.latitude);
+	let lng = parseFloat(req.query.longitude);
+	let latV = 0.27;
+	let lngV = 0.38;
+
+	// find the rental points
+	let rentalPoints = await RentalPoint.find( { 'lat': {$gte: lat - latV, $lte: lat+latV }, 'lng':{$gte: lng - lngV, $lte: lng+lngV }, 'bikeNumber': {$gt : 0 } }).exec();	
+	res.status(200).json({rentalPoints});
+});
+
+// ---------------------------------------------------------
 // route to get rental point based on the bike availability
 // ---------------------------------------------------------
 router.get('/date', async function(req, res) {
