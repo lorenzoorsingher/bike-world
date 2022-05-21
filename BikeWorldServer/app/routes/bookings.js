@@ -100,7 +100,7 @@ router.delete('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
-	let result = await Booking.deleteOne({ _id: req.params._id});
+	let result = await Booking.deleteOne({ _id: req.params.id});
     
     if(result.deletedCount == 0){
         res.status(404).json({

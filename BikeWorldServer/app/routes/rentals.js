@@ -1,15 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const Bike = require('../models/bike'); // get bike mongoose model
-const RentalPoint = require('../models/rentalPoint'); // get our mongoose model
-const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-const Booking = require('../models/booking.js') // get booking model
-const { db } = require('../models/bike');
+const Bike = require('../models/bike');
+const RentalPoint = require('../models/rentalPoint');
+const Booking = require('../models/booking.js');
+const verifyToken = require('../middleware/auth');
 
 // ---------------------------------------------------------
 // route to add new rental point
 // ---------------------------------------------------------
-router.post('', async function(req, res) {
+router.post('', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -18,17 +17,23 @@ router.post('', async function(req, res) {
     // find the rental Point
 	let rentalPointAlreadyExists = await RentalPoint.findOne({
 		name: req.body.name
-	}).exec();
+	});
 	
 	// rental point already exists
 	if (rentalPointAlreadyExists) {
 		res.status(409).json({ success: false, message: 'Creation rental point failed. Rental point already exists.' });
-		return;	//to stop the execution of the function	
+		return;
 	}
 
     //save user in the db
-    const newRentalPoint = new RentalPoint({name: req.body.name, address: req.body.address, lat: parseFloat(req.body.lat), lng: parseFloat(req.body.lng), type: req.body.type,bikeNumber: 0});
-    await newRentalPoint.save();
+    const newRentalPoint = await RentalPoint.create({
+		name: req.body.name, 
+		address: req.body.address, 
+		lat: parseFloat(req.body.lat), 
+		lng: parseFloat(req.body.lng), 
+		type: req.body.type,
+		bikeNumber: 0
+	});
 
 	res.status(200).json({
 		success: true,
@@ -48,8 +53,18 @@ router.get('', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	// find the rental points
-	let rentalPoints = await RentalPoint.find( { 'bikeNumber': {$gt : 0 }}).exec();	
-	res.json({rentalPoints});
+	let rentalPoints = await RentalPoint.find({ 'bikeNumber': {$gt : 0 }});	
+	res.json(rentalPoints.map(rental => {
+		return {
+			_id: rental._id,
+			name: rental.name,
+		  	address: rental.address,
+		  	lat: rental.lat, 
+		  	lng: rental.lng, 
+		  	type: rental.type,
+		  	bikeNumber: rental.bikeNumber
+		}
+	}));
 });
 
 // ---------------------------------------------------------
@@ -63,47 +78,66 @@ router.get('/name', async function(req, res) {
 	
 	// find the rental points
 	let rentalPoints = await RentalPoint.find( { }, { name : 1}).exec();
-	res.status(200).json({rentalPoints});
+	res.status(200).json(rentalPoints);
 });
 
 // ---------------------------------------------------------
 // route to delete rental point
 // ---------------------------------------------------------
-router.delete('', async function(req, res) {
+router.delete('', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	// remove the rental points
-	await RentalPoint.deleteOne( { name: req.query.name}).exec();
+	let result = await RentalPoint.deleteOne({name: req.query.name});
 
-	// remove all bike associated to this rental point
-	await Bike.deleteMany( { rentalPointName: req.query.name}).exec();
+	if(result.deletedCount == 0){
+        res.status(404).json({
+            success: false,
+            message: 'Rental Point not found'
+        });
+    }else{
+		// remove all bike associated to this rental point
+		await Bike.deleteMany({rentalPointName: req.query.name});
 
-	res.status(200).json({
-		success: true,
-		message: 'Rental Point deleted!'
-	});
+		res.status(200).json({
+			success: true,
+			message: 'Rental Point deleted!'
+		});    
+    }
 });
 
 // ---------------------------------------------------------
 // route to update rental point info
 // ---------------------------------------------------------
-router.put('', async function(req, res) {
+router.put('', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Accept, Origin');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
     //update rental point in the db
-	await RentalPoint.updateOne({'name': req.body.name}, {$set: {'address': req.body.address,'lat': req.body.lat, 'lng': req.body.lng, 'type': req.body.type}});
+	let result = await RentalPoint.updateOne({'name': req.body.name}, 
+								{$set: {
+									'address': req.body.address,
+									'lat': req.body.lat, 
+									'lng': req.body.lng, 
+									'type': req.body.type
+								}});
 
-	res.status(200).json({
-		success: true,
-		message: 'Rental point info updated!'
-	});
-
+	if(result.modifiedCount == 0){
+		res.status(404).json({
+			success: false,
+			message: 'Rental Point not found'
+		});
+	}else{
+		res.status(200).json({
+			success: true,
+			message: 'Rental point info updated!'
+		});   
+	}
 });
 
 // ---------------------------------------------------------
@@ -118,8 +152,18 @@ router.get('/type', async function(req, res) {
 	let type = req.query.type;
 	
 	// find the rental points
-	let rentalPoints = await RentalPoint.find( { 'type': type, 'bikeNumber': {$gt : 0 } }).exec();	
-	res.status(200).json({rentalPoints});
+	let rentalPoints = await RentalPoint.find({ 'type': type, 'bikeNumber': {$gt : 0 } });	
+	res.status(200).json(rentalPoints.map(rental => {
+		return {
+			_id: rental._id,
+			name: rental.name,
+		  	address: rental.address,
+		  	lat: rental.lat, 
+		  	lng: rental.lng, 
+		  	type: rental.type,
+		  	bikeNumber: rental.bikeNumber
+		}
+	}));
 });
 
 // ---------------------------------------------------------
@@ -133,14 +177,19 @@ router.get('/date', async function(req, res) {
 	
 	let dateSearch = req.query.date;
 	// find all the rental points
-	let allRentalPoints = await RentalPoint.find( { }).exec();
+	let allRentalPoints = await RentalPoint.find({ }).exec();
 
 	//find booking	
 	let bookings = await Booking.aggregate([
-		{ $match: { date: { $gte: new Date(dateSearch),
-			$lte: new Date(dateSearch) }}}, 
-		{ $group : { _id : "$rentalPointName", count : { $sum : 1 } } }
-	  ]);
+		{ $match: { 
+			date: { $gte: new Date(dateSearch),
+					$lte: new Date(dateSearch) 
+			}}}, 
+		{ $group : { 
+			_id : "$rentalPointName", 
+			count : { $sum : 1 } 
+		} }
+	]);
 	
 	for(let i = 0; i < bookings.length; i++){
 		for(let y = 0; y < allRentalPoints.length; y++){
@@ -158,7 +207,17 @@ router.get('/date', async function(req, res) {
 		}
 	}
 
-	res.status(200).json({rentalPoints});
+	res.status(200).json(rentalPoints.map(rental => {
+		return {
+			_id: rental._id,
+			name: rental.name,
+		  	address: rental.address,
+		  	lat: rental.lat, 
+		  	lng: rental.lng, 
+		  	type: rental.type,
+		  	bikeNumber: rental.bikeNumber
+		}
+	}));
 
 });
 

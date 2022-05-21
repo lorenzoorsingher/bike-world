@@ -23,11 +23,11 @@ export class BikeComponent {
   async getRentalPointsName(){
     await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/name`).pipe(map(data => {
       let i;
-      this.rentalName = new Array(data.rentalPoints.length);
+      this.rentalName = new Array(data.length);
     
-      if (data.rentalPoints.length > 0) {
-        for (i = 0; i < data.rentalPoints.length; i++) {
-          this.rentalName[i] = data.rentalPoints[i].name;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          this.rentalName[i] = data[i].name;
         }
       }
     })));

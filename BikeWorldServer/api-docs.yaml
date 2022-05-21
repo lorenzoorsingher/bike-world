@@ -483,7 +483,7 @@ paths:
             type: string
             example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
         - name: code
-          in: path
+          in: query
           required: true
           description: The code of the bike to return.
           schema:
@@ -547,7 +547,7 @@ paths:
       summary: Remove bike.
       parameters:
         - name: code
-          in: path
+          in: query
           required: true
           description: The code of the bike to delete.
           schema:
@@ -672,6 +672,14 @@ paths:
   /api/v1/rentals:
     post:
       summary: Add a new rental point.
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
       requestBody:
         content:
           application/json:
@@ -720,6 +728,32 @@ paths:
                   message: 
                     type: string
                     example: 'Creation rental point failed. Rental point already exists.'
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
 
   /api/v1/rentals:
     get:
@@ -755,10 +789,6 @@ paths:
                     bikeNumber:
                       type: integer
                       example: 0
-                    __v:
-                      type: integer
-                      description: description ???
-                      example: 0
 
   /api/v1/rentals/name:
     get:
@@ -785,12 +815,19 @@ paths:
       summary: Remove a rental point.
       parameters:
         - name: name
-          in: path
+          in: query
           required: true
           description: The name of the rental point to delete.
           schema:
             type: string
             example: 'Ax26'
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
       responses:
         '200':
           description: Rental point deleted.
@@ -805,10 +842,57 @@ paths:
                   message:
                     type: string
                     example: "Rental Point deleted!"
+        '404':
+          description: Rental not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Rental Point not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
 
   /api/v1/rentals:
     put:
       summary: Update a rental point.
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
       requestBody:
         content:
           application/json:
@@ -844,13 +928,52 @@ paths:
                   message:
                     type: string
                     example: "Rental point info updated!"
+        '404':
+          description: Rental not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Rental Point not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
 
   /api/v1/rentals/type:
     get:
       summary: Get rental point by type.
       parameters:
         - name: type
-          in: path
+          in: query
           required: true
           description: The type of the rental points to return.
           schema:
@@ -887,17 +1010,13 @@ paths:
                     bikeNumber:
                       type: integer
                       example: 0
-                    __v:
-                      type: integer
-                      description: description ???
-                      example: 0
 
   /api/v1/rentals/date:
     get:
       summary: Get rental point based on the bike availability.
       parameters:
         - name: date
-          in: path
+          in: query
           required: true
           description: The date used to check the bike availability.
           schema:
@@ -933,10 +1052,6 @@ paths:
                       example: "Negozio"
                     bikeNumber:
                       type: integer
-                      example: 0
-                    __v:
-                      type: integer
-                      description: description ???
                       example: 0
 
   ###################
@@ -985,13 +1100,39 @@ paths:
                   message: 
                     type: string
                     example: 'New Booking added!'
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
 
   /api/v1/bookings:
     get:
       summary: Get bookings of a specific user.
       parameters:
         - name: username
-          in: path
+          in: query
           required: true
           description: The username.
           schema:
@@ -1030,25 +1171,58 @@ paths:
                   rentalPointName: 
                     type: string
                     example: "Nord Milano2"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
 
   /api/v1/bookings/bikeAvaiable:
     get:
       summary: Get bikes of a rentalPoint available in a day
       parameters:
         - name: rentalPointName
-          in: path
+          in: query
           required: true
           description: The rental point name.
           schema:
             type: string
             example: 'Est Milano'
         - name: date
-          in: path
+          in: query
           required: true
           description: The date.
           schema:
             type: string
             example: '2022-05-20' 
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
       responses:
         '200':
           description: List of the bikes.
@@ -1077,18 +1251,51 @@ paths:
                     state:
                       type: boolean
                       example: true
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
 
-  /api/v1/bookings:
+  /api/v1/bookings/{id}:
     delete:
       summary: Remove a booking.
       parameters:
-        - name: _id
+        - name: id
           in: path
           required: true
           description: The id to delete.
           schema:
             type: string
             example: '627fb874a991e0a164e063ac'
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
       responses:
         '200':
           description: Booking deleted.
@@ -1116,3 +1323,29 @@ paths:
                   message:
                     type: string
                     example: "Booking not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
