@@ -5,13 +5,15 @@ const path = require('path');
 
 const tokenChecker = require('./utils/tokenGenerator.js');
 
-const rental = require('./routes/rental.js');
-const bike = require('./routes/bike.js');
-const booking = require('./routes/booking.js');
-const user = require('./routes/user.js');
+const rental = require('./routes/rentals.js');
+const bike = require('./routes/bikes.js');
+const booking = require('./routes/bookings.js');
+const user = require('./routes/users.js');
 
-const swaggerJsdoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load(path.join(__dirname, '../api-docs.yaml'));
 
 /**
  * Configure Express.js parsing middleware
@@ -21,38 +23,32 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 const swaggerOptions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Bike World',
-      version: '1',
-    },
-  },
-  baseDir: __dirname,
-  apis: ['./app/routes/*.js']
+  swaggerOptions: {
+      url: "/api/v1/api-docs/swagger.json",
+  }
 };
 
-const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.get("/api/v1/api-docs/swagger.json", (req, res) => res.json(swaggerDocument));
 app.use(
   "/api/v1/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec)
+  swaggerUi.serveFiles(null, swaggerOptions), 
+  swaggerUi.setup(null, swaggerOptions)
 );
 
 /**
  * Manage rental(add rental point, get rental point, modify, remove filter rental point) routing and middleware
 */
-app.use('/api/v1/rental', rental);
+app.use('/api/v1/rentals', rental);
 
 /**
  * Manage booking routing and middleware
 */
-app.use('/api/v1/booking', booking);
+app.use('/api/v1/bookings', booking);
 
 /**
  * Manage bike(add rental bike, get rental point, remove) routing and middleware
 */
-app.use('/api/v1/bike', bike);
+app.use('/api/v1/bikes', bike);
 
 /**
  * Manage user

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { catchError, lastValueFrom, map, Observable, of } from 'rxjs';
 import { AgmMap, MapsAPILoader } from '@agm/core';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ export class RentalPointComponent {
   latC = 45.4654219;
   lngC = 9.1859243;
   rentalPoints: RentalPoint[] | undefined;
-  selectedRentalName: string = "";
+  selectedRentalId: string = "";
 
   constructor(private http: HttpClient, private apiloader: MapsAPILoader, private router: Router) {
     this.getRentalPoints();
@@ -29,8 +29,15 @@ export class RentalPointComponent {
     document.getElementById("creationRentalPointError")?.style.display = "none";
 
     if(this.checkLatLng(lat, lng) == true){
-      const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
-      await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
+      const body = {
+        name,
+        address, 
+        lat,
+        lng, 
+        type
+      };
+      const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+      await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/rentals`, body, {headers: headers}).pipe(map(data => {
         this.router.navigate(['/']);    
       }), catchError(error => {
         // @ts-ignore
@@ -56,9 +63,22 @@ export class RentalPointComponent {
     document.getElementById("changeRentalPointError")?.style.display = "none";
 
     if(this.checkLatLng(lat, lng) == true){
-      const params = new HttpParams().set("name", name).set("address", address).set("lat", lat).set("lng", lng).set("type", type);
-      await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/rental`, params).pipe(map(data => {
+      const body = {
+        name,
+        address,
+        lat,
+        lng,
+        type
+      };
+      const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+      await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/rentals/${this.selectedRentalId}`, body, {headers: headers}).pipe(map(data => {
 
+      }), catchError(error => {
+        // @ts-ignore
+        document.getElementById("changeRentalPointError")?.style.display = "block";
+        // @ts-ignore
+        document.getElementById("changeRentalPointError")?.innerHTML = error.error.message;
+        return of([]);
       })))
 
       // @ts-ignore
@@ -75,24 +95,30 @@ export class RentalPointComponent {
     }
   }
 
-  async removeRentalPoint() {
-    const params = new HttpParams().set('name', this.selectedRentalName)
-    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/rental`, { params }).pipe(map(data => {
+  async removeRentalPoint() {    
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/rentals/${this.selectedRentalId}`, { headers: headers }).pipe(map(data => {
 
+    }), catchError(error => {
+      // @ts-ignore
+      document.getElementById("changeRentalPointError")?.style.display = "block";
+      // @ts-ignore
+      document.getElementById("changeRentalPointError")?.innerHTML = error.error.message;
+      return of([]);
     })));
-    this.selectedRentalName = "";
+    this.selectedRentalId = "";
     await this.getRentalPoints();
     this.selectRentalPoint(undefined);
   }
 
   async getRentalPoints() {
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental`).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals`).pipe(map(data => {
       let i;
-      this.rentalPoints = new Array(data.rentalPoints.length);
+      this.rentalPoints = new Array(data.length);
 
-      if (data.rentalPoints.length > 0) {
-        for (i = 0; i < data.rentalPoints.length; i++) {
-          this.rentalPoints[i] = new RentalPoint(data.rentalPoints[i].id, data.rentalPoints[i].name, data.rentalPoints[i].address, data.rentalPoints[i].lat, data.rentalPoints[i].lng, data.rentalPoints[i].type, data.rentalPoints[i].bikeNumber);
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          this.rentalPoints[i] = new RentalPoint(data[i]._id, data[i].name, data[i].address, data[i].lat, data[i].lng, data[i].type, data[i].bikeNumber);
         }
       }
     })));
@@ -123,7 +149,7 @@ export class RentalPointComponent {
     // @ts-ignore
     document.getElementById("changeRentalPointForm").style.display = 'block';
     let rentalPoint = this.getRentalPoint();
-
+    
     // @ts-ignore
     document.getElementById("nameChange").value = rentalPoint.name;
     // @ts-ignore
@@ -135,17 +161,17 @@ export class RentalPointComponent {
     // @ts-ignore
     document.getElementById("typeRentalPointChange").value = rentalPoint.type;
     // @ts-ignore
-    document.getElementById("bikeNumberChange").value = rentalPoint.bikeNumber;
+    document.getElementById("bikeNumberChange")?.value = rentalPoint.bikeNumber;
   }
 
   getRentalPoint() {
     let rentalPoint = undefined;
-    let name = this.selectedRentalName;
+    let id = this.selectedRentalId;
 
     // @ts-ignore
     for (let i = 0; i < this.rentalPoints.length; i++) {
       // @ts-ignore
-      if (this.rentalPoints[i].name == name) {
+      if (this.rentalPoints[i].id == id) {
         // @ts-ignore
         rentalPoint = this.rentalPoints[i];
       }
@@ -158,9 +184,9 @@ export class RentalPointComponent {
     document.getElementById("changeRentalPointForm").style.display = 'none';
 
     if (event != undefined) {
-      this.selectedRentalName = event.target.id;
+      this.selectedRentalId = event.target.id;
     }
-    if (this.selectedRentalName != "") {
+    if (this.selectedRentalId != "") {
       let rentalInfo = "";
       let rentalPoint = this.getRentalPoint();
 
@@ -189,7 +215,7 @@ export class RentalPointComponent {
       }
     }
     // @ts-ignore
-    this.selectedRentalName = rentalPoint?.name;
+    this.selectedRentalId = rentalPoint?.name;
     let rentalInfo = "";
     // @ts-ignore
     rentalInfo = "<b>Nome negozio:</b> " + rentalPoint.name + "<br><b>Indirizzo:</b> " + rentalPoint.address + "<br><b>Tipo:</b> " + rentalPoint.type + "<br><b>Numero di bici disponibili:</b> " + rentalPoint.bikeNumber;
@@ -202,14 +228,14 @@ export class RentalPointComponent {
     if (event.target.value != "") {
       let del = true;
       const params = new HttpParams().set('type', event.target.value)
-      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/type`, { params }).pipe(map(data => {
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/type`, { params }).pipe(map(data => {
         let i;
-        this.rentalPoints = new Array(data.rentalPoints.length);
+        this.rentalPoints = new Array(data.length);
 
-        if (data.rentalPoints.length > 0) {
-          for (i = 0; i < data.rentalPoints.length; i++) {
-            this.rentalPoints[i] = new RentalPoint(data.rentalPoints[i].id, data.rentalPoints[i].name, data.rentalPoints[i].address, data.rentalPoints[i].lat, data.rentalPoints[i].lng, data.rentalPoints[i].type, data.rentalPoints[i].bikeNumber);
-            if (this.rentalPoints[i].name == this.selectedRentalName) {
+        if (data.length > 0) {
+          for (i = 0; i < data.length; i++) {
+            this.rentalPoints[i] = new RentalPoint(data[i]._id, data[i].name, data[i].address, data[i].lat, data[i].lng, data[i].type, data[i].bikeNumber);
+            if (this.rentalPoints[i].name == this.selectedRentalId) {
               del = false;
             }
           }
@@ -217,7 +243,7 @@ export class RentalPointComponent {
       })));
 
       if (del == true) {
-        this.selectedRentalName = "";
+        this.selectedRentalId = "";
         // @ts-ignore  
         document.getElementById("rentalShopSelected").innerHTML = "";
       }
@@ -266,14 +292,14 @@ export class RentalPointComponent {
     if (event.target.value != "") {
       if(this.checkFutureDate(event.target.value)){
       const params = new HttpParams().set('date', event.target.value)
-      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/date`, { params }).pipe(map(data => {
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/date`, { params }).pipe(map(data => {
         
         let i;
-        this.rentalPoints = new Array(data.rentalPoints.length);
+        this.rentalPoints = new Array(data.length);
 
-        if (data.rentalPoints.length > 0) {
-          for (i = 0; i < data.rentalPoints.length; i++) {
-            this.rentalPoints[i] = new RentalPoint(data.rentalPoints[i].id, data.rentalPoints[i].name, data.rentalPoints[i].address, data.rentalPoints[i].lat, data.rentalPoints[i].lng, data.rentalPoints[i].type, data.rentalPoints[i].bikeNumber);
+        if (data.length > 0) {
+          for (i = 0; i < data.length; i++) {
+            this.rentalPoints[i] = new RentalPoint(data[i]._id, data[i].name, data[i].address, data[i].lat, data[i].lng, data[i].type, data[i].bikeNumber);
           }
         }
       })));
@@ -305,7 +331,6 @@ class RentalPoint {
     this.lng = lng;
     this.type = type;
     this.bikeNumber = bikeNumber;
-
   }
 
 }

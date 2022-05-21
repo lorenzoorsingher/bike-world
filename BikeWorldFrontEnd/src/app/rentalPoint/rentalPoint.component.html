@@ -38,7 +38,7 @@
         <hr>
         <h4>Lista punti noleggio</h4>
         <ul class="list-group" *ngFor="let element of rentalPoints">
-            <li class="list-group-item" style="width:300px" *ngIf="element.bikeNumber != 0"  (click)="selectRentalPoint($event)" id="{{element.name}}"> {{element.name}}: {{element.address}}</li>
+            <li class="list-group-item" style="width:300px" *ngIf="element.bikeNumber != 0"  (click)="selectRentalPoint($event)" id="{{element.id}}"> {{element.name}}: {{element.address}}</li>
             
         </ul>
     </div>
@@ -48,8 +48,8 @@
                 (markerClick)="showMarkerInfo($event)"></agm-marker>
         </agm-map>
         <div id="rentalShopSelected"></div>
-        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" class="btn btn-danger" (click)="removeRentalPoint()">Remove rental point</button>
-        <button *ngIf="addItemOptions() == true && selectedRentalName != ''" class="btn btn-info" (click)="allowRentalPointChange()">Change rental point info</button>  
+        <button *ngIf="addItemOptions() == true && selectedRentalId != ''" class="btn btn-danger" (click)="removeRentalPoint()">Remove rental point</button>
+        <button *ngIf="addItemOptions() == true && selectedRentalId != ''" class="btn btn-info" (click)="allowRentalPointChange()">Change rental point info</button>  
     </div>
     <div class="content">
         <a *ngIf="addItemOptions() == true" id="addRentalForm" style="display: block;">
