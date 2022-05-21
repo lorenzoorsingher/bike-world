@@ -6,7 +6,7 @@ info:
   
 servers:
   - url: https://bike-world-ids.herokuapp.com/
-  
+
 paths:
 
   ###################
@@ -365,6 +365,30 @@ paths:
                   message: 
                     type: string
                     example: 'New Bike added'
+                  bike:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        example: "628548c22119863b28fb368f"
+                      code:
+                        type: string
+                        example: "Ax26"
+                      model:
+                        type: string
+                        example: "Bianchi"
+                      type:
+                        type: string
+                        example: "E-bike"
+                      rentalPointName:
+                        type: string
+                        example: "Nord Milano2"
+                      state:
+                        type: boolean
+                        example: true
+                      self: 
+                        type: string
+                        example: "/api/v1/bikes/628548c22119863b28fb368f"
         '409':
           description: Conflict. Bike already exists.
           content:
@@ -444,6 +468,9 @@ paths:
                     state:
                       type: boolean
                       example: true
+                    self: 
+                      type: string
+                      example: "/api/v1/bikes/628548c22119863b28fb368f"
         '401':
           description: Unauthorized. No token provided.
           content:
@@ -471,9 +498,9 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
 
-  /api/v1/bikes/code:
+  /api/v1/bikes/{id}:
     get:
-      summary: Get bike searched by code.
+      summary: Get bike searched by id.
       parameters:  
         - name: x-access-token
           in: header
@@ -482,16 +509,16 @@ paths:
           schema:
             type: string
             example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
-        - name: code
-          in: query
+        - name: id
+          in: path
           required: true
-          description: The code of the bike to return.
+          description: The id of the bike to return.
           schema:
             type: string
-            example: 'Ax26'
+            example: '628548c22119863b28fb368f'
       responses:
         '200':
-          description: Bike with the specific code.
+          description: Bike with the specific id.
           content:
             application/json:
               schema:
@@ -515,6 +542,22 @@ paths:
                   state:
                     type: boolean
                     example: true
+                  self: 
+                    type: string
+                    example: "/api/v1/bikes/628548c22119863b28fb368f"
+        '404':
+          description: Bike not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Bike not found"
         '401':
           description: Unauthorized. No token provided.
           content:
@@ -546,13 +589,13 @@ paths:
     delete:
       summary: Remove bike.
       parameters:
-        - name: code
-          in: query
+        - name: id
+          in: path
           required: true
-          description: The code of the bike to delete.
+          description: The id of the bike to delete.
           schema:
             type: string
-            example: 'Ax26'  
+            example: '628548c22119863b28fb368f'  
         - name: x-access-token
           in: header
           required: true
@@ -574,6 +617,19 @@ paths:
                   message:
                     type: string
                     example: "Bike deleted!"
+        '404':
+          description: Bike not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Bike not found"
         '401':
           description: Unauthorized. No token provided.
           content:
@@ -606,6 +662,13 @@ paths:
       summary: Repare a bike.
       description: Based on the status of a bike, puts or removes it from repair.
       parameters:  
+        - name: id
+          in: path
+          required: true
+          description: The id of the bike to put/remove from reparation.
+          schema:
+            type: string
+            example: '628548c22119863b28fb368f'  
         - name: x-access-token
           in: header
           required: true
@@ -613,18 +676,6 @@ paths:
           schema:
             type: string
             example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                code:
-                  type: string
-                  example: 'Ax26'
-                rentalPointName:
-                  type: string
-                  example: 'Nord Milano2'
       responses:
         '200':
           description: Bike status changed.
@@ -639,6 +690,19 @@ paths:
                   message:
                     type: string
                     example: "Bike repared!"
+        '404':
+          description: Bike not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Bike not found"
         '401':
           description: Unauthorized. No token provided.
           content:

@@ -3,6 +3,7 @@ const router = express.Router();
 const Bike = require('../models/bike');
 const RentalPoint = require('../models/rentalPoint');
 const verifyToken = require('../middleware/auth');
+const { findById } = require('../models/bike');
 
 // ---------------------------------------------------------
 // route to add new bike
@@ -12,8 +13,7 @@ router.post('', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-	console.log("arrived");
-    // find the rental Point
+
 	let bikeAlreadyExists = await Bike.findOne({
 		code: req.body.code
 	});
@@ -45,9 +45,17 @@ router.post('', verifyToken, async function(req, res) {
 
 	res.status(201).json({
 		success: true,
-		message: 'New Bike added!'
+		message: 'New Bike added!',
+		bike: {
+			_id: newBike._id,
+			code: newBike.code,
+			model: newBike.model,
+			type: newBike.type,
+			rentalPointName: newBike.rentalPointName,
+			state: newBike.state,
+			self: "/api/v1/bikes/" + newBike._id
+		}
 	});
-
 });
 
 
@@ -69,48 +77,69 @@ router.get('', verifyToken, async function(req, res) {
 			model: bike.model,
 			type: bike.type,
 			rentalPointName: bike.rentalPointName,
-			state: bike.state
+			state: bike.state,
+			self: "/api/v1/bikes/" + bike._id
 		}
 	}));
 });
 
 
 // ---------------------------------------------------------
-// route to get bike searched by code
+// route to get bike
 // ---------------------------------------------------------
-router.get('/code', verifyToken, async function(req, res) {
+router.get('/:id', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	// find the bike
-	let bike = await Bike.findOne( { 'code': req.query.code });
+	let bike = await Bike.findById(req.params.id);
+	if(bike == null){
+		res.status(404).json({
+			success: false,
+			message: 'Bike not found'
+		});
+		return;
+	}
+
 	res.status(200).json({
 		_id: bike._id,
 		code: bike.code,
 		model: bike.model,
 		type: bike.type,
 		rentalPointName: bike.rentalPointName,
-		state: bike.state
+		state: bike.state,
+		self: "/api/v1/bikes/" + bike._id
 	});
 });
 
 // ---------------------------------------------------------
 // route to delete bike
 // ---------------------------------------------------------
-router.delete('', verifyToken, async function(req, res) {
+router.delete('/:id', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	// remove the bike
-	await Bike.deleteOne({ code: req.query.code});
+	let bike = await Bike.findById(req.params.id);
+	if(bike == null){
+		res.status(404).json({
+			success: false,
+			message: 'Bike not found'
+		});
+		return;
+	}
+
+	const rentalPointName = bike.rentalPointName;
+
+	await Bike.deleteOne({ _id: req.params.id });
 
 	//find the rental Point
 	let rentalPoint = await RentalPoint.findOne({
-		name: req.query.rentalPointName
+		name: rentalPointName
 	});
 
 	//remove bike from rental Point
@@ -125,25 +154,30 @@ router.delete('', verifyToken, async function(req, res) {
 // ---------------------------------------------------------
 // route to repare bike
 // ---------------------------------------------------------
-router.patch('', verifyToken, async function(req, res) {
+router.patch('/:id', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Accept, Origin');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	// find the bike
-	let bike = await Bike.findOne({
-		code: req.body.code
-	});
+	let bike = await Bike.findById(req.params.id);
+	if(bike == null){
+		res.status(404).json({
+			success: false,
+			message: 'Bike not found'
+		});
+		return;
+	}
 
 	//find the rental Point
 	let rentalPoint = await RentalPoint.findOne({
-		name: req.body.rentalPointName
+		name: bike.rentalPointName
 	});
 	
 	if(bike.state){
 		//put bike in reparation
-		await Bike.updateOne({'code': req.body.code}, {$set: {'state': false}});
+		await Bike.updateOne({'_id': req.params.id}, {$set: {'state': false}});
 		
 		//remove bike from rental Point
 		await RentalPoint.updateOne({'name': rentalPoint.name}, {$set: {'bikeNumber': rentalPoint.bikeNumber - 1}});
@@ -154,7 +188,7 @@ router.patch('', verifyToken, async function(req, res) {
 		});
 	} else {
 		//repare bike
-		await Bike.updateOne({'code': req.body.code}, {$set: {'state': true}});
+		await Bike.updateOne({'_id': req.params.id}, {$set: {'state': true}});
 
 		//add bike from rental Point
 		await RentalPoint.updateOne({'name': rentalPoint.name}, {$set: {'bikeNumber': rentalPoint.bikeNumber + 1}});

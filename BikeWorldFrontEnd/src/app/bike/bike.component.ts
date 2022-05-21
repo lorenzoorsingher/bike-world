@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BikeComponent {
   bikes: Bike[] | undefined; 
-  selectedBikeCode: string = "";
+  selectedBikeId: string = "";
   rentalName: string[] | undefined;
 
   constructor(private router: Router, private _ActivatedRoute: ActivatedRoute, private http: HttpClient) {
@@ -41,7 +41,7 @@ export class BikeComponent {
       
       if (data.length > 0) {
         for (i = 0; i < data.length; i++) {
-          this.bikes[i] = new Bike(data[i].code, data[i].model, data[i].type, data[i].rentalPointName, data[i].state);
+          this.bikes[i] = new Bike(data[i]._id, data[i].code, data[i].model, data[i].type, data[i].rentalPointName, data[i].state);
         }
       }
     })));
@@ -49,12 +49,12 @@ export class BikeComponent {
 
   getBike(){
     let bike = undefined;
-    let code = this.selectedBikeCode;
+    let id = this.selectedBikeId;
 
     // @ts-ignore
     for(let i = 0; i < this.bikes.length; i++){
       // @ts-ignore
-      if(this.bikes[i].code == code){
+      if(this.bikes[i].id == id){
           // @ts-ignore
           bike = this.bikes[i];
       }
@@ -83,20 +83,15 @@ export class BikeComponent {
 
   async updateInfoAdd(code: string){
     await this.getBikes();
-    this.selectedBikeCode=code;
+    this.selectedBikeId=code;
     this.selectBike(undefined);  
   }
 
   async repareBike(){
     let bike = this.getBike();
     
-    // @ts-ignore
-    const body = {
-      code: this.selectedBikeCode,
-      rentalPointName: bike?.rentalPointName
-    };    
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.patch<any>(`${environment.apiUrl}/api/v1/bikes`, body, {headers: headers}).pipe(map( data => { 
+    await lastValueFrom(this.http.patch<any>(`${environment.apiUrl}/api/v1/bikes/${this.selectedBikeId}`, null, {headers: headers}).pipe(map( data => { 
        
     })))
 
@@ -106,13 +101,12 @@ export class BikeComponent {
 
   async removeBike(){ 
     let bike = this.getBike();
-    // @ts-ignore
-    const params = new HttpParams().set('code', this.selectedBikeCode).set("rentalPointName", bike.rentalPointName); 
+    // @ts-ignore    
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/bikes`, {params, headers: headers}).pipe(map(data => {
+    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/bikes/${this.selectedBikeId}`, {headers: headers}).pipe(map(data => {
         
     })));
-    this.selectedBikeCode = "";
+    this.selectedBikeId = "";
     await this.getBikes();
     this.selectBike(undefined);
     // @ts-ignore
@@ -124,10 +118,10 @@ export class BikeComponent {
     document.getElementById("bikeInfoModule").style.display = 'block';
 
     if(event != undefined){
-      this.selectedBikeCode = event.target.id;
+      this.selectedBikeId = event.target.id;
     }  
 
-    if(this.selectedBikeCode != ""){
+    if(this.selectedBikeId != ""){
       let bikeInfo = "";
       let bike = this.getBike();    
 
@@ -152,7 +146,7 @@ export class BikeComponent {
         
         if (data != null) {
           this.bikes = new Array(1);
-          this.bikes[0] = new Bike(data.code, data.model, data.type, data.rentalPointName, data.state);
+          this.bikes[0] = new Bike(data._id, data.code, data.model, data.type, data.rentalPointName, data.state);
         } 
       })));
     }else{
@@ -164,13 +158,15 @@ export class BikeComponent {
 }
 
 class Bike{
+  id: string;
   code: string | undefined;
   model: string | undefined;
   type: string | undefined;
   rentalPointName: string | undefined;
   state: string | undefined;
 
-  constructor(code: string, model: string, type:string, rentalPointName:string, state: string){
+  constructor(id: string, code: string, model: string, type:string, rentalPointName:string, state: string){
+    this.id = id;
     this.code = code;
     this.model = model;
     this.type = type;
