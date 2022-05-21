@@ -1,25 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const Bike = require('../models/bike'); // get our mongoose model
-const RentalPoint = require('../models/rentalPoint'); // get our mongoose model
-const Booking = require('../models/booking.js') // get booking model
-const User = require('../models/user.js'); // get user model
-const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const Bike = require('../models/bike');
+const Booking = require('../models/booking.js');
+const verifyToken = require('../middleware/auth');
 
 // ---------------------------------------------------------
 // route to add new booking
 // ---------------------------------------------------------
-router.post('', async function(req, res) {
+router.post('', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
-    let releaseCode = Math.floor(Math.random()*1000000);
-
-    //save booking in the db
-    const newBooking = new Booking({username: req.body.username, date: req.body.date, bikeCode: req.body.bikeCode, releaseBikeCode: releaseCode, rentalPointName: req.body.rentalPointName});
-    await newBooking.save();
+    const releaseCode = Math.floor(Math.random()*1000000);
+    const username = req.loggedUser.username;
+    
+    const newBooking = await Booking.create({
+        username: username, 
+        date: req.body.date, 
+        bikeCode: req.body.bikeCode, 
+        releaseBikeCode: releaseCode, 
+        rentalPointName: req.body.rentalPointName
+    });    
     
 	res.status(200).json({
 		success: true,
@@ -32,31 +35,35 @@ router.post('', async function(req, res) {
 // ---------------------------------------------------------
 // route to get bookings
 // ---------------------------------------------------------
-router.get('', async function(req, res) {
+router.get('', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
-    let username = req.query.username;
+    // getting user information from token
+    const username = req.loggedUser.username;
+    const permissions =  req.loggedUser.permissions;
 
-    let user = await User.findOne({'username': username});
+    // if admin return all bookings
+    const bookings = await Booking.find( permissions ? {} : {'username': username} );
 
-	// get the bookings
-	let bookings;
-    
-    if(user.permissions == true){
-        bookings = await Booking.find().exec();
-    } else {
-        bookings = await Booking.find( { 'username': username }).exec();
-    }
-	res.status(200).json({bookings});
+	res.status(200).json(bookings.map(booking => {
+        return {
+            _id: booking._id,
+            username: booking.username,
+            date: booking.date,
+            bikeCode: booking.bikeCode,
+            releaseBikeCode: booking.releaseBikeCode,
+            rentalPointName: booking.rentalPointName
+        }
+    }));
 });
 
 // ---------------------------------------------------------
 // route to get bikes of a rentalPoint available in a day
 // ---------------------------------------------------------
-router.get('/bikeAvailable', async function(req, res) {
+router.get('/bikeAvailable', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -65,42 +72,47 @@ router.get('/bikeAvailable', async function(req, res) {
 	let rentalPointName = req.query.rentalPointName;
     let date = req.query.date;
 
-    let bikeCodes = await Booking.find({ 'rentalPointName' : rentalPointName, 'date': date}, {bikeCode: 1})
-    let bikeCode = [];
+    let bookings = await Booking.find({ 'rentalPointName' : rentalPointName, 'date': date}, {bikeCode: 1})    
+    let bookedBikeCodes = bookings.map(x => x.bikeCode);
 
-    for(let i = 0; i < bikeCodes.length; i++){
-        bikeCode.push(bikeCodes[i].bikeCode);
-    }
+	let allBikes = await Bike.find({ 'rentalPointName' : rentalPointName, 'state': true });	
 
-	// get the bikes
-	let allBikes = await Bike.find( { 'rentalPointName' : rentalPointName, 'state': true }).exec();	
-    let bikes = [];
+    let freeBikes = allBikes.filter(bike => !bookedBikeCodes.includes(bike.code));
 
-    for(let i = 0; i < allBikes.length; i++){
-        if(!bikeCode.includes(allBikes[i].code)){
-            bikes.push(allBikes[i]);
+	res.status(200).json(freeBikes.map(bike => {
+        return {
+            _id: bike._id, 
+            code: bike.code,
+            model: bike.model,
+            type: bike.type,
+            rentalPointName: bike.rentalPointName,
+            state: bike.state
         }
-    }
-
-	res.status(200).json({bikes});
+    }));
 });
 
 // ---------------------------------------------------------
 // route to delete booking
 // ---------------------------------------------------------
-router.delete('', async function(req, res) {
+router.delete('/:id', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
-	// remove the booking
-	await Booking.deleteOne( { _id: req.query._id}).exec();
-
-	res.status(200).json({
-		success: true,
-		message: 'Booking deleted!'
-	});
+	let result = await Booking.deleteOne({ _id: req.params._id});
+    
+    if(result.deletedCount == 0){
+        res.status(404).json({
+            success: false,
+            message: 'Booking not found'
+        });
+    }else{
+        res.status(200).json({
+            success: true,
+            message: 'Booking deleted!'
+        });        
+    }
 });
 
 

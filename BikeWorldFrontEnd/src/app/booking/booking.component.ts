@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http'
-import { lastValueFrom, map, Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
+import { catchError, lastValueFrom, map, Observable, of } from 'rxjs';
 import { AgmMap, MapsAPILoader } from '@agm/core';
 import { environment } from 'src/environments/environment';
 
@@ -23,27 +23,34 @@ export class BookingComponent {
   async newBooking(date: Date, rentalPointName: string, bikeCode: string, event: any) {
     event.preventDefault()
     // @ts-ignore
-    const params = new HttpParams().set("username", sessionStorage.getItem("username")).set("date", date).set("bikeCode", bikeCode).set("rentalPointName", rentalPointName);
-    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bookings`, params).pipe(map(data => {
+    const body = {
+      date,
+      bikeCode,
+      rentalPointName
+    };
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bookings`, body, {headers: headers}).pipe(map(data => {
         if(data.success == false){
             // @ts-ignore
             document.getElementById("errorMessage").innerHTML = data.message;
         }
     })))
-
+    
+    // @ts-ignore
+    document.getElementById("bookingDeleteErrorMessage").style.display = 'none';
     this.getBookings();
   }
 
   async getBookings() {
     // @ts-ignore
-    const params = new HttpParams().set("username", sessionStorage.getItem("username"));
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bookings`, {params}).pipe(map(data => {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bookings`, {headers: headers}).pipe(map(data => {
       let i;
-      this.bookings = new Array(data.bookings.length);
+      this.bookings = new Array(data.length);
 
-      if (data.bookings.length > 0) {
-        for (i = 0; i < data.bookings.length; i++) {
-          this.bookings[i] = new Booking(data.bookings[i]._id, data.bookings[i].username, data.bookings[i].date, data.bookings[i].bikeCode, data.bookings[i].releaseBikeCode, data.bookings[i].rentalPointName);
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          this.bookings[i] = new Booking(data[i]._id, data[i].username, data[i].date, data[i].bikeCode, data[i].releaseBikeCode, data[i].rentalPointName);
         }
       }
     })));
@@ -77,13 +84,14 @@ export class BookingComponent {
       if(new Date(date) > new Date()){
         // @ts-ignore
         const params = new HttpParams().set("rentalPointName", rentalPointName).set("date", date);
-        await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bookings/bikeAvailable`, {params}).pipe(map(data => {
+        const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+        await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bookings/bikeAvailable`, {params, headers: headers}).pipe(map(data => {
           let i;
-          this.bikes = new Array(data.bikes.length);
+          this.bikes = new Array(data.length);
           
-          if (data.bikes.length > 0) {
-            for (i = 0; i < data.bikes.length; i++) {
-              this.bikes[i] = new Bike(data.bikes[i].code, data.bikes[i].model, data.bikes[i].type, data.bikes[i].rentalPointName, data.bikes[i].state);
+          if (data.length > 0) {
+            for (i = 0; i < data.length; i++) {
+              this.bikes[i] = new Bike(data[i].code, data[i].model, data[i].type, data[i].rentalPointName, data[i].state);
             }
           } else {
             // @ts-ignore
@@ -123,9 +131,15 @@ export class BookingComponent {
 
     async removeBooking(){ 
         // @ts-ignore
-        const params = new HttpParams().set('_id', this.selectedBookingId); 
-        await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/bookings`, {params} ).pipe(map(data => {
+        const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+        await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/bookings/${this.selectedBookingId}`, {headers: headers} ).pipe(map(data => {
             
+        }), catchError(error => {
+          // @ts-ignore
+          document.getElementById("bookingDeleteErrorMessage").style.display = 'block';
+          // @ts-ignore
+          document.getElementById("bookingDeleteErrorMessage").innerHTML = error.error.message;
+          return of([]);
         })));
         this.selectedBookingId = "";
         await this.getBookings();
@@ -135,6 +149,8 @@ export class BookingComponent {
     }
 
     selectBooking(event: any){   
+        // @ts-ignore
+        document.getElementById("bookingDeleteErrorMessage").style.display = 'none';
         // @ts-ignore
         document.getElementById("bookingInfoModule").style.display = 'block';
         

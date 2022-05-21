@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Bike = require('../models/bike'); // get our mongoose model
-const RentalPoint = require('../models/rentalPoint'); // get our mongoose model
-const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const Bike = require('../models/bike');
+const RentalPoint = require('../models/rentalPoint');
 const verifyToken = require('../middleware/auth');
 
 // ---------------------------------------------------------

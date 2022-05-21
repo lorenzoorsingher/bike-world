@@ -204,6 +204,32 @@ paths:
                   message: 
                     type: string
                     example: 'Unauthorized. You can access only your informations.' 
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'                    
  
   /api/v1/users/{id}:
     put:
@@ -265,7 +291,33 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Unauthorized. You can access only your informations.'                     
+                    example: 'Unauthorized. You can access only your informations.' 
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'                    
 
   ###################
   # route bikes
@@ -326,6 +378,32 @@ paths:
                   message: 
                     type: string
                     example: 'Creation bike failed. Bike already exists.'
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
 
   /api/v1/bikes:
     get:
@@ -366,6 +444,32 @@ paths:
                     state:
                       type: boolean
                       example: true
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
 
   /api/v1/bikes/code:
     get:
@@ -411,6 +515,32 @@ paths:
                   state:
                     type: boolean
                     example: true
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
 
   /api/v1/bikes:
     delete:
@@ -444,6 +574,32 @@ paths:
                   message:
                     type: string
                     example: "Bike deleted!"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'                    
 
   /api/v1/bikes:
     patch:
@@ -483,6 +639,32 @@ paths:
                   message:
                     type: string
                     example: "Bike repared!"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'                    
 
   ###################
   # route rental
@@ -763,6 +945,14 @@ paths:
   /api/v1/bookings:
     post:
       summary: Add a new booking.
+      parameters:  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
       requestBody:
         content:
           application/json:
@@ -795,19 +985,6 @@ paths:
                   message: 
                     type: string
                     example: 'New Booking added!'
-        '409':
-          description: Conflict. No bikes.
-          content:
-            application/json:
-              schema: 
-                type: object
-                properties:
-                  success: 
-                    type: boolean
-                    example: false
-                  message: 
-                    type: string
-                    example: 'Non ci sono biciclette disponibili'
 
   /api/v1/bookings:
     get:
@@ -820,6 +997,13 @@ paths:
           schema:
             type: string
             example: 'User1'
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'  
       responses:
         '200':
           description: List of the bookings.
@@ -846,9 +1030,6 @@ paths:
                   rentalPointName: 
                     type: string
                     example: "Nord Milano2"
-                  __v:
-                    type: integer
-                    example: 0
 
   /api/v1/bookings/bikeAvaiable:
     get:
@@ -896,10 +1077,6 @@ paths:
                     state:
                       type: boolean
                       example: true
-                    __v:
-                      type: integer
-                      description: description ???
-                      example: 0
 
   /api/v1/bookings:
     delete:
@@ -926,3 +1103,16 @@ paths:
                   message:
                     type: string
                     example: "Booking deleted!"
+        '404':
+          description: Booking not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Booking not found"
