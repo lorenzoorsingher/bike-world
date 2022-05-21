@@ -779,6 +779,33 @@ paths:
                   message: 
                     type: string
                     example: 'New Rental Point added!'
+                  rental: 
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        example: "627fb874a991e0a164e063ac"
+                      name:
+                        type: string
+                        example: "Est Milano"
+                      address:
+                        type: string
+                        example: "ds"
+                      lat: 
+                        type: number
+                        example: 45.4654219
+                      lng: 
+                        type: number
+                        example: 10.1859243
+                      type:
+                        type: string
+                        example: "Negozio"
+                      bikeNumber:
+                        type: integer
+                        example: 0
+                      self:
+                        type: string
+                        example: "/api/v1/rentals/627fb874a991e0a164e063ac"
         '409':
           description: Conflict. Rental Point already exists.
           content:
@@ -821,7 +848,7 @@ paths:
 
   /api/v1/rentals:
     get:
-      summary: Get rental points.
+      summary: Get rental points with bikeNumber > 0.
       responses:
         '200':
           description: List of the rental points.
@@ -853,6 +880,9 @@ paths:
                     bikeNumber:
                       type: integer
                       example: 0
+                    self:
+                      type: string
+                      example: "/api/v1/rentals/627fb874a991e0a164e063ac"                      
 
   /api/v1/rentals/name:
     get:
@@ -874,17 +904,17 @@ paths:
                       type: string
                       example: "Est Milano"
 
-  /api/v1/rentals:
+  /api/v1/rentals/{id}:
     delete:
       summary: Remove a rental point.
       parameters:
-        - name: name
-          in: query
+        - name: id
+          in: path
           required: true
-          description: The name of the rental point to delete.
+          description: The id of the rental point to delete.
           schema:
             type: string
-            example: 'Ax26'
+            example: '627fb874a991e0a164e063ac'
         - name: x-access-token
           in: header
           required: true
@@ -946,10 +976,17 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
 
-  /api/v1/rentals:
+  /api/v1/rentals/{id}:
     put:
       summary: Update a rental point.
       parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the rental point to update.
+          schema:
+            type: string
+            example: '627fb874a991e0a164e063ac'
         - name: x-access-token
           in: header
           required: true
@@ -1074,6 +1111,9 @@ paths:
                     bikeNumber:
                       type: integer
                       example: 0
+                    self:
+                      type: string
+                      example: "/api/v1/rentals/627fb874a991e0a164e063ac"  
 
   /api/v1/rentals/date:
     get:
@@ -1117,6 +1157,9 @@ paths:
                     bikeNumber:
                       type: integer
                       example: 0
+                    self:
+                      type: string
+                      example: "/api/v1/rentals/627fb874a991e0a164e063ac"  
 
   ###################
   # route bookings

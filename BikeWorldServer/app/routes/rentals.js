@@ -37,9 +37,18 @@ router.post('', verifyToken, async function(req, res) {
 
 	res.status(200).json({
 		success: true,
-		message: 'New Rental Point added!'
+		message: 'New Rental Point added!',
+		rental: {
+			_id: newRentalPoint._id,
+			name: newRentalPoint.name,
+		  	address: newRentalPoint.address,
+		  	lat: newRentalPoint.lat, 
+		  	lng: newRentalPoint.lng, 
+		  	type: newRentalPoint.type,
+		  	bikeNumber: newRentalPoint.bikeNumber,
+			self: "/api/v1/rentals/" + newRentalPoint._id
+		}
 	});
-
 });
 
 
@@ -62,7 +71,8 @@ router.get('', async function(req, res) {
 		  	lat: rental.lat, 
 		  	lng: rental.lng, 
 		  	type: rental.type,
-		  	bikeNumber: rental.bikeNumber
+		  	bikeNumber: rental.bikeNumber,
+			self: "/api/v1/rentals/" + rental._id
 		}
 	}));
 });
@@ -77,49 +87,49 @@ router.get('/name', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	// find the rental points
-	let rentalPoints = await RentalPoint.find( { }, { name : 1}).exec();
+	let rentalPoints = await RentalPoint.find({ }, { name : 1});
 	res.status(200).json(rentalPoints);
 });
 
 // ---------------------------------------------------------
 // route to delete rental point
 // ---------------------------------------------------------
-router.delete('', verifyToken, async function(req, res) {
+router.delete('/:id', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-	
-	// remove the rental points
-	let result = await RentalPoint.deleteOne({name: req.query.name});
 
-	if(result.deletedCount == 0){
+	let rental = await RentalPoint.findById(req.params.id);
+	if(rental == null){
         res.status(404).json({
             success: false,
             message: 'Rental Point not found'
         });
-    }else{
-		// remove all bike associated to this rental point
-		await Bike.deleteMany({rentalPointName: req.query.name});
+	}
 
-		res.status(200).json({
-			success: true,
-			message: 'Rental Point deleted!'
-		});    
-    }
+	// remove the rental points
+	await RentalPoint.deleteOne({_id: req.params.id});
+	// remove all bike associated to this rental point
+	await Bike.deleteMany({rentalPointName: rental.name});
+
+	res.status(200).json({
+		success: true,
+		message: 'Rental Point deleted!'
+	});    
 });
 
 // ---------------------------------------------------------
 // route to update rental point info
 // ---------------------------------------------------------
-router.put('', verifyToken, async function(req, res) {
+router.put('/:id', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Accept, Origin');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
     //update rental point in the db
-	let result = await RentalPoint.updateOne({'name': req.body.name}, 
+	let result = await RentalPoint.updateOne({'_id': req.params.id}, 
 								{$set: {
 									'address': req.body.address,
 									'lat': req.body.lat, 
@@ -161,7 +171,8 @@ router.get('/type', async function(req, res) {
 		  	lat: rental.lat, 
 		  	lng: rental.lng, 
 		  	type: rental.type,
-		  	bikeNumber: rental.bikeNumber
+		  	bikeNumber: rental.bikeNumber,
+			self: "/api/v1/rentals/" + rental._id
 		}
 	}));
 });
@@ -215,7 +226,8 @@ router.get('/date', async function(req, res) {
 		  	lat: rental.lat, 
 		  	lng: rental.lng, 
 		  	type: rental.type,
-		  	bikeNumber: rental.bikeNumber
+		  	bikeNumber: rental.bikeNumber,
+			self: "/api/v1/rentals/" + rental._id  
 		}
 	}));
 
