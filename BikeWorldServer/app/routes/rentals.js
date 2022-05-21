@@ -198,7 +198,7 @@ router.get('/type', async function(req, res) {
 });
 
 // ---------------------------------------------------------
-// route to get rental point based on the type
+// route to get rental point based on the zone
 // ---------------------------------------------------------
 router.get('/zone', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -206,14 +206,35 @@ router.get('/zone', async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
+	if(isNaN(parseFloat(req.query.latitude)) || isNaN(parseFloat(req.query.longitude))){
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		return;
+	}
+
 	let lat = parseFloat(req.query.latitude);
 	let lng = parseFloat(req.query.longitude);
 	let latV = 0.27;
 	let lngV = 0.38;
 
 	// find the rental points
-	let rentalPoints = await RentalPoint.find( { 'lat': {$gte: lat - latV, $lte: lat+latV }, 'lng':{$gte: lng - lngV, $lte: lng+lngV }, 'bikeNumber': {$gt : 0 } }).exec();	
-	res.status(200).json({rentalPoints});
+	let rentalPoints = await RentalPoint.find({ 
+		'lat': {$gte: lat - latV, $lte: lat+latV }, 
+		'lng':{$gte: lng - lngV, $lte: lng+lngV }, 
+		'bikeNumber': {$gt : 0 } 
+	});
+	
+	res.status(200).json(rentalPoints.map(rental => {
+		return {
+			_id: rental._id,
+			name: rental.name,
+		  	address: rental.address,
+		  	lat: rental.lat, 
+		  	lng: rental.lng, 
+		  	type: rental.type,
+		  	bikeNumber: rental.bikeNumber,
+			self: "/api/v1/rentals/" + rental._id
+		}
+	}));
 });
 
 // ---------------------------------------------------------

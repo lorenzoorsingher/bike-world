@@ -269,12 +269,12 @@ export class RentalPointComponent {
   async filterZoneBased(event: any){
     
     const params = new HttpParams().set('latitude', event.lat).set("longitude", event.lng);
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rental/zone`, { params }).pipe(map(data => {      
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/zone`, { params }).pipe(map(data => {      
       let i;
-      this.rentalPoints = new Array(data.rentalPoints.length);
-      if (data.rentalPoints.length > 0) {
-        for (i = 0; i < data.rentalPoints.length; i++) {
-          this.rentalPoints[i] = new RentalPoint(data.rentalPoints[i].id, data.rentalPoints[i].name, data.rentalPoints[i].address, data.rentalPoints[i].lat, data.rentalPoints[i].lng, data.rentalPoints[i].type, data.rentalPoints[i].bikeNumber);
+      this.rentalPoints = new Array(data.length);
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          this.rentalPoints[i] = new RentalPoint(data[i].id, data[i].name, data[i].address, data[i].lat, data[i].lng, data[i].type, data[i].bikeNumber);
         }
       }
     })));

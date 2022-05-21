@@ -1277,7 +1277,71 @@ paths:
                     type: string
                     example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
 
-
+  /api/v1/rentals/zone:
+    get:
+      summary: Get rental point by zone.
+      parameters:
+        - name: latitude
+          in: query
+          required: true
+          description: The latitude of the rental points to return.
+          schema:
+            type: number
+            example: 45.4654219
+        - name: longitude
+          in: query
+          required: true
+          description: The longitude of the rental points to return.
+          schema:
+            type: number
+            example: 10.1859243
+      responses:
+        '200':
+          description: List of the rental points with a specific type.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: "Est Milano"
+                    address:
+                      type: string
+                      example: "ds"
+                    lat: 
+                      type: number
+                      example: 45.4654219
+                    lng: 
+                      type: number
+                      example: 10.1859243
+                    type:
+                      type: string
+                      example: "Negozio"
+                    bikeNumber:
+                      type: integer
+                      example: 0
+                    self:
+                      type: string
+                      example: "/api/v1/rentals/627fb874a991e0a164e063ac"  
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
 
   /api/v1/rentals/date:
     get:
