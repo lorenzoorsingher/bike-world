@@ -1164,6 +1164,30 @@ paths:
                   message: 
                     type: string
                     example: 'New Booking added!'
+                  booking:
+                    type: object 
+                    properties:
+                      _id: 
+                        type: string
+                        example: "628548d32119863b28fb369d"
+                      username: 
+                        type: string
+                        example: "admin"
+                      date: 
+                        type: string
+                        example: "2022-05-26T00:00:00.000Z"
+                      bikeCode: 
+                        type: string
+                        example: "Ax26"
+                      releaseBikeCode:
+                        type: integer
+                        example: 727786
+                      rentalPointName: 
+                        type: string
+                        example: "Nord Milano2"
+                      self: 
+                        type: string
+                        example: "/api/v1/bookings/628548d32119863b28fb369d"
         '401':
           description: Unauthorized. No token provided.
           content:
@@ -1193,7 +1217,7 @@ paths:
 
   /api/v1/bookings:
     get:
-      summary: Get bookings of a specific user.
+      summary: Get bookings of a specific user (all if admin).
       parameters:
         - name: username
           in: query
@@ -1235,6 +1259,9 @@ paths:
                   rentalPointName: 
                     type: string
                     example: "Nord Milano2"
+                  self: 
+                    type: string
+                    example: "/api/v1/bookings/628548d32119863b28fb369d"
         '401':
           description: Unauthorized. No token provided.
           content:
@@ -1315,6 +1342,9 @@ paths:
                     state:
                       type: boolean
                       example: true
+                    self: 
+                      type: string
+                      example: "/api/v1/bikes/628548d32119863b28fb369d"
         '401':
           description: Unauthorized. No token provided.
           content:

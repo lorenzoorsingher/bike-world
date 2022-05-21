@@ -26,14 +26,23 @@ router.post('', verifyToken, async function(req, res) {
     
 	res.status(200).json({
 		success: true,
-		message: 'New Booking added!'
+		message: 'New Booking added!',
+        booking: {
+            _id: newBooking._id,
+            username: newBooking.username,
+            date: newBooking.date,
+            bikeCode: newBooking.bikeCode,
+            releaseBikeCode: newBooking.releaseBikeCode,
+            rentalPointName: newBooking.rentalPointName,
+            self: "/api/v1/bookings/" + newBooking._id
+        }
 	});
 
 });
 
 
 // ---------------------------------------------------------
-// route to get bookings
+// route to get bookings of a user (all users if admin)
 // ---------------------------------------------------------
 router.get('', verifyToken, async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -55,7 +64,8 @@ router.get('', verifyToken, async function(req, res) {
             date: booking.date,
             bikeCode: booking.bikeCode,
             releaseBikeCode: booking.releaseBikeCode,
-            rentalPointName: booking.rentalPointName
+            rentalPointName: booking.rentalPointName,
+            self: "/api/v1/bookings/" + newBooking._id
         }
     }));
 });
@@ -86,7 +96,8 @@ router.get('/bikeAvailable', verifyToken, async function(req, res) {
             model: bike.model,
             type: bike.type,
             rentalPointName: bike.rentalPointName,
-            state: bike.state
+            state: bike.state,
+            self: "/api/v1/bikes/" + bike._id
         }
     }));
 });
