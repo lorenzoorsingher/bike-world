@@ -60,7 +60,12 @@ router.get('', verifyToken, async function(req, res) {
     const permissions =  req.loggedUser.permissions;
 
     // if admin return all bookings
-    const bookings = await Booking.find( permissions ? {} : {'username': username} );
+    let bookings = null;
+    if(permissions){
+        bookings = await Booking.find({});
+    }else {
+        bookings = await Booking.find({'username': username}, {'releaseBikeCode': 0});
+    }
 
 	res.status(200).json(bookings.map(booking => {
         return {

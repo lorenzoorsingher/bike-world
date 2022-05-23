@@ -168,8 +168,12 @@ export class BookingComponent {
           let arrayDate = (date[0]).split("-");
 
           // @ts-ignore
-          bookingInfo = "<b>Data:</b> " + arrayDate[2] + "-" + arrayDate[1] + "-" + arrayDate[0] + "<br><b>Punto noleggio:</b> " + booking.rentalPointName + "<br><b>Bici:</b> " + booking.bikeCode + "<br><b>Codice di sblocco:</b> <i>" + booking.releaseCode + "</i>"; 
-    
+          bookingInfo = "<b>Data:</b> " + arrayDate[2] + "-" + arrayDate[1] + "-" + arrayDate[0] + "<br><b>Punto noleggio:</b> " + booking.rentalPointName + "<br><b>Bici:</b> " + booking.bikeCode;
+          
+          if(booking?.releaseCode != undefined){
+            bookingInfo += "<br><b>Codice di sblocco:</b> <i>" + booking.releaseCode + "</i>";  
+          }
+
           // @ts-ignore  
           document.getElementById("bookingInfo").innerHTML = bookingInfo;
         }
