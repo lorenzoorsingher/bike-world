@@ -122,6 +122,8 @@ router.delete('/:id', verifyToken, async function(req, res) {
 	await RentalPoint.deleteOne({_id: req.params.id});
 	// remove all bike associated to this rental point
 	await Bike.deleteMany({rentalPointName: rental.name});
+	// remove all booking associated to this rental point
+	await Booking.deleteMany({rentalPointName: rental.name});
 
 	res.status(200).json({
 		success: true,

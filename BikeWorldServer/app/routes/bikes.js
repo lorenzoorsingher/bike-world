@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Bike = require('../models/bike');
 const RentalPoint = require('../models/rentalPoint');
+const Booking = require('../models/booking.js');
 const verifyToken = require('../middleware/auth');
 const { findById } = require('../models/bike');
 
@@ -150,6 +151,8 @@ router.delete('/:id', verifyToken, async function(req, res) {
 
 	const rentalPointName = bike.rentalPointName;
 
+	// remove all booking associated to this rental point
+	await Booking.deleteMany({bikeCode: bike.code});
 	await Bike.deleteOne({ _id: req.params.id });
 
 	//find the rental Point
