@@ -64,6 +64,8 @@ router.get('', verifyToken, async function(req, res) {
     if(permissions){
         bookings = await Booking.find({});
     }else {
+        //until payment will not be developed assign only bike to the rental point "Negozio"
+        //after allowing payment show releaseBikeCode only if payment is done
         bookings = await Booking.find({'username': username}, {'releaseBikeCode': 0});
     }
 

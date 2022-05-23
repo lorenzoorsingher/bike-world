@@ -91,8 +91,9 @@ router.get('/name', async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
-	// find the rental points
-	let rentalPoints = await RentalPoint.find({ }, { name : 1});
+	// find the rental points 
+	//until payment will not be developed assign only bike to the rental point "Negozio"
+	let rentalPoints = await RentalPoint.find({ 'type': 'Negozio' }, { name : 1});
 	res.status(200).json(rentalPoints);
 });
 
