@@ -112,6 +112,7 @@ router.get('/:id', verifyToken, async function(req, res) {
 			success: false,
 			message: "Unauthorized. You can access only your informations."
 		});
+		return;
 	}
 
 	let user = await User.findById(req.params.id);
