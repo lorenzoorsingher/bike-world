@@ -15,7 +15,7 @@ router.post('', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if(!req.body.name || !req.body.address || isNaN(parseFloat(req.body.lat)) || isNaN(parseFloat(req.body.lng)) || !req.body.type){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 
@@ -51,7 +51,7 @@ router.post('', verifyToken, async function(req, res) {
 		  	lng: newRentalPoint.lng, 
 		  	type: newRentalPoint.type,
 		  	bikeNumber: newRentalPoint.bikeNumber,
-			self: "/api/v1/rentals/" + newRentalPoint._id
+			self: "/api/v2/rentals/" + newRentalPoint._id
 		}
 	});
 });
@@ -77,7 +77,7 @@ router.get('', async function(req, res) {
 		  	lng: rental.lng, 
 		  	type: rental.type,
 		  	bikeNumber: rental.bikeNumber,
-			self: "/api/v1/rentals/" + rental._id
+			self: "/api/v2/rentals/" + rental._id
 		}
 	}));
 });
@@ -107,7 +107,7 @@ router.delete('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if(!req.params.id){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 
@@ -142,7 +142,7 @@ router.put('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	if(!req.params.id || !req.body.address || !req.body.lat || !req.body.lng || !req.body.type){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 
@@ -178,7 +178,7 @@ router.get('/type', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	if(!req.query.type){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 	
@@ -195,7 +195,7 @@ router.get('/type', async function(req, res) {
 		  	lng: rental.lng, 
 		  	type: rental.type,
 		  	bikeNumber: rental.bikeNumber,
-			self: "/api/v1/rentals/" + rental._id
+			self: "/api/v2/rentals/" + rental._id
 		}
 	}));
 });
@@ -210,7 +210,7 @@ router.get('/zone', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	if(isNaN(parseFloat(req.query.latitude)) || isNaN(parseFloat(req.query.longitude))){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 
@@ -235,7 +235,7 @@ router.get('/zone', async function(req, res) {
 		  	lng: rental.lng, 
 		  	type: rental.type,
 		  	bikeNumber: rental.bikeNumber,
-			self: "/api/v1/rentals/" + rental._id
+			self: "/api/v2/rentals/" + rental._id
 		}
 	}));
 });
@@ -250,7 +250,7 @@ router.get('/date', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	if(!req.query.date){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 
@@ -295,7 +295,7 @@ router.get('/date', async function(req, res) {
 		  	lng: rental.lng, 
 		  	type: rental.type,
 		  	bikeNumber: rental.bikeNumber,
-			self: "/api/v1/rentals/" + rental._id  
+			self: "/api/v2/rentals/" + rental._id  
 		}
 	}));
 
