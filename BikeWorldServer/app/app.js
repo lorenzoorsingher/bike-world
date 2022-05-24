@@ -5,10 +5,10 @@ const path = require('path');
 
 const tokenChecker = require('./utils/tokenGenerator.js');
 
-const rental = require('./routes/rentals.js');
-const bike = require('./routes/bikes.js');
-const booking = require('./routes/bookings.js');
-const user = require('./routes/users.js');
+const rental = require('./routes/v1/rentals.js');
+const bike = require('./routes/v1/bikes.js');
+const booking = require('./routes/v1/bookings.js');
+const user = require('./routes/v1/users.js');
 
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -39,21 +39,25 @@ app.use(
  * Manage rental(add rental point, get rental point, modify, remove filter rental point) routing and middleware
 */
 app.use('/api/v1/rentals', rental);
+app.use('/api/v2/rentals', rental);
 
 /**
  * Manage booking routing and middleware
 */
 app.use('/api/v1/bookings', booking);
+app.use('/api/v2/bookings', booking);
 
 /**
  * Manage bike(add rental bike, get rental point, remove) routing and middleware
 */
 app.use('/api/v1/bikes', bike);
+app.use('/api/v2/bikes', bike);
 
 /**
  * Manage user
  */
 app.use('/api/v1/users', user);
+app.use('/api/v2/users', user);
 
 /**
  * Serve front-end static files

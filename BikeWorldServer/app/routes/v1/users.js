@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
+const User = require('../../models/user');
 const bcrypt = require('bcryptjs');
-const verifyToken = require('../middleware/auth');
-const tokenGenerator = require('../utils/tokenGenerator');
+const verifyToken = require('../../middleware/auth');
+const tokenGenerator = require('../../utils/tokenGenerator');
 
 router.post('/login', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
