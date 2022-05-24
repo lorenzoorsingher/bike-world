@@ -15,7 +15,7 @@ router.post('', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
-	if(!req.body.code || !req.body.model || !body.type || !req.body.rentalPointName){
+	if(!req.body.code || !req.body.model || !req.body.type || !req.body.rentalPointName){
 		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}

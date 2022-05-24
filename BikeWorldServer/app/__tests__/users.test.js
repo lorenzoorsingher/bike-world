@@ -448,12 +448,12 @@ describe('PUT /api/v2/users/:id', () => {
 
             const sessionResult = {
                 success: true,
-                message: 'Signup completed!',
+                message: 'Information updated!',
                 token: expect.any(String),
                 permissions: false,
                 username: "test_username",
                 id: userId,
-                self: "/api/v2/users/" + userId
+                self: "api/v2/users/" + userId
             };
 
             // create a valid token
