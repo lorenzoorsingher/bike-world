@@ -144,7 +144,7 @@ router.put('/:id', verifyToken, async function(req, res) {
 	
 	// check if a user is trying to retrive another user informations
 	if(loggedUserId != req.params.id){
-		res.status(403).json({
+		return res.status(403).json({
 			success: false,
 			message: "Unauthorized. You can access only your informations."
 		});

@@ -514,8 +514,7 @@ describe('PUT /api/v2/users/:id', () => {
         });
     });
     
-    describe("given not correct id", () => {
-        
+    describe("given not correct id", () => {        
         it("should return a 403 status code", async () => {
             // create a valid token
             var _token = jwt.sign({
@@ -555,6 +554,7 @@ describe('PUT /api/v2/users/:id', () => {
             expect(body).toEqual(sessionResult);          
         });
     });
+    
     
     describe("given incomplete data", () => {
         it("should return a 400 status code", async () => {

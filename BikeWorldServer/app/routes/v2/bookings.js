@@ -29,7 +29,7 @@ router.post('', verifyToken, async function(req, res) {
         rentalPointName: req.body.rentalPointName
     });    
     
-	res.status(200).json({
+	res.status(201).json({
 		success: true,
 		message: 'New Booking added!',
         booking: {
