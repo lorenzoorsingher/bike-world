@@ -99,7 +99,8 @@ router.get('/bikeAvailable', verifyToken, async function(req, res) {
 	let rentalPointName = req.query.rentalPointName;
     let date = req.query.date;
 
-    let bookings = await Booking.find({ 'rentalPointName' : rentalPointName, 'date': date}, {bikeCode: 1})    
+    let bookings = await Booking.find({ 'rentalPointName' : rentalPointName, 'date': date}, {bikeCode: 1})  
+    
     let bookedBikeCodes = bookings.map(x => x.bikeCode);
 
 	let allBikes = await Bike.find({ 'rentalPointName' : rentalPointName, 'state': true });	
@@ -136,12 +137,12 @@ router.delete('/:id', verifyToken, async function(req, res) {
 	let result = await Booking.deleteOne({ _id: req.params.id});
     
     if(result.deletedCount == 0){
-        res.status(404).json({
+        return res.status(404).json({
             success: false,
             message: 'Booking not found'
         });
     }else{
-        res.status(200).json({
+         return res.status(200).json({
             success: true,
             message: 'Booking deleted!'
         });        

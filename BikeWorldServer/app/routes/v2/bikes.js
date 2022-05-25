@@ -30,6 +30,16 @@ router.post('', verifyToken, async function(req, res) {
 		return;
 	}
 
+	
+	//find the rental Point
+	let rentalPoint = await RentalPoint.findOne({
+		name: req.body.rentalPointName
+	});
+
+	if(rentalPoint == null){
+		return res.status(404).json({ success: false, message: 'Creation bike failed. Rental Point not found' }); 	
+	}
+
     //save user in the db
     const newBike = await Bike.create({
 		code: req.body.code, 
@@ -39,12 +49,6 @@ router.post('', verifyToken, async function(req, res) {
 		state: true
 	});
 
-	//find the rental Point
-	let rentalPoint = await RentalPoint.findOne({
-		name: req.body.rentalPointName
-	});
-
-	// todo add check to rental point
 
 	//add bike from rental Point
 	await RentalPoint.updateOne({'name': rentalPoint.name}, {$set: {'bikeNumber': rentalPoint.bikeNumber + 1}});
@@ -151,14 +155,23 @@ router.delete('/:id', verifyToken, async function(req, res) {
 
 	const rentalPointName = bike.rentalPointName;
 
-	// remove all booking associated to this rental point
-	await Booking.deleteMany({bikeCode: bike.code});
-	await Bike.deleteOne({ _id: req.params.id });
-
 	//find the rental Point
 	let rentalPoint = await RentalPoint.findOne({
 		name: rentalPointName
 	});
+
+	if(rentalPoint == null){
+		res.status(404).json({
+			success: false,
+			message: 'Rental point not found'
+		});
+		return;
+	}
+
+	// remove all booking associated to this rental point
+	await Booking.deleteMany({bikeCode: bike.code});
+	await Bike.deleteOne({ _id: req.params.id });
+	
 
 	//remove bike from rental Point
 	await RentalPoint.updateOne({'name': rentalPoint.name}, {$set: {'bikeNumber': rentalPoint.bikeNumber - 1}});
@@ -197,6 +210,14 @@ router.patch('/:id', verifyToken, async function(req, res) {
 	let rentalPoint = await RentalPoint.findOne({
 		name: bike.rentalPointName
 	});
+
+	if(rentalPoint == null){
+		res.status(404).json({
+			success: false,
+			message: 'Rental point not found'
+		});
+		return;
+	}
 	
 	if(bike.state){
 		//put bike in reparation

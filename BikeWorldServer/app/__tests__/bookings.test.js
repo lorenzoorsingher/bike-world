@@ -523,6 +523,35 @@ describe('GET /api/v2/bookings/bikeAvailable', () => {
             expect(body).toEqual(sessionResult);             
         });
     });
+
+    describe("given not existing rental point name", () => {
+        it("should return a 404 status code", async () => {
+
+            // create a valid token
+            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
+    
+            const { statusCode, body } = await agent.get("/api/v2/bookings/bikeAvailable").set('x-access-token', _token)
+                .send();
+    
+            expect(statusCode).toBe(400);     
+        });
+        
+        it("should return an error message", async () => {
+
+            const sessionResult = {
+                success: false,
+                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
+            };
+
+            // create a valid token
+            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
+    
+            const { statusCode, body } = await agent.get("/api/v2/bookings/bikeAvailable").set('x-access-token', _token)
+                .send();
+    
+            expect(body).toEqual(sessionResult);             
+        });
+    });
 });
 
 
@@ -604,47 +633,6 @@ describe('DELETE /api/v2/bookings/:id', () => {
     
             const { statusCode, body } = await agent.delete("/api/v2/bookings/bikeAvailable").set('x-access-token', '1234').send();
     
-            expect(body).toEqual(sessionResult);             
-        });
-    });
-    
-    describe("given the incorrect id", () => {
-        it("should return a 404 status code", async () => { 
-            const result = {
-                deletedCount: 0
-            }
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: true, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findBookingMock = jest.spyOn(Booking, "deleteOne").mockReturnValueOnce(result);
-    
-            const { statusCode, body } = await agent.delete("/api/v2/bookings/"+bikeId).set('x-access-token', _token)
-                .send();
-    
-            expect(statusCode).toBe(404);     
-        });
-        
-        it("should return the list of bookings info", async () => {
-            const result = {
-                deletedCount: 0
-            }
-
-            const sessionResult = 
-                {
-                    success: false,
-                    message: 'Booking not found'
-                }
-            
-            
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: true, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findBookingMock = jest.spyOn(Booking, "deleteOne").mockReturnValueOnce(result);
-    
-            const { statusCode, body } = await agent.delete("/api/v2/bookings/"+bikeId).set('x-access-token', _token)
-                .send();
-
             expect(body).toEqual(sessionResult);             
         });
     });
