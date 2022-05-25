@@ -25,7 +25,7 @@ router.post('/login', async function(req, res) {
 	
 	// user not found
 	if (!user) {
-		res.status(400).json({ success: false, message: 'Authentication failed. User not found.' });	
+		res.status(400).json({ success: false, message: 'Authentication failed. Wrong username or password.' });	
 		return;
 	}
 	

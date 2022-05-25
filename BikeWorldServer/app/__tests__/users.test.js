@@ -107,6 +107,71 @@ describe('POST /api/v2/users/login', () => {
         });
     });
 
+    describe("given user not found", () => {
+        it("should return a 400 status code", async () => {
+            const hash = await bcrypt.hash("test_password", 10);
+            const userPayload = {
+                _id: userId,
+                username: "test_username",
+                email: "test_username@domain.com",
+                psw_hash: hash,
+                permissions: false,
+                target: "principiante"
+            };
+
+            const loginMock = jest.spyOn(User, "findOne").mockReturnValueOnce(userPayload);
+    
+            const { statusCode, body } = await agent.post("/api/v2/users/login")
+                .send({ username: "test2_username", password: "wrong_password" });
+    
+            expect(statusCode).toBe(400);     
+        });
+
+        it("should return the error message", async () => {
+            const hash = await bcrypt.hash("test_password", 10);
+            const userPayload = {
+                _id: userId,
+                username: "test_username",
+                email: "test_username@domain.com",
+                psw_hash: hash,
+                permissions: false,
+                target: "principiante"
+            };
+            const sessionResult = {
+                success: false,
+                message: 'Authentication failed. Wrong username or password.'
+            };
+
+            const loginMock = jest.spyOn(User, "findOne").mockReturnValueOnce(userPayload);
+    
+            const { statusCode, body } = await agent.post("/api/v2/users/login")
+                .send({ username: "test_username2", password: "wrong_password" });
+            
+            expect(body).toEqual(sessionResult);          
+        });
+    });
+
+    describe("given incomplete data", () => {
+        it("should return a 400 status code", async () => {
+            const { statusCode, body } = await agent.post("/api/v2/users/login")
+                .send();
+    
+            expect(statusCode).toBe(400);     
+        });
+
+        it("should return the error message", async () => {
+            const sessionResult = {
+                success: false,
+                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+            };
+    
+            const { statusCode, body } = await agent.post("/api/v2/users/login")
+                .send();
+            
+            expect(body).toEqual(sessionResult);          
+        });
+    });
+
 });
 
 //Test signup
