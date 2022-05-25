@@ -9,6 +9,7 @@ const tokenGenerator = require('../utils/tokenGenerator');
 const agent = request.agent(app);
 
 const userId = new mongoose.Types.ObjectId().toString();
+const wrongUserId = new mongoose.Types.ObjectId().toString();
 
 //Test login
 describe('POST /api/v2/users/login', () => {
@@ -471,7 +472,7 @@ describe('PUT /api/v2/users/:id', () => {
             const { statusCode, body } = await agent.put("/api/v2/users/"+userId).set('x-access-token',_token)
                 .send({ password: "hashed_psw", email: "test_update@domain.com", target: "esperto"});          
     
-            expect(body).toBe(sessionResult);    
+            expect(body).toEqual(sessionResult);    
         });
     });
     
@@ -514,16 +515,8 @@ describe('PUT /api/v2/users/:id', () => {
     });
     
     describe("given not correct id", () => {
+        
         it("should return a 403 status code", async () => {
-            const hash = await bcrypt.hash("test_password", 10);
-            const userPayload = {
-                _id: userId,
-                username: "test_username",
-                email: "test_username@domain.com",
-                psw_hash: hash,
-                permissions: false,
-                target: "principiante"
-            };
             // create a valid token
             var _token = jwt.sign({
                     user_id: userId,
@@ -533,28 +526,17 @@ describe('PUT /api/v2/users/:id', () => {
                 process.env.TOKEN_SECRET,
                 {expiresIn: 86400}
             )
-
-            const findUserMock = jest.spyOn(User, "findById").mockReturnValueOnce(userPayload);   
-            const wrongUserId = new mongoose.Types.ObjectId().toString();        
+     
             const { statusCode, body } = await agent.put("/api/v2/users/"+wrongUserId).set('x-access-token',_token)
                 .send({ password: "hashed_psw", email: "test_update@domain.com", target: "esperto"});          
     
             expect(statusCode).toBe(403);     
         });
-
+        
         it("should return an error message", async () => {
-            const hash = await bcrypt.hash("test_password", 10);
             const sessionResult = {
                 success: false,
                 message: 'Unauthorized. You can access only your informations.'
-            };
-            const userPayload = {
-                _id: userId,
-                username: "test_username",
-                email: "test_username@domain.com",
-                psw_hash: hash,
-                permissions: false,
-                target: "principiante"
             };
 
             // create a valid token
@@ -567,8 +549,6 @@ describe('PUT /api/v2/users/:id', () => {
                 {expiresIn: 86400}
             )
 
-            const findUserMock = jest.spyOn(User, "findById").mockReturnValueOnce(userPayload);
-            const wrongUserId = new mongoose.Types.ObjectId().toString();
             const { statusCode, body } = await agent.put("/api/v2/users/"+wrongUserId).set('x-access-token',_token)
                 .send({ password: "hashed_psw", email: "test_update@domain.com", target: "esperto"});  
             
