@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
+const User = require('../../models/user');
 const bcrypt = require('bcryptjs');
-const verifyToken = require('../middleware/auth');
-const tokenGenerator = require('../utils/tokenGenerator');
+const verifyToken = require('../../middleware/auth');
+const tokenGenerator = require('../../utils/tokenGenerator');
 
 router.post('/login', async function(req, res) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,7 +14,7 @@ router.post('/login', async function(req, res) {
 	const { username, password } = req.body;
 
 	if(!username || !password){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 	
@@ -40,7 +40,7 @@ router.post('/login', async function(req, res) {
 			permissions: user.permissions,
 			username: user.username,
 			id: user._id,
-			self: "/api/v1/users/" + user._id,
+			self: "/api/v2/users/" + user._id,
 		});
 		return;
 	}
@@ -55,7 +55,7 @@ router.post('/signUp', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if(!req.body.username || !req.body.password || !req.body.email || !req.body.target){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 
@@ -89,7 +89,7 @@ router.post('/signUp', async function(req, res) {
 		permissions: newUser.permissions,
 		username: newUser.username,
 		id: newUser._id,
-		self: "/api/v1/users/" + newUser._id
+		self: "/api/v2/users/" + newUser._id
 	});
 });
 
@@ -100,7 +100,7 @@ router.get('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	if(!req.params.id){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 
@@ -117,7 +117,7 @@ router.get('/:id', verifyToken, async function(req, res) {
 	let user = await User.findById(req.params.id);
 	
 	res.status(200).json({
-		self: "/api/v1/users/" + user._id,
+		self: "/api/v2/users/" + user._id,
 		id: user._id,
 		target: user.target,
 		permissions: user.permissions,
@@ -133,7 +133,7 @@ router.put('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	if(!req.params.id || !req.body.password || !req.body.email || !req.body.target){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v1/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 
@@ -170,7 +170,7 @@ router.put('/:id', verifyToken, async function(req, res) {
 		permissions: user.permissions,
 		username: user.username,
 		id: user._id,
-		self: "api/v1/users/" + user._id
+		self: "api/v2/users/" + user._id
 	});
 
 });
