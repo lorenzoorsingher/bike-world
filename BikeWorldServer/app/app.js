@@ -5,14 +5,10 @@ const path = require('path');
 
 const tokenChecker = require('./utils/tokenGenerator.js');
 
-const rental = require('./routes/v1/rentals.js');
-const bike = require('./routes/v1/bikes.js');
-const booking = require('./routes/v1/bookings.js');
-const user = require('./routes/v1/users.js');
-const rentalV2 = require('./routes/v2/rentals.js');
-const bikeV2 = require('./routes/v2/bikes.js');
-const bookingV2 = require('./routes/v2/bookings.js');
-const userV2 = require('./routes/v2/users.js');
+const rental = require('./routes/rentals.js');
+const bike = require('./routes/bikes.js');
+const booking = require('./routes/bookings.js');
+const user = require('./routes/users.js');
 
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -43,25 +39,21 @@ app.use(
  * Manage rental(add rental point, get rental point, modify, remove filter rental point) routing and middleware
 */
 app.use('/api/v1/rentals', rental);
-app.use('/api/v2/rentals', rentalV2);
 
 /**
  * Manage booking routing and middleware
 */
 app.use('/api/v1/bookings', booking);
-app.use('/api/v2/bookings', bookingV2);
 
 /**
  * Manage bike(add rental bike, get rental point, remove) routing and middleware
 */
 app.use('/api/v1/bikes', bike);
-app.use('/api/v2/bikes', bikeV2);
 
 /**
  * Manage user
  */
 app.use('/api/v1/users', user);
-app.use('/api/v2/users', userV2);
 
 /**
  * Serve front-end static files
