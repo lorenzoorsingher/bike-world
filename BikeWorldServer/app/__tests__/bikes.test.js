@@ -53,7 +53,7 @@ describe('POST /api/v2/bikes', () => {
             expect(statusCode).toBe(201);     
         });
         
-        it("should return a valid token and user info", async () => {
+        it("should return the bike created info", async () => {
             const bikePayload = {
                 _id: bikeId,
                 code: "Ax26",
@@ -255,7 +255,7 @@ describe('GET /api/v2/bikes', () => {
             expect(statusCode).toBe(200);     
         });
         
-        it("should return a valid token and user info", async () => {
+        it("should return a list of bike", async () => {
             const bikePayload = [{
                 _id: bikeId,
                 code: "Ax26",
@@ -369,7 +369,7 @@ describe('GET /api/v2/bikes/:id', () => {
             expect(statusCode).toBe(200);     
         });
         
-        it("should return a valid token and user info", async () => {
+        it("should return the bike selected info", async () => {
             const bikePayload = {
                 _id: bikeId,
                 code: "Ax26",
@@ -512,7 +512,7 @@ describe('DELETE /api/v2/bikes/:id', () => {
             expect(statusCode).toBe(200);     
         });
         
-        it("should return a valid token and user info", async () => {
+        it("should return a message for bike deleted", async () => {
             const bikePayload = {
                 _id: bikeId,
                 code: "Ax26",
@@ -663,7 +663,7 @@ describe('PATCH /api/v2/bikes/:id', () => {
             expect(statusCode).toBe(200);     
         });
         
-        it("should return a valid token and user info", async () => {
+        it("should return a message to repare the bike", async () => {
             const bikePayload = {
                 _id: bikeId,
                 code: "Ax26",
@@ -737,7 +737,7 @@ describe('PATCH /api/v2/bikes/:id', () => {
             expect(statusCode).toBe(200);     
         });
         
-        it("should return a valid token and user info", async () => {
+        it("should return a message to bike repared", async () => {
             const bikePayload = {
                 _id: bikeId,
                 code: "Ax26",

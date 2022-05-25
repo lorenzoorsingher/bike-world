@@ -40,7 +40,7 @@ router.post('', verifyToken, async function(req, res) {
 		bikeNumber: 0
 	});
 
-	res.status(200).json({
+	res.status(201).json({
 		success: true,
 		message: 'New Rental Point added!',
 		rental: {
@@ -113,7 +113,7 @@ router.delete('/:id', verifyToken, async function(req, res) {
 
 	let rental = await RentalPoint.findById(req.params.id);
 	if(rental == null){
-        res.status(404).json({
+        return res.status(404).json({
             success: false,
             message: 'Rental Point not found'
         });

@@ -263,7 +263,7 @@ describe('GET /api/v2/users/:id', () => {
             expect(statusCode).toBe(200);     
         });
 
-        it("should return a valid token and user info", async () => {
+        it("should return the user info", async () => {
             const hash = await bcrypt.hash("test_password", 10);
             const sessionResult = {
                 target: "principiante",
