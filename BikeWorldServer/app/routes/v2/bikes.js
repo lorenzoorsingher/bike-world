@@ -159,14 +159,14 @@ router.delete('/:id', verifyToken, async function(req, res) {
 	let rentalPoint = await RentalPoint.findOne({
 		name: rentalPointName
 	});
-
+	/* non serve poichè il rental point esiste necessariamente se riesco ad associarlo alla bicicletta
 	if(rentalPoint == null){
 		res.status(404).json({
 			success: false,
 			message: 'Rental point not found'
 		});
 		return;
-	}
+	}*/
 
 	// remove all booking associated to this rental point
 	await Booking.deleteMany({bikeCode: bike.code});

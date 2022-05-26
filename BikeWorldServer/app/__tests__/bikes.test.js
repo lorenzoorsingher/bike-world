@@ -259,7 +259,7 @@ describe('POST /api/v2/bikes', () => {
 });
 
 
-//Test get new bike
+//Test get bike
 describe('GET /api/v2/bikes', () => {
     describe("return array of bikes", () => {
         it("should return a 200 status code", async () => {
@@ -659,7 +659,7 @@ describe('DELETE /api/v2/bikes/:id', () => {
             expect(body).toEqual(sessionResult);             
         });
     });
-
+    /*
     describe("given the unvalid rental Point name", () => {
         it("should return 404 a  status code", async () => { 
             const bikePayload = {
@@ -710,6 +710,7 @@ describe('DELETE /api/v2/bikes/:id', () => {
             expect(body).toEqual(sessionResult);             
         });
     });
+    */
 });
 
 //Test patch a bike
