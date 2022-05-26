@@ -603,14 +603,16 @@ describe('GET /api/v2/rentals/type', () => {
                 address: "Via",
                 lat: 44.36,
                 lng: 11.28,
-                type: "Automatico"
+                type: "Automatico",
+                bikeNumber: 3
             },{
                 _id: rentalId2,
                 name: "Rental2",
                 address: "Via2",
                 lat: 45.36,
                 lng: 10.28,
-                type: "Automatico"
+                type: "Automatico",
+                bikeNumber: 2
             }];
 
             const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
@@ -628,14 +630,16 @@ describe('GET /api/v2/rentals/type', () => {
                 address: "Via",
                 lat: 44.36,
                 lng: 11.28,
-                type: "Automatico"
+                type: "Automatico",
+                bikeNumber: 2
             },{
                 _id: rentalId2,
                 name: "Rental2",
                 address: "Via2",
                 lat: 45.36,
                 lng: 10.28,
-                type: "Automatico"
+                type: "Automatico",
+                bikeNumber: 3
             }];
 
             const sessionResult = [{
@@ -645,6 +649,7 @@ describe('GET /api/v2/rentals/type', () => {
                 lat: 44.36,
                 lng: 11.28,
                 type: "Automatico",
+                bikeNumber: 2,
                 self: "/api/v2/rentals/" + rentalId
             },{
                 _id: rentalId2,
@@ -653,6 +658,7 @@ describe('GET /api/v2/rentals/type', () => {
                 lat: 45.36,
                 lng: 10.28,
                 type: "Automatico",
+                bikeNumber: 3,
                 self: "/api/v2/rentals/" + rentalId2
             }]
 
@@ -700,14 +706,16 @@ describe('GET /api/v2/rentals/zone', () => {
                 address: "Via",
                 lat: 44.36,
                 lng: 11.28,
-                type: "Negozio"
+                type: "Negozio",
+                bikeNumber: 2
             },{
                 _id: rentalId2,
                 name: "Rental2",
                 address: "Via2",
                 lat: 44.40,
                 lng: 11.17,
-                type: "Automatico"
+                type: "Automatico",
+                bikeNumber: 3
             }];
 
             const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
@@ -725,14 +733,16 @@ describe('GET /api/v2/rentals/zone', () => {
                 address: "Via",
                 lat: 44.36,
                 lng: 11.28,
-                type: "Negozio"
+                type: "Negozio",
+                bikeNumber: 2
             },{
                 _id: rentalId2,
                 name: "Rental2",
                 address: "Via2",
                 lat: 44.40,
                 lng: 11.17,
-                type: "Automatico"
+                type: "Automatico",
+                bikeNumber: 3
             }];
 
             const sessionResult = [{
@@ -742,6 +752,7 @@ describe('GET /api/v2/rentals/zone', () => {
                 lat: 44.36,
                 lng: 11.28,
                 type: "Negozio",
+                bikeNumber: 2,
                 self: "/api/v2/rentals/" + rentalId
             },{
                 _id: rentalId2,
@@ -750,6 +761,7 @@ describe('GET /api/v2/rentals/zone', () => {
                 lat: 44.40,
                 lng: 11.17,
                 type: "Automatico",
+                bikeNumber: 3,
                 self: "/api/v2/rentals/" + rentalId2
             }]
 
