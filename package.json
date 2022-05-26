@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start" : "cd BikeWorldServer && npm install && npm run start",
+    "start": "cd BikeWorldServer && npm install && npm run start",
     "build": "cd BikeWorldFrontEnd && npm install --legacy-peer-deps && npm run build",
     "heroku-postbuild": "cd BikeWorldFrontEnd && npm install && npm run build:prod"
   },
