@@ -167,7 +167,7 @@ describe('POST /api/v2/rentals', () => {
         });
     });
 
-    describe("given incomplete data", () => {
+    describe("given incomplete or wrong data", () => {
         it("should return a 400 status code", async () => {
 
             // create a valid token
@@ -208,14 +208,16 @@ describe('GET /api/v2/rentals', () => {
                 address: "Via",
                 lat: 44.36,
                 lng: 11.28,
-                type: "Negozio"
+                type: "Negozio",
+                bikeNumber: 2
             },{
                 _id: rentalId2,
                 name: "Rental2",
                 address: "Via2",
                 lat: 45.36,
                 lng: 10.28,
-                type: "Automatico"
+                type: "Automatico",
+                bikeNumber: 3
             }];
             const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
     
@@ -232,14 +234,16 @@ describe('GET /api/v2/rentals', () => {
                 address: "Via",
                 lat: 44.36,
                 lng: 11.28,
-                type: "Negozio"
+                type: "Negozio",
+                bikeNumber: 2
             },{
                 _id: rentalId2,
                 name: "Rental2",
                 address: "Via2",
                 lat: 45.36,
                 lng: 10.28,
-                type: "Automatico"
+                type: "Automatico",
+                bikeNumber: 3
             }];
 
             const sessionResult = [{
@@ -249,6 +253,7 @@ describe('GET /api/v2/rentals', () => {
                     lat: 44.36,
                     lng: 11.28,
                     type: "Negozio",
+                    bikeNumber: 2,
                     self: "/api/v2/rentals/" + rentalId
                 },{
                     _id: rentalId2,
@@ -257,6 +262,7 @@ describe('GET /api/v2/rentals', () => {
                     lat: 45.36,
                     lng: 10.28,
                     type: "Automatico",
+                    bikeNumber: 3,
                     self: "/api/v2/rentals/" + rentalId2
                 }]
 
