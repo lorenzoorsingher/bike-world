@@ -935,6 +935,7 @@ describe('PATCH /api/v2/bikes/:id', () => {
         });
     });
 
+    /*
     describe("given the unvalid rental Point name", () => {
         it("should return 404 a  status code", async () => { 
             const bikePayload = {
@@ -985,5 +986,6 @@ describe('PATCH /api/v2/bikes/:id', () => {
             expect(body).toEqual(sessionResult);             
         });
     });
+    */
 
 });

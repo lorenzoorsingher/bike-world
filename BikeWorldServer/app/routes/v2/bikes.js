@@ -211,6 +211,7 @@ router.patch('/:id', verifyToken, async function(req, res) {
 		name: bike.rentalPointName
 	});
 
+	/* non serve poichè il rental point esiste necessariamente se riesco ad associarlo alla bicicletta
 	if(rentalPoint == null){
 		res.status(404).json({
 			success: false,
@@ -218,6 +219,7 @@ router.patch('/:id', verifyToken, async function(req, res) {
 		});
 		return;
 	}
+	*/
 	
 	if(bike.state){
 		//put bike in reparation
