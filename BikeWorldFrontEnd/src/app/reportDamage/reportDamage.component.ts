@@ -43,16 +43,17 @@ export class ReportDamageComponent {
       // @ts-ignore
       const params = new HttpParams().set('code', event.target.value)
       const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bikes/code`, { params, headers: headers }).pipe(map(data => {
-        this.bikes = undefined;
 
-        if (data != null) {
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/bikes/code`, { params, headers: headers }).pipe(map(data => {
+        this.bikes = undefined;
+        if (data['bike'] != undefined) {
           this.bikes = new Array(1);
-          this.bikes[0] = new Bike(data._id, data.code, data.model, data.type, data.rentalPointName, data.state);
+          let tmpBike = new Bike(data['bike']._id, data['bike'].code, data['bike'].model, data['bike'].type, data['bike'].rentalPointName, data['bike'].state);
+          this.bikes[0] = tmpBike
         }
       })));
     } else {
-      this.getBikes();
+      await this.getBikes();
     }
 
   }
@@ -74,7 +75,7 @@ export class ReportDamageComponent {
 
   selectBike(event: any) {
     // @ts-ignore
-    document.getElementById("bikeInfoModule").style.display = 'block';
+
 
     if (event != undefined) {
       this.selectedBikeId = event.target.id;
@@ -84,20 +85,13 @@ export class ReportDamageComponent {
       let bikeInfo = "";
       let bike = this.getBike();
 
-      // @ts-ignore
-      bikeInfo = "<b>Codice bici:</b> " + bike.code + "<br><b>Modello:</b> " + bike.model + "<br><b>Tipo:</b> " + bike.type + "<br><b>Stato:</b> ";
-      // @ts-ignore
-      if (bike.state == true) { bikeInfo += "utilizzabile " } else { bikeInfo += "in riparazione " }
-      bikeInfo += "<br><b>Nome punto di ritiro:</b> " + bike?.rentalPointName;
-
-      // @ts-ignore  
-      document.getElementById("bikeInfo").innerHTML = bikeInfo;
+      console.log(bike)
     }
   }
 
-
-
 }
+
+
 
 class Bike {
   id: string;
