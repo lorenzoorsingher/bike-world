@@ -73,7 +73,7 @@
         </a>
          <br><br>
         <form id="changeRentalPointForm" style="display: none;"
-            (submit)="changeRentalPoint($any(nameChange.value), $any(addressChange.value), $any(latChange.value), $any(lngChange.value), $any(typeRentalPointChange.value), $event)">
+            (submit)="changeRentalPoint($any(addressChange.value), $any(latChange.value), $any(lngChange.value), $any(typeRentalPointChange.value), $event)">
             <h4>Modifica Punto di noleggio</h4>
             <b>Inserire nome:</b> <input type="text" class="form-control-plaintext" id="nameChange" #nameChange disabled><br>
             <b>Inserire indirizzo:</b> <input type="text" class="form-control" style="width: 300px;" id="addressChange" #addressChange required><br>

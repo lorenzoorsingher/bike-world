@@ -23,7 +23,7 @@ export class AccountComponent implements OnInit {
   setAccountInfo(){
     const headers = new HttpHeaders().set('x-access-token', sessionStorage.getItem('token') ?? "");  
     // @ts-ignore
-    lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/users/${sessionStorage.getItem("userID")}`, {headers: headers}).pipe(map( data => { 
+    lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/users/${sessionStorage.getItem("userID")}`, {headers: headers}).pipe(map( data => { 
         // @ts-ignore
         document.getElementById("username").value = data.username;
         // @ts-ignore
@@ -65,7 +65,7 @@ export class AccountComponent implements OnInit {
         };
         const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
         //console.log(params);
-        await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/users/${sessionStorage.getItem("userID")}`, body, {headers: headers}).pipe(map( data => { 
+        await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v2/users/${sessionStorage.getItem("userID")}`, body, {headers: headers}).pipe(map( data => { 
           // @ts-ignore
           document.getElementById("infoUpdatedMessage").style.display = 'block';
             // @ts-ignore

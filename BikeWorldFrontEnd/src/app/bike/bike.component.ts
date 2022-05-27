@@ -21,7 +21,7 @@ export class BikeComponent {
   }
 
   async getRentalPointsName() {
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/name`).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/rentals/name`).pipe(map(data => {
       let i;
       this.rentalName = new Array(data.length);
 
@@ -35,7 +35,7 @@ export class BikeComponent {
 
   async getBikes() {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bikes`, { headers: headers }).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/bikes`, { headers: headers }).pipe(map(data => {
       let i;
       this.bikes = new Array(data.length);
 
@@ -72,7 +72,7 @@ export class BikeComponent {
     document.getElementById("creationBikeError").style.display = 'none';
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bikes`, body, { headers: headers }).pipe(map(data => {
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/bikes`, body, { headers: headers }).pipe(map(data => {
       this.updateInfoAdd(code);
     }), catchError(error => {
       // @ts-ignore
@@ -93,7 +93,7 @@ export class BikeComponent {
     let bike = this.getBike();
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.patch<any>(`${environment.apiUrl}/api/v1/bikes/${this.selectedBikeId}`, null, { headers: headers }).pipe(map(data => {
+    await lastValueFrom(this.http.patch<any>(`${environment.apiUrl}/api/v2/bikes/${this.selectedBikeId}`, null, { headers: headers }).pipe(map(data => {
 
     })))
 
@@ -105,7 +105,7 @@ export class BikeComponent {
     let bike = this.getBike();
     // @ts-ignore    
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/bikes/${this.selectedBikeId}`, { headers: headers }).pipe(map(data => {
+    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v2/bikes/${this.selectedBikeId}`, { headers: headers }).pipe(map(data => {
 
     })));
     this.selectedBikeId = "";

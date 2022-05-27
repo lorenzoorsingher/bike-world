@@ -58,14 +58,13 @@ export class ItineraryComponent {
     }
   }
 
-  async changeItinerary(name: string, addressStarting: string, latS: number, lngS: number, description: string, length: number, difficulty: string, event: any) {
+  async changeItinerary(addressStarting: string, latS: number, lngS: number, description: string, length: number, difficulty: string, event: any) {
     event.preventDefault()
     // @ts-ignore
     document.getElementById("changeItineraryError")?.style.display = "none";
 
     if(this.checkLatLng(latS, lngS) == true){
       const body = {
-        name,
         addressStarting,
         description,
         latS,
@@ -74,9 +73,10 @@ export class ItineraryComponent {
         difficulty
       };
       const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-      await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v2/iteneraries/${this.selectedItineraryId}`, body, {headers: headers}).pipe(map(data => {
-
+      await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v2/itineraries/${this.selectedItineraryId}`, body, {headers: headers}).pipe(map(data => {
+        
       }), catchError(error => {
+          console.log(error);
         // @ts-ignore
         document.getElementById("changeItineraryError")?.style.display = "block";
         // @ts-ignore
@@ -233,7 +233,7 @@ export class ItineraryComponent {
     if (event.target.value != "") {
       let del = true;
       const params = new HttpParams().set('difficulty', event.target.value)
-      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/itinerary/difficulty`, { params }).pipe(map(data => {
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/itineraries/difficulty`, { params }).pipe(map(data => {
         let i;
         this.itineraries = new Array(data.length);
 

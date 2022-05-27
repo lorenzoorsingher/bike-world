@@ -75,7 +75,7 @@
         </a>
          <br><br>
         <form id="changeItineraryForm" style="display: none;"
-            (submit)="changeItinerary($any(nameChange.value), $any(addressStartingChange.value), $any(latSChange.value), $any(lngSChange.value), $any(descriptionChange.value), $any(lengthChange.value) ,$any(difficultyChange.value), $event)">
+            (submit)="changeItinerary($any(addressStartingChange.value), $any(latSChange.value), $any(lngSChange.value), $any(descriptionChange.value), $any(lengthChange.value) ,$any(difficultyChange.value), $event)">
             <h4>Modifica Itinerario</h4>
                 <b>Inserire nome:</b> <input type="text" class="form-control" style="width:300px;" id="nameChange" #nameChange disabled><br>
                 <b>Inserire indirizzo punto di partenza:</b> <input type="text" class="form-control" style="width: 300px;" id="addressStartingChange" #addressStartingChange required><br>
