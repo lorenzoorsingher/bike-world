@@ -19,6 +19,24 @@
     }
 </style>
 
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min: 0,
+      max: 150,
+      values: [ 10, 150 ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+  } );
+  </script>
+
 <div>
     <div class="sidebar">
         <h4>Filtra elementi</h4>
@@ -31,6 +49,9 @@
         </select>
         <br>
         <label for="dataFilter"><b>Scegliere lunghezza</b></label>
+        <div class="custom-slider">
+            <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (userChange)="filterLengthBased(this)"></ngx-slider>
+          </div>
         <br>
         <label for="zoneFilter"><b>Rimuovi filtro per zona</b></label>
         <button type="submit" class="btn btn-danger" id="zone" name="zone" #zone (click)="deleteFilterZoneBased()">Rimuovi</button>

@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { catchError, lastValueFrom, map, Observable, of } from 'rxjs';
 import { AgmMap, MapsAPILoader } from '@agm/core';
+import noUiSlider from 'nouislider';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ConditionalExpr } from '@angular/compiler';
+import { LabelType, Options } from '@angular-slider/ngx-slider';
 
 
 @Component({
@@ -12,14 +14,23 @@ import { ConditionalExpr } from '@angular/compiler';
   templateUrl: './itinerary.component.html',
   styleUrls: ['./itinerary.component.css']
 })
-export class ItineraryComponent {
+export class ItineraryComponent{
   latC = 45.4654219;
   lngC = 9.1859243;
   itineraries: Itinerary[] | undefined;
   selectedItineraryId: string = "";
 
+  minValue: number = 15.0;
+  maxValue: number = 150.0;
+  options: Options = {
+    floor: 0.0,
+    ceil: 150.0,
+    step: 15.0,
+    showTicks: true
+  };
+
   constructor(private http: HttpClient, private apiloader: MapsAPILoader, private router: Router) {
-    this.getItineraries();
+    this.getItineraries();   
   }
 
   async newItinerary(name: string, addressStarting: string, latS: number, lngS: number, description: string, length: number, difficulty: string, event: any) {
@@ -275,6 +286,23 @@ export class ItineraryComponent {
 
   deleteFilterZoneBased(){
     this.getItineraries();
+  }
+
+  async filterLengthBased(event: any){
+    let min = parseFloat(event.minValue);
+    let max = parseFloat(event.maxValue);
+    const params = new HttpParams().set('minLength', min).set("maxLength", max);
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/itineraries/length`, { params }).pipe(map(data => {      
+      let i;
+      this.itineraries = new Array(data.length);
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+            this.itineraries[i] = new Itinerary(data[i]._id, data[i].name, data[i].addressStarting, data[i].description, data[i].latS, data[i].lngS, data[i].difficulty, data[i].length);
+        }
+      }
+    })));
+
+    this.selectItinerary(undefined);
   }
 
 }

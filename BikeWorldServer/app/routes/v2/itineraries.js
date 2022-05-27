@@ -247,15 +247,15 @@ router.get('/length', async function(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-	
-	if(isNaN(parseFloat(req.query.lowLimitLength)) || isNaN(parseFloat(req.query.highLimitLength))){
+
+	if(isNaN(parseFloat(req.query.minLength)) || isNaN(parseFloat(req.query.maxLength))){
 		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
 
 	// find the itineraries
 	let itineraries = await Itinerary.find({ 
-		'length': {$gte: req.query.lowLimitLength, $lte: req.query.highLimitLength }
+		'length': {$gte: req.query.minLength, $lte: req.query.maxLength }
 	});
 	
 	res.status(200).json(itineraries.map(itinerary => {

@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AgmCoreModule } from '@agm/core';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
@@ -22,7 +23,7 @@ import { ItineraryComponent } from './itinerary/itinerary.component';
     AppRoutingModule,
     HttpClientModule,
     AgmCoreModule.forRoot({ apiKey: '', libraries: ['places']}),
-    NgbModule
+    NgbModule, NgxSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]
