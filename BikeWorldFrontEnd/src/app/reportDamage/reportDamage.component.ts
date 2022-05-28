@@ -17,7 +17,7 @@ export class ReportDamageComponent {
   bikes: Bike[] | undefined;
   selectedBikeId: string = "";
   rentalName: string[] | undefined;
-
+  description = ''
   constructor(private http: HttpClient, private apiloader: MapsAPILoader, private router: Router) {
     console.log("damage")
     this.getBikes();

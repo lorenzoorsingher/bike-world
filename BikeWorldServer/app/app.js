@@ -13,6 +13,7 @@ const rentalV2 = require('./routes/v2/rentals.js');
 const bikeV2 = require('./routes/v2/bikes.js');
 const bookingV2 = require('./routes/v2/bookings.js');
 const userV2 = require('./routes/v2/users.js');
+const damage = require('./routes/v2/damage.js');
 
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -28,14 +29,14 @@ app.use(cors());
 
 const swaggerOptions = {
   swaggerOptions: {
-      url: "/api/v1/api-docs/swagger.json",
+    url: "/api/v1/api-docs/swagger.json",
   }
 };
 
 app.get("/api/v1/api-docs/swagger.json", (req, res) => res.json(swaggerDocument));
 app.use(
   "/api/v1/api-docs",
-  swaggerUi.serveFiles(null, swaggerOptions), 
+  swaggerUi.serveFiles(null, swaggerOptions),
   swaggerUi.setup(null, swaggerOptions)
 );
 
@@ -62,6 +63,11 @@ app.use('/api/v2/bikes', bikeV2);
  */
 app.use('/api/v1/users', user);
 app.use('/api/v2/users', userV2);
+
+/**
+ * Manage damage reports
+*/
+app.use('/api/v2/damage', damage);
 
 /**
  * Serve front-end static files

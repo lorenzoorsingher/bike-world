@@ -20,31 +20,29 @@
 </style>
 
 <div>
-    <div class="bikeList">
-        <h4>Filtra Biciclette</h4>
-        <b>Ricerca per codice </b><input type="text" class="form-control" style="width: 500px;" id="codeSearch"
-            #codeSearch (change)="researchBikeCode($event)"><br>
-
-    </div>
     <div class="bike">
 
         <h4>Segnala un danno</h4>
-        <form (submit)=" $any(code.value)">
+        <form (submit)="$any(description)">
             <h4>Lista Biciclette</h4>
+            <div class="bikeList">
+                <h5>Filtra Biciclette</h5>
+                <b>Ricerca per codice </b><input type="text" class="form-control" style="width: 500px;" id="codeSearch"
+                    #codeSearch (change)="researchBikeCode($event)"><br>
+
+            </div>
             <ul class="list-group" *ngFor="let element of bikes">
                 <li class="list-group-item" style="width:500px;" (click)="selectBike($event)" id="{{element.id}}">
                     {{element.code}} {{element.model}}</li>
             </ul>
-            <b>Inserire codice: </b> <input type="text" class="form-control" style="width: 300px;" id="code" #code
-                required><br>
             <b>Inserire una breve descrizione: </b> <input type="text" class="form-control" style="width: 300px;"
                 id="description" #model required><br>
 
             <div>
 
             </div>
-            <button class="btn btn-success" type="submit">Crea nuova bici</button>
-            <div class="alert alert-danger" style="width:300px; display: none;" id="creationBikeError" role="alert">
+            <button class="btn btn-success" type="submit">Invia segnalazione</button>
+            <div class="alert alert-danger" style="width:300px; display: none;" id="reportDamageError" role="alert">
             </div>
         </form>
     </div>
