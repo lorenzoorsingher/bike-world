@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+const ReviewModel = require('./review');
+
 var Schema = mongoose.Schema;
 
 // set up a mongoose model
@@ -9,5 +11,6 @@ module.exports = mongoose.model('Itinerary', new Schema({
 	lngS: Number,
     description: String,
 	difficulty: String,
-	length: Number	
+	length: Number,
+	reviews: [ ReviewModel.schema ]
 }));
