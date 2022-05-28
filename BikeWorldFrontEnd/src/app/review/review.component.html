@@ -1,0 +1,16 @@
+<div class="card"> 
+    <div class="card-body">
+        <div class="row align-items-center">        
+            <h3>{{ reviewModel?.title }} - {{ reviewModel?.author }}</h3>            
+        </div>
+        <div class="row align-items-center">        
+            <p class="">
+                <span class="text-muted">{{ reviewModel?.stars ?? 0 }}</span> 
+                <ngb-rating [max]="5" [rate]="reviewModel?.stars ?? 0" [readonly]="true"></ngb-rating>
+            </p>        
+        </div>
+        <div class="row">        
+            <p class="lh-sm">{{ reviewModel?.text }}</p>
+        </div>    
+    </div>
+</div>

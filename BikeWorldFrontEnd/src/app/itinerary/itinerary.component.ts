@@ -8,7 +8,6 @@ import { environment } from 'src/environments/environment';
 import { ConditionalExpr } from '@angular/compiler';
 import { LabelType, Options } from '@angular-slider/ngx-slider';
 
-
 @Component({
   selector: 'itinerary-root',
   templateUrl: './itinerary.component.html',
@@ -18,7 +17,9 @@ export class ItineraryComponent{
   latC = 45.4654219;
   lngC = 9.1859243;
   itineraries: Itinerary[] | undefined;
+  
   selectedItineraryId: string = "";
+  selectedItinerary?: Itinerary;
 
   minValue: number = 15.0;
   maxValue: number = 150.0;
@@ -120,7 +121,10 @@ export class ItineraryComponent{
       document.getElementById("changeItineraryError")?.innerHTML = error.error.message;
       return of([]);
     })));
+    
     this.selectedItineraryId = "";
+    this.selectedItinerary = undefined;
+
     await this.getItineraries();
     this.selectItinerary(undefined);
   }
@@ -203,17 +207,15 @@ export class ItineraryComponent{
       this.selectedItineraryId = event.target.id;
     }
     if (this.selectedItineraryId != "") {
-      let itineraryInfo = "";
       let itinerary = this.getItinerary();
-
-      // @ts-ignore
-      itineraryInfo = "<b>Nome :</b> " + itinerary.name + "<br><b>Indirizzo partenza:</b> " + itinerary.addressStarting+ "<br><b>Descrizione:</b> " + itinerary.description + "<br><b>Difficoltà:</b> " + itinerary?.difficulty + "<br><b>Lunghezza:</b> " + itinerary.length;
-
-      // @ts-ignore  
-      document.getElementById("itinerarySelected").innerHTML = itineraryInfo;
+      this.selectedItinerary = itinerary;
+      
+      // retriving reviwes for the selected itinery
+      this.http.get<any>(`${environment.apiUrl}/api/v2/itineraries/${this.selectedItineraryId}/reviews`).subscribe(data => {
+        this.selectedItinerary!.reviews = data;
+      });
     } else {
-      // @ts-ignore  
-      document.getElementById("itinerarySelected").innerHTML = "";
+      this.selectedItinerary = undefined;
     }
   }
 
@@ -230,14 +232,14 @@ export class ItineraryComponent{
         itinerary = this.itineraries[i];
       }
     }
-    // @ts-ignore
-    this.selectedItineraryId = itinerary?.name;
-    let itineraryInfo = "";
-    // @ts-ignore
-    itineraryInfo = "<b>Nome :</b> " + itinerary.name + "<br><b>Indirizzo partenza:</b> " + itinerary.addressStarting+ "<br><b>Descrizione:</b> " + itinerary.description + "<br><b>Difficoltà:</b> " + itinerary?.difficulty + "<br><b>Lunghezza:</b> " + itinerary.length;
-    // @ts-ignore  
-    document.getElementById("itinerarySelected").innerHTML = itineraryInfo;
 
+    this.selectedItineraryId = itinerary?.id ?? '';
+    this.selectedItinerary = itinerary;
+    
+    // retriving reviwes for the selected itinery
+    this.http.get<any>(`${environment.apiUrl}/api/v2/itineraries/${this.selectedItineraryId}/reviews`).subscribe(data => {
+      this.selectedItinerary!.reviews = data;
+    });
   }
 
   async filterDifficultyBased(event: any) {
@@ -260,8 +262,7 @@ export class ItineraryComponent{
 
       if (del == true) {
         this.selectedItineraryId = "";
-        // @ts-ignore  
-        document.getElementById("itinerarySelected").innerHTML = "";
+        this.selectedItinerary = undefined;        
       }
     } else {
       this.getItineraries();
@@ -316,6 +317,7 @@ class Itinerary {
   lngS: number = 0;
   difficulty: string | undefined;
   length: number | undefined;
+  reviews: [] = [];
 
   constructor(id: string, name: string, addressStarting: string, description: string, latS: number, lngS: number, difficulty: string, length: number) {
     this.id = id;

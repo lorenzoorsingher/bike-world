@@ -12,11 +12,12 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { BikeComponent } from './bike/bike.component';
 import { BookingComponent } from './booking/booking.component';
 import { ItineraryComponent } from './itinerary/itinerary.component';
+import { ReviewComponent } from './review/review.component';
 
 @NgModule({
   declarations: [
     AppComponent,HeaderComponent,
-    RentalPointComponent, BikeComponent, BookingComponent, ItineraryComponent
+    RentalPointComponent, BikeComponent, BookingComponent, ItineraryComponent, ReviewComponent
   ],
   imports: [
     BrowserModule,
