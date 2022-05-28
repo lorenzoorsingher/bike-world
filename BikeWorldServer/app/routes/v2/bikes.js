@@ -102,9 +102,30 @@ router.get('/code', verifyToken, async function (req, res) {
 	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 	res.setHeader('Access-Control-Allow-Credentials', true);
 
+	if (!req.query.code) {
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });
+		return;
+	}
+
 	// find the bike
-	let bike = await Bike.findOne({ 'code': req.query.code }).exec();
-	res.status(200).json({ bike });
+	let bike = await Bike.findOne({ 'code': req.query.code });
+	if (bike == null) {
+		res.status(404).json({
+			success: false,
+			message: 'Bike not found'
+		});
+		return;
+	}
+	
+	res.status(200).json({
+		_id: bike._id,
+		code: bike.code,
+		model: bike.model,
+		type: bike.type,
+		rentalPointName: bike.rentalPointName,
+		state: bike.state,
+		self: "/api/v2/bikes/code/" + bike._id
+	});
 });
 
 // ---------------------------------------------------------
@@ -168,10 +189,6 @@ router.delete('/:id', verifyToken, async function (req, res) {
 	}
 
 	const rentalPointName = bike.rentalPointName;
-
-	// remove all booking associated to this rental point
-	await Booking.deleteMany({ bikeCode: bike.code });
-	await Bike.deleteOne({ _id: req.params.id });
 
 	//find the rental Point
 	let rentalPoint = await RentalPoint.findOne({

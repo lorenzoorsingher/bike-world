@@ -380,6 +380,164 @@ describe('GET /api/v2/bikes', () => {
     });
 });
 
+//Test get a bike by code
+describe('GET /api/v2/bikes/code', () => {
+    describe("given the valid code", () => {
+        it("should return a 200 status code", async () => {
+            const bikePayload = {
+                _id: bikeId,
+                code: "Ax26",
+                model: "model",
+                type: "type",
+                rentalPointName: "Rental",
+                state: true
+            };
+            
+            // create a valid token
+            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
+
+            const findMock = jest.spyOn(Bike, "findOne").mockReturnValueOnce(bikePayload);
+    
+            const { statusCode, body } = await agent.get("/api/v2/bikes/code?code=Ax26").set('x-access-token', _token)
+                .send();
+    
+            expect(statusCode).toBe(200);     
+        });
+        
+        it("should return the bike selected info", async () => {
+            const bikePayload = {
+                _id: bikeId,
+                code: "Ax26",
+                model: "model",
+                type: "type",
+                rentalPointName: "Rental",
+                state: true
+            };
+            
+            const sessionResult = {
+                _id: bikeId,
+                code: "Ax26",
+                model: "model",
+                type: "type",
+                rentalPointName: "Rental",
+                state: true,
+                self: "/api/v2/bikes/code/" + bikeId
+            };
+
+            // create a valid token
+            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
+
+            const findMock = jest.spyOn(Bike, "findOne").mockReturnValueOnce(bikePayload);
+    
+            const { statusCode, body } = await agent.get("/api/v2/bikes/code?code=Ax26").set('x-access-token', _token)
+                .send();
+    
+            expect(body).toEqual(sessionResult);             
+        });
+    });
+
+    describe("don't pass token", () => {
+        it("should return a 401 status code", async () => {
+            
+            const { statusCode, body } = await agent.get("/api/v2/bikes/code").send();
+            expect(statusCode).toBe(401);     
+        });
+        
+        it("should return an error message", async () => {
+            
+            const sessionResult = {
+                success: false,
+                message: 'No token provided.'
+            };
+    
+            const { statusCode, body } = await agent.get("/api/v2/bikes/code").send();
+    
+            expect(body).toEqual(sessionResult);             
+        });
+    });
+
+    describe("pass invalid token", () => {
+        it("should return a 403 status code", async () => {
+            
+            const { statusCode, body } = await agent.get("/api/v2/bikes/code").set('x-access-token', '1234').send();
+            expect(statusCode).toBe(403);     
+        });
+        
+        it("should return an error message", async () => {
+            
+            const sessionResult = {
+                success: false,
+                message: 'Failed to authenticate token.'
+            };
+    
+            const { statusCode, body } = await agent.get("/api/v2/bikes/code").set('x-access-token', '1234').send();
+    
+            expect(body).toEqual(sessionResult);             
+        });
+    });
+
+    describe("given the uncorrect code", () => {
+        it("should return a 404 status code", async () => {            
+            // create a valid token
+            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
+
+            const findMock = jest.spyOn(Bike, "findOne").mockReturnValueOnce(null);
+    
+            const { statusCode, body } = await agent.get("/api/v2/bikes/code?code=15264").set('x-access-token', _token)
+                .send();
+    
+            expect(statusCode).toBe(404);     
+        });
+        
+        it("should return an error message", async () => {
+            
+            const sessionResult = {
+                success: false,
+                message: 'Bike not found'
+            };
+
+            // create a valid token
+            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
+
+            const findMock = jest.spyOn(Bike, "findOne").mockReturnValueOnce(null);
+    
+            const { statusCode, body } = await agent.get("/api/v2/bikes/code?code=15264").set('x-access-token', _token)
+                .send();
+    
+            expect(body).toEqual(sessionResult);             
+        });
+    });
+
+    describe("given the incorrect code", () => {
+        it("should return a 400 status code", async () => {            
+            // create a valid token
+            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
+    
+            const { statusCode, body } = await agent.get("/api/v2/bikes/code").set('x-access-token', _token)
+                .send();
+    
+            expect(statusCode).toBe(400);     
+        });
+        
+        it("should return an error message", async () => {
+            
+            const sessionResult = {
+                success: false,
+                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+            };
+
+            // create a valid token
+            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
+    
+            const { statusCode, body } = await agent.get("/api/v2/bikes/code").set('x-access-token', _token)
+                .send();
+    
+            expect(body).toEqual(sessionResult);             
+        });
+    });
+});
+
+
 //Test get a bike
 describe('GET /api/v2/bikes/:id', () => {
     describe("given the  valid id", () => {
@@ -512,7 +670,7 @@ describe('GET /api/v2/bikes/:id', () => {
 //Test delete a bike
 describe('DELETE /api/v2/bikes/:id', () => {
     describe("given the  valid id", () => {
-        it("should return a 201 status code", async () => {
+        it("should return a 200 status code", async () => {
             const bikePayload = {
                 _id: bikeId,
                 code: "Ax26",
