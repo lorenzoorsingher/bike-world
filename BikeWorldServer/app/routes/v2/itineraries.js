@@ -51,7 +51,7 @@ router.post('', verifyToken, async function(req, res) {
             description: newItinerary.description,
 		  	length: newItinerary.length,
 		  	difficulty: newItinerary.difficulty,
-			self: "/api/v2/itinerary/" + newItinerary._id
+			self: "/api/v2/itineraries/" + newItinerary._id
 		}
 	});
 });
@@ -68,7 +68,7 @@ router.get('', async function(req, res) {
 	
 	// find the itineraries
 	let itineraries = await Itinerary.find({});	
-	res.json(itineraries.map(itinerary => {
+	res.status(200).json(itineraries.map(itinerary => {
 		return {
 			_id: itinerary._id,
 			name: itinerary.name,
@@ -78,7 +78,7 @@ router.get('', async function(req, res) {
             description: itinerary.description,
 		  	length: itinerary.length,
 		  	difficulty: itinerary.difficulty,
-			self: "/api/v2/itinerary/" + itinerary._id
+			self: "/api/v2/itineraries/" + itinerary._id
 		}
 	}));
 });

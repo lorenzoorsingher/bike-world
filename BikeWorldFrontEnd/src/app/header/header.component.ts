@@ -46,6 +46,7 @@ export class HeaderComponent {
     this.sessionStorageHeader.removeItem("userID");
     this.sessionStorageHeader.removeItem("username");
     this.sessionStorageHeader.removeItem("permissions");
+    this.sessionStorageHeader.removeItem("token");
     this.router.navigate(['/']);    
   }
 

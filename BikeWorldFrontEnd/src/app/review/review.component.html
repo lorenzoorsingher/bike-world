@@ -1,0 +1,47 @@
+<div *ngIf="!isDeleted" class="card"> 
+
+    <!-- View -->
+    <div *ngIf="!updateFormVisible" class="card-body">
+        <div class="row align-items-center">      
+            <div class="col">
+                <h3>{{ reviewModel.title }} - {{ reviewModel.author }}</h3>            
+            </div>  
+            <div class="col-4 btn-toolbar">
+                <button *ngIf="btnRemoveVisible()" class="card-link btn btn-danger" (click)="removeReview()">Remove</button>
+                <button *ngIf="btnUpdateVisible()" class="card-link btn btn-info" (click)="updateFormVisible = !updateFormVisible">Update</button>                                              
+            </div>
+        </div>
+        <div class="row align-items-center">        
+            <p class="">
+                <span class="text-muted">{{ reviewModel.stars }}</span> 
+                <ngb-rating [max]="5" [rate]="reviewModel.stars" [readonly]="true"></ngb-rating>
+            </p>        
+        </div>
+        <div class="row">        
+            <p class="lh-sm">{{ reviewModel.text }}</p>
+        </div>    
+        <div *ngIf="removeError" class="alert alert-danger" id="removeError" role="alert">{{ removeError }}</div>       
+    </div>
+
+    <!-- Update -->
+    <div *ngIf="updateFormVisible" class="card-body">
+        <form (submit)="updateReview(title.value, text.value, $event)">    
+            <div class="row">
+                <label for="reviewTitle" class="form-label col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                    <input required class="form-control" id="reviewTitle" #title [value]="reviewModel.title">
+                </div>
+            </div>
+            <div>
+                <span class="text-muted">{{ inputReviewStars }}</span> 
+                <ngb-rating [max]="5" [(rate)]="inputReviewStars"></ngb-rating>
+            </div>
+            <div class="mb-3">            
+                <textarea required class="form-control" id="reviewText" [value]="reviewModel.text" #text rows="3"></textarea>
+            </div>
+            <div *ngIf="updateError" class="alert alert-danger" id="updateError" role="alert">{{ updateError }}</div>       
+            <button type="submit" class="btn btn-success">Conferma</button>
+            <button type="button" (click)="updateFormVisible = !updateFormVisible" class="btn btn-danger">Annulla</button>
+        </form>
+    </div>
+</div>

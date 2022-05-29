@@ -14,6 +14,7 @@ const bikeV2 = require('./routes/v2/bikes.js');
 const bookingV2 = require('./routes/v2/bookings.js');
 const userV2 = require('./routes/v2/users.js');
 const itinerary = require('./routes/v2/itineraries.js');
+const review = require('./routes/v2/reviews.js');
 
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -68,6 +69,11 @@ app.use('/api/v2/users', userV2);
  * Manage itineraries routing and middleware
 */
 app.use('/api/v2/itineraries', itinerary);
+
+/**
+ * Manage reviews of itineraries
+*/
+app.use('/api/v2/itineraries/:itineraryId/reviews', review);
 
 /**
  * Serve front-end static files
