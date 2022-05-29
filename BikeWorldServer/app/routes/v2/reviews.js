@@ -135,7 +135,7 @@ router.delete('/:reviewId', verifyToken, async function(req, res) {
 		return;
     }
     
-    const review = itinerary.reviews.id(reviewId);
+    const review = await itinerary.reviews.id(reviewId);
 
     const loggedUsername = req.loggedUser.username;
     if(loggedUsername != review.author && !req.loggedUser.permissions){
@@ -195,7 +195,7 @@ router.put('/:reviewId', verifyToken, async function(req, res) {
 		return;
     }
 
-    let review = itinerary.reviews.id(reviewId);
+    let review = await itinerary.reviews.id(reviewId);
     if(review == null){
         res.status(404).json({
             status: false,

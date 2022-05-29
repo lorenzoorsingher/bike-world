@@ -333,6 +333,7 @@ export class ItineraryComponent{
     await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/itineraries/${this.selectedItineraryId}/reviews`, reqBody, {headers: headers}).pipe(map(data => {
       this.selectedItinerary?.reviews.push(data.review);
       this.addReviewCollapsed = true;
+      this.newReviewError = "";
     }), catchError(error => {
       this.newReviewError = error.error.message;
       return of([]);

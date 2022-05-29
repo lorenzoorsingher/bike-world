@@ -74,7 +74,7 @@
                         <div class="btn-toolbar">
                             <button *ngIf="addItemOptions() == true && selectedItineraryId != ''" class="card-link btn btn-danger" (click)="removeItinerary()">Remove itinerary</button>
                             <button *ngIf="addItemOptions() == true && selectedItineraryId != ''" class="card-link btn btn-info" (click)="allowItineraryChange()">Change itinerary info</button>                              
-                            <button *ngIf="isUserLogged()" class="card-link btn btn-info" (click)="addReviewCollapsed = !addReviewCollapsed">Aggiungi Recensione</button>  
+                            <button *ngIf="isUserLogged()" class="card-link btn btn-success" (click)="addReviewCollapsed = !addReviewCollapsed">Aggiungi Recensione</button>  
                         </div>                                                    
                     </div>
 
@@ -103,7 +103,7 @@
                     
                     <!-- Reviews -->
                     <div *ngFor="let review of selectedItinerary?.reviews">
-                        <review-block [reviewModel]="review" ></review-block>
+                        <review-block [itineraryId]="selectedItinerary?.id ?? ''" [reviewModel]="review" ></review-block>
                     </div>
                 </div>
 
