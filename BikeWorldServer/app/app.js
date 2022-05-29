@@ -13,7 +13,7 @@ const rentalV2 = require('./routes/v2/rentals.js');
 const bikeV2 = require('./routes/v2/bikes.js');
 const bookingV2 = require('./routes/v2/bookings.js');
 const userV2 = require('./routes/v2/users.js');
-const damage = require('./routes/v2/damage.js');
+const damage = require('./routes/v2/damages.js');
 
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');

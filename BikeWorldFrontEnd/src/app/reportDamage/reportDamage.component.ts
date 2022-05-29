@@ -84,14 +84,43 @@ export class ReportDamageComponent {
     if (this.selectedBikeId != "") {
       let bikeInfo = "";
       let bike = this.getBike();
-
+      this.selectedBikeId = event.target.id;
+      console.log(this.selectedBikeId)
       console.log(bike)
     }
   }
 
+  async newDamageReport(description: string, event: any) {
+    event.preventDefault()
+
+    let id = this.selectedBikeId
+    const body = { id, description };
+    // @ts-ignore
+    document.getElementById("reportDamageError").style.display = 'none';
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/damage`, body, { headers: headers }).pipe(map(data => {
+
+    }), catchError(error => {
+      // @ts-ignore
+      document.getElementById("reportDamageError").style.display = 'block';
+      // @ts-ignore
+      document.getElementById("reportDamageError")?.innerHTML = error.error.message;
+      return of([]);
+    })))
+  }
+
 }
 
+class DamageReport {
+  code: string | undefined;
+  description: string | undefined;
 
+  constructor(code: string, description: string) {
+    this.code = code;
+    this.description = description;
+  }
+}
 
 class Bike {
   id: string;

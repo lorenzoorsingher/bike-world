@@ -23,7 +23,7 @@
     <div class="bike">
 
         <h4>Segnala un danno</h4>
-        <form (submit)="$any(description)">
+        <form (submit)="newDamageReport($any(description.value),$event)">
             <h4>Lista Biciclette</h4>
             <div class="bikeList">
                 <h5>Filtra Biciclette</h5>
@@ -33,10 +33,11 @@
             </div>
             <ul class="list-group" *ngFor="let element of bikes">
                 <li class="list-group-item" style="width:500px;" (click)="selectBike($event)" id="{{element.id}}">
-                    {{element.code}} {{element.model}}</li>
+                    {{element.code}} {{element.model}} {{element.id == selectedBikeId ? "*" : ""}}
+                </li>
             </ul>
             <b>Inserire una breve descrizione: </b> <input type="text" class="form-control"
-                style="width: 400px;height: 200px;" id="description" #model required><br>
+                style="width: 400px;height: 200px;" id="description" #description required><br>
 
             <div>
 
