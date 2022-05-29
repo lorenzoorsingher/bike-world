@@ -256,7 +256,7 @@ router.get('/date', async function(req, res) {
 
 	let dateSearch = req.query.date;
 	// find all the rental points
-	let allRentalPoints = await RentalPoint.find({ }).exec();
+	let allRentalPoints = await RentalPoint.find({ });
 
 	//find booking	
 	let bookings = await Booking.aggregate([

@@ -833,7 +833,8 @@ describe('GET /api/v2/rentals/date', () => {
             const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
             const findBookingMock = jest.spyOn(Booking, "aggregate").mockReturnValueOnce(bookings);
     
-            const { statusCode, body } = await agent.get("/api/v2/rentals/zone?latitude=44.38&longitude=11.20")
+            const date = '20220529';
+            const { statusCode, body } = await agent.get("/api/v2/rentals/date?date="+date)
                 .send();
     
             expect(statusCode).toBe(200);     
@@ -881,7 +882,8 @@ describe('GET /api/v2/rentals/date', () => {
             const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
             const findBookingMock = jest.spyOn(Booking, "aggregate").mockReturnValueOnce(bookings);
     
-            const { statusCode, body } = await agent.get("/api/v2/rentals/zone?latitude=44.38&longitude=11.20")
+            const date = '20220529';
+            const { statusCode, body } = await agent.get("/api/v2/rentals/date?date="+date)
                 .send();
 
             expect(body).toEqual(sessionResult);             
