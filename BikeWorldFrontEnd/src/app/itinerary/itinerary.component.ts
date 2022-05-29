@@ -2,11 +2,9 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { catchError, lastValueFrom, map, Observable, of } from 'rxjs';
 import { AgmMap, MapsAPILoader } from '@agm/core';
-import noUiSlider from 'nouislider';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { ConditionalExpr } from '@angular/compiler';
-import { LabelType, Options } from '@angular-slider/ngx-slider';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'itinerary-root',
@@ -20,6 +18,10 @@ export class ItineraryComponent{
   
   selectedItineraryId: string = "";
   selectedItinerary?: Itinerary;
+
+  addReviewCollapsed = true;
+  inputReviewStars: number = 0;
+  newReviewError: string = "";
 
   minValue: number = 15.0;
   maxValue: number = 150.0;
@@ -124,6 +126,8 @@ export class ItineraryComponent{
     
     this.selectedItineraryId = "";
     this.selectedItinerary = undefined;
+    this.newReviewError = "";
+    this.addReviewCollapsed = true;
 
     await this.getItineraries();
     this.selectItinerary(undefined);
@@ -202,6 +206,8 @@ export class ItineraryComponent{
   selectItinerary(event: any) {
     // @ts-ignore
     document.getElementById("changeItineraryForm").style.display = 'none';
+    this.newReviewError = "";
+    this.addReviewCollapsed = true;
 
     if (event != undefined) {
       this.selectedItineraryId = event.target.id;
@@ -236,6 +242,9 @@ export class ItineraryComponent{
     this.selectedItineraryId = itinerary?.id ?? '';
     this.selectedItinerary = itinerary;
     
+    this.newReviewError = "";
+    this.addReviewCollapsed = true;
+
     // retriving reviwes for the selected itinery
     this.http.get<any>(`${environment.apiUrl}/api/v2/itineraries/${this.selectedItineraryId}/reviews`).subscribe(data => {
       this.selectedItinerary!.reviews = data;
@@ -243,6 +252,8 @@ export class ItineraryComponent{
   }
 
   async filterDifficultyBased(event: any) {
+    this.newReviewError = "";
+
     if (event.target.value != "") {
       let del = true;
       const params = new HttpParams().set('difficulty', event.target.value)
@@ -306,6 +317,27 @@ export class ItineraryComponent{
     this.selectItinerary(undefined);
   }
 
+  isUserLogged = () => sessionStorage.getItem("token") != null;
+
+  async newReview(title:string, text:string, event:any){
+    event.preventDefault();
+    this.newReviewError = "";
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");    
+    const reqBody = {
+      title: title,
+      text: text,
+      stars: this.inputReviewStars
+    };
+
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/itineraries/${this.selectedItineraryId}/reviews`, reqBody, {headers: headers}).pipe(map(data => {
+      this.selectedItinerary?.reviews.push(data.review);
+      this.addReviewCollapsed = true;
+    }), catchError(error => {
+      this.newReviewError = error.error.message;
+      return of([]);
+    })));
+  }
 }
 
 class Itinerary {
@@ -317,7 +349,7 @@ class Itinerary {
   lngS: number = 0;
   difficulty: string | undefined;
   length: number | undefined;
-  reviews: [] = [];
+  reviews: any[] = [];
 
   constructor(id: string, name: string, addressStarting: string, description: string, latS: number, lngS: number, difficulty: string, length: number) {
     this.id = id;
