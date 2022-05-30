@@ -11,29 +11,45 @@ const tokenGenerator = require('../utils/tokenGenerator');
 const agent = request.agent(app);
 
 const userId = new mongoose.Types.ObjectId().toString();
+var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
 const bikeId = new mongoose.Types.ObjectId().toString();
 const rentalId = new mongoose.Types.ObjectId().toString();
+const rental = {
+    _id: rentalId,
+    name: "Rental",
+    address: "Via",
+    lat: 44.36,
+    lng: 11.28,
+    type: "Negozio",
+    bikeNumber: 0
+};
+const rental1 = {
+    _id: rentalId,
+    name: "Rental",
+    address: "Via",
+    lat: 44.36,
+    lng: 11.28,
+    type: "Negozio",
+    bikeNumber: 2
+};
 const rentalId2 = new mongoose.Types.ObjectId().toString();
+const rental2 = {
+    _id: rentalId2,
+    name: "Rental2",
+    address: "Via2",
+    lat: 44.40,
+    lng: 11.17,
+    type: "Negozio",
+    bikeNumber: 3
+}
 
 
 //Test add new rental point
 describe('POST /api/v2/rentals', () => {
     describe("given the name, address, lat, lng and type are valid", () => {
         it("should return a 201 status code", async () => {            
-            const rentalPayload = {
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Negozio"
-            };
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const findMock = jest.spyOn(Rental, "findOne").mockReturnValueOnce(null);
-            const createMock = jest.spyOn(Rental, "create").mockReturnValueOnce(rentalPayload);
+            const createMock = jest.spyOn(Rental, "create").mockReturnValueOnce(rental);
     
             const { statusCode, body } = await agent.post("/api/v2/rentals").set('x-access-token', _token)
                 .send({ name: "Rental", address: "Via", lat: 44.36, lng: 11.28, type: "Negozio"});
@@ -42,16 +58,6 @@ describe('POST /api/v2/rentals', () => {
         });
         
         it("should return the new rental point created info", async () => {
-            const rentalPayload = {
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Negozio",
-                bikeNumber: 0
-            };
-
             const sessionResult = {
                 success: true,
                 message: 'New Rental Point added!',
@@ -66,12 +72,8 @@ describe('POST /api/v2/rentals', () => {
                     self: "/api/v2/rentals/" + rentalId
                 }
             }
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const findMock = jest.spyOn(Rental, "findOne").mockReturnValueOnce(null);
-            const createMock = jest.spyOn(Rental, "create").mockReturnValueOnce(rentalPayload);
+            const createMock = jest.spyOn(Rental, "create").mockReturnValueOnce(rental);
     
             const { statusCode, body } = await agent.post("/api/v2/rentals").set('x-access-token', _token)
                 .send({ name: "Rental", address: "Via", lat: 44.36, lng: 11.28, type: "Negozio"});
@@ -81,14 +83,12 @@ describe('POST /api/v2/rentals', () => {
     });
     
     describe("don't pass token", () => {
-        it("should return a 401 status code", async () => {
-            
+        it("should return a 401 status code", async () => {            
             const { statusCode, body } = await agent.post("/api/v2/rentals").send();
             expect(statusCode).toBe(401);     
         });
         
-        it("should return an error message", async () => {
-            
+        it("should return an error message", async () => {            
             const sessionResult = {
                 success: false,
                 message: 'No token provided.'
@@ -106,8 +106,7 @@ describe('POST /api/v2/rentals', () => {
             expect(statusCode).toBe(403);     
         });
         
-        it("should return an error message", async () => {
-            
+        it("should return an error message", async () => {            
             const sessionResult = {
                 success: false,
                 message: 'Failed to authenticate token.'
@@ -121,19 +120,7 @@ describe('POST /api/v2/rentals', () => {
 
     describe("given the name already existing", () => {
         it("should return a 409 status code", async () => {
-            const rentalPayload = {
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Negozio"
-            };
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findMock = jest.spyOn(Rental, "findOne").mockReturnValueOnce(rentalPayload);
+            const findMock = jest.spyOn(Rental, "findOne").mockReturnValueOnce(rental);
     
             const { statusCode, body } = await agent.post("/api/v2/rentals").set('x-access-token', _token)
                 .send({ name: "Rental", address: "Via", lat: 44.36, lng: 11.28, type: "Negozio"});
@@ -146,19 +133,7 @@ describe('POST /api/v2/rentals', () => {
                 success: false,
                 message: 'Creation rental point failed. Rental point already exists.'
             };
-            const rentalPayload = {
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Negozio"
-            };
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findMock = jest.spyOn(Rental, "findOne").mockReturnValueOnce(rentalPayload);
+            const findMock = jest.spyOn(Rental, "findOne").mockReturnValueOnce(rental);
     
             const { statusCode, body } = await agent.post("/api/v2/rentals").set('x-access-token', _token)
                 .send({ name: "Rental", address: "Via", lat: 44.36, lng: 11.28, type: "Negozio"});
@@ -169,10 +144,6 @@ describe('POST /api/v2/rentals', () => {
 
     describe("given incomplete or wrong data", () => {
         it("should return a 400 status code", async () => {
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-    
             const { statusCode, body } = await agent.post("/api/v2/rentals").set('x-access-token', _token)
                 .send();
     
@@ -180,15 +151,10 @@ describe('POST /api/v2/rentals', () => {
         });
         
         it("should return an error message", async () => {
-
             const sessionResult = {
                 success: false,
                 message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
             };
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-    
             const { statusCode, body } = await agent.post("/api/v2/rentals").set('x-access-token', _token)
                 .send();
     
@@ -201,25 +167,8 @@ describe('POST /api/v2/rentals', () => {
 //Test get rental point
 describe('GET /api/v2/rentals', () => {
     describe("return all the rental point with bikeNumber>0", () => {
-        it("should return a 200 status code", async () => {            
-            const rentalPayload = [{
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Negozio",
-                bikeNumber: 2
-            },{
-                _id: rentalId2,
-                name: "Rental2",
-                address: "Via2",
-                lat: 45.36,
-                lng: 10.28,
-                type: "Automatico",
-                bikeNumber: 3
-            }];
-            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
+        it("should return a 200 status code", async () => {  
+            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce([rental1, rental2]);
     
             const { statusCode, body } = await agent.get("/api/v2/rentals")
                 .send();
@@ -227,24 +176,7 @@ describe('GET /api/v2/rentals', () => {
             expect(statusCode).toBe(200);     
         });
         
-        it("should return a list of rental point info", async () => {            
-            const rentalPayload = [{
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Negozio",
-                bikeNumber: 2
-            },{
-                _id: rentalId2,
-                name: "Rental2",
-                address: "Via2",
-                lat: 45.36,
-                lng: 10.28,
-                type: "Automatico",
-                bikeNumber: 3
-            }];
+        it("should return a list of rental point info", async () => { 
 
             const sessionResult = [{
                     _id: rentalId,
@@ -259,14 +191,14 @@ describe('GET /api/v2/rentals', () => {
                     _id: rentalId2,
                     name: "Rental2",
                     address: "Via2",
-                    lat: 45.36,
-                    lng: 10.28,
-                    type: "Automatico",
+                    lat: 44.40,
+                    lng: 11.17,
+                    type: "Negozio",
                     bikeNumber: 3,
                     self: "/api/v2/rentals/" + rentalId2
                 }]
 
-            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
+            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce([rental1, rental2]);
     
             const { statusCode, body } = await agent.get("/api/v2/rentals")
                 .send();
@@ -281,11 +213,7 @@ describe('GET /api/v2/rentals', () => {
 describe('GET /api/v2/rentals/name', () => {
     describe("return the name of rental point with bikeNumber>0 and type='Negozio'", () => {
         it("should return a 200 status code", async () => {            
-            const rentalPayload = [{
-                name: "Rental"
-            },{
-                name: "Rental2"
-            }];
+            const rentalPayload = [{ name: "Rental" },{ name: "Rental2" }];
             const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
     
             const { statusCode, body } = await agent.get("/api/v2/rentals/name")
@@ -295,17 +223,8 @@ describe('GET /api/v2/rentals/name', () => {
         });
         
         it("should return the name of rental point", async () => {            
-            const rentalPayload = [{
-                name: "Rental"
-            },{
-                name: "Rental2"
-            }];
-
-            const sessionResult = [{
-                    name: "Rental"
-                },{
-                    name: "Rental2"
-                }]
+            const rentalPayload = [{ name: "Rental" },{ name: "Rental2" }];
+            const sessionResult = [{ name: "Rental" },{ name: "Rental2" }]
 
             const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
     
@@ -320,20 +239,8 @@ describe('GET /api/v2/rentals/name', () => {
 //Test delete rental point
 describe('DELETE /api/v2/rentals/:id', () => {
     describe("given the valid id", () => {
-        it("should return a 200 status code", async () => {            
-            const rentalPayload = {
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Negozio"
-            };
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findMock = jest.spyOn(Rental, "findById").mockReturnValueOnce(rentalPayload);
+        it("should return a 200 status code", async () => {  
+            const findMock = jest.spyOn(Rental, "findById").mockReturnValueOnce(rental1);
             const deleteRentalMock = jest.spyOn(Rental, "deleteOne").mockReturnValueOnce(null);
             const deleteBikeMock = jest.spyOn(Bike, "deleteMany").mockReturnValueOnce(null);
             const deleteBookingMock = jest.spyOn(Booking, "deleteMany").mockReturnValueOnce(null);
@@ -345,25 +252,11 @@ describe('DELETE /api/v2/rentals/:id', () => {
         });
         
         it("should return a message for rental point deleted", async () => {
-            const rentalPayload = {
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Negozio"
-            };
-
             const sessionResult = {
                 success: true,
                 message: 'Rental Point deleted!'
             }
-
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findMock = jest.spyOn(Rental, "findById").mockReturnValueOnce(rentalPayload);
+            const findMock = jest.spyOn(Rental, "findById").mockReturnValueOnce(rental1);
             const deleteRentalMock = jest.spyOn(Rental, "deleteOne").mockReturnValueOnce(null);
             const deleteBikeMock = jest.spyOn(Bike, "deleteMany").mockReturnValueOnce(null);
             const deleteBookingMock = jest.spyOn(Booking, "deleteMany").mockReturnValueOnce(null);
@@ -416,9 +309,6 @@ describe('DELETE /api/v2/rentals/:id', () => {
     
     describe("given an invalid rental id", () => {
         it("should return a 404 status code", async () => {
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const findMock = jest.spyOn(Rental, "findById").mockReturnValueOnce(null);
     
             const { statusCode, body } = await agent.post("/api/v2/rentals/"+rentalId).set('x-access-token', _token)
@@ -432,12 +322,7 @@ describe('DELETE /api/v2/rentals/:id', () => {
                 success: false,
                 message: 'Rental Point not found'
             };
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findMock = jest.spyOn(Rental, "findById").mockReturnValueOnce(null);
-    
+            const findMock = jest.spyOn(Rental, "findById").mockReturnValueOnce(null);    
             const { statusCode, body } = await agent.delete("/api/v2/rentals/"+rentalId).set('x-access-token', _token)
                 .send();
     
@@ -453,12 +338,8 @@ describe('PUT /api/v2/rentals/id', () => {
             const result = {
                 modifiedCount: 1
             }
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const updateMock = jest.spyOn(Rental, "updateOne").mockReturnValueOnce(result);
-    
+   
             const { statusCode, body } = await agent.put("/api/v2/rentals/"+rentalId).set('x-access-token', _token)
                 .send({ address: "Via", lat: 44.36, lng: 11.28, type: "Negozio"});
     
@@ -474,10 +355,6 @@ describe('PUT /api/v2/rentals/id', () => {
                 success: true,
                 message: 'Rental point info updated!'
             }
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const updateMock = jest.spyOn(Rental, "updateOne").mockReturnValueOnce(result);
     
             const { statusCode, body } = await agent.put("/api/v2/rentals/"+rentalId).set('x-access-token', _token)
@@ -492,12 +369,7 @@ describe('PUT /api/v2/rentals/id', () => {
             const result = {
                 modifiedCount: 0
             }
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const updateMock = jest.spyOn(Rental, "updateOne").mockReturnValueOnce(result);
-    
             const { statusCode, body } = await agent.post("/api/v2/rentals/"+rentalId).set('x-access-token', _token)
                 .send({ address: "Via", lat: 44.36, lng: 11.28, type: "Negozio"});
     
@@ -509,14 +381,9 @@ describe('PUT /api/v2/rentals/id', () => {
                 success: false,
                 message: 'Rental Point not found'
             }
-
             const result = {
                 modifiedCount: 0
             }
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const updateMock = jest.spyOn(Rental, "updateOne").mockReturnValueOnce(result);
     
             const { statusCode, body } = await agent.put("/api/v2/rentals/"+rentalId).set('x-access-token', _token)
@@ -567,10 +434,6 @@ describe('PUT /api/v2/rentals/id', () => {
 
     describe("given incomplete data", () => {
         it("should return a 400 status code", async () => {
-            
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-    
             const { statusCode, body } = await agent.post("/api/v2/rentals").set('x-access-token', _token)
                 .send();
     
@@ -582,9 +445,6 @@ describe('PUT /api/v2/rentals/id', () => {
                 success: false,
                 message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
             };
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-   
             const { statusCode, body } = await agent.post("/api/v2/rentals").set('x-access-token', _token)
                 .send();
     
@@ -596,75 +456,39 @@ describe('PUT /api/v2/rentals/id', () => {
 //Test rental point based on type
 describe('GET /api/v2/rentals/type', () => {
     describe("return the rental point with bikeNumber>0 and selected type", () => {
-        it("should return a 200 status code", async () => {            
-            const rentalPayload = [{
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Automatico",
-                bikeNumber: 3
-            },{
-                _id: rentalId2,
-                name: "Rental2",
-                address: "Via2",
-                lat: 45.36,
-                lng: 10.28,
-                type: "Automatico",
-                bikeNumber: 2
-            }];
-
-            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
+        it("should return a 200 status code", async () => {    
+            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce([rental1, rental2]);
     
-            const { statusCode, body } = await agent.get("/api/v2/rentals/type?type=Automatico")
+            const { statusCode, body } = await agent.get("/api/v2/rentals/type?type=Negozio")
                 .send();
     
             expect(statusCode).toBe(200);     
         });
         
-        it("should return a list of rental point based on availability in a date", async () => {            
-            const rentalPayload = [{
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Automatico",
-                bikeNumber: 2
-            },{
-                _id: rentalId2,
-                name: "Rental2",
-                address: "Via2",
-                lat: 45.36,
-                lng: 10.28,
-                type: "Automatico",
-                bikeNumber: 3
-            }];
-
+        it("should return a list of rental point based on availability in a date", async () => {   
             const sessionResult = [{
                 _id: rentalId,
                 name: "Rental",
                 address: "Via",
                 lat: 44.36,
                 lng: 11.28,
-                type: "Automatico",
+                type: "Negozio",
                 bikeNumber: 2,
                 self: "/api/v2/rentals/" + rentalId
             },{
                 _id: rentalId2,
                 name: "Rental2",
                 address: "Via2",
-                lat: 45.36,
-                lng: 10.28,
-                type: "Automatico",
+                lat: 44.40,
+                lng: 11.17,
+                type: "Negozio",
                 bikeNumber: 3,
                 self: "/api/v2/rentals/" + rentalId2
             }]
 
-            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
+            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce([rental1, rental2]);
     
-            const { statusCode, body } = await agent.get("/api/v2/rentals/type?type=Automatico")
+            const { statusCode, body } = await agent.get("/api/v2/rentals/type?type=Negozio")
                 .send();
 
             expect(body).toEqual(sessionResult);             
@@ -699,26 +523,8 @@ describe('GET /api/v2/rentals/type', () => {
 //Test rental point based on zone
 describe('GET /api/v2/rentals/zone', () => {
     describe("return the rental point with bikeNumber>0 and in a zone", () => {
-        it("should return a 200 status code", async () => {            
-            const rentalPayload = [{
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Negozio",
-                bikeNumber: 2
-            },{
-                _id: rentalId2,
-                name: "Rental2",
-                address: "Via2",
-                lat: 44.40,
-                lng: 11.17,
-                type: "Automatico",
-                bikeNumber: 3
-            }];
-
-            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
+        it("should return a 200 status code", async () => {  
+            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce([rental1, rental2]);
     
             const { statusCode, body } = await agent.get("/api/v2/rentals/zone?latitude=44.38&longitude=11.20")
                 .send();
@@ -726,25 +532,7 @@ describe('GET /api/v2/rentals/zone', () => {
             expect(statusCode).toBe(200);     
         });
         
-        it("should return a list of rental point based on zone", async () => {            
-            const rentalPayload = [{
-                _id: rentalId,
-                name: "Rental",
-                address: "Via",
-                lat: 44.36,
-                lng: 11.28,
-                type: "Negozio",
-                bikeNumber: 2
-            },{
-                _id: rentalId2,
-                name: "Rental2",
-                address: "Via2",
-                lat: 44.40,
-                lng: 11.17,
-                type: "Automatico",
-                bikeNumber: 3
-            }];
-
+        it("should return a list of rental point based on zone", async () => {      
             const sessionResult = [{
                 _id: rentalId,
                 name: "Rental",
@@ -760,12 +548,12 @@ describe('GET /api/v2/rentals/zone', () => {
                 address: "Via2",
                 lat: 44.40,
                 lng: 11.17,
-                type: "Automatico",
+                type: "Negozio",
                 bikeNumber: 3,
                 self: "/api/v2/rentals/" + rentalId2
             }]
 
-            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
+            const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce([rental1, rental2]);
 
             const { statusCode, body } = await agent.get("/api/v2/rentals/zone?latitude=44.38&longitude=11.20")
                 .send();
@@ -817,7 +605,7 @@ describe('GET /api/v2/rentals/date', () => {
                 address: "Via2",
                 lat: 44.40,
                 lng: 11.17,
-                type: "Automatico",
+                type: "Negozio",
                 bikeNumber: 4
             }];
 
@@ -833,7 +621,7 @@ describe('GET /api/v2/rentals/date', () => {
             const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
             const findBookingMock = jest.spyOn(Booking, "aggregate").mockReturnValueOnce(bookings);
     
-            const date = '20220529';
+            const date = '2022-05-29';
             const { statusCode, body } = await agent.get("/api/v2/rentals/date?date="+date)
                 .send();
     
@@ -855,7 +643,7 @@ describe('GET /api/v2/rentals/date', () => {
                 address: "Via2",
                 lat: 44.40,
                 lng: 11.17,
-                type: "Automatico",
+                type: "Negozio",
                 bikeNumber: 4
             }];
 
