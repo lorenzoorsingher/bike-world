@@ -1,0 +1,52 @@
+<style>
+    .sidebar {
+        float: left;
+        margin-left: 1%;
+        width: 19%;
+        height: 100%;
+    }
+
+    .map {
+        float: left;
+        margin-left: 1%;
+        width: 49%;
+    }
+
+    .content {
+        float: right;
+        margin-left: 1%;
+        width: 29%;
+    }
+</style>
+
+<div>
+    <div class="bike">
+
+        <h4>Segnala un danno</h4>
+        <form (submit)="newDamageReport($any(description.value),$event)">
+            <h4>Lista Biciclette</h4>
+            <div class="bikeList">
+                <h5>Filtra Biciclette</h5>
+                <b>Ricerca per codice </b><input type="text" class="form-control" style="width: 500px;" id="codeSearch"
+                    #codeSearch (change)="researchBikeCode($event)"><br>
+
+            </div>
+            <ul class="list-group" *ngFor="let element of bikes">
+                <li class="list-group-item" style="width:500px;" (click)="selectBike($event)" id="{{element.id}}">
+                    {{element.code}} {{element.model}} {{element.id == selectedBikeId ? "*" : ""}}
+                </li>
+            </ul>
+            <b>Inserire una breve descrizione: </b> <input type="text" class="form-control"
+                style="width: 400px;height: 200px;" id="description" #description required><br>
+
+            <div>
+
+            </div>
+            <button class="btn btn-success" type="submit">Invia segnalazione</button>
+            <div class="alert alert-danger" style="width:300px; display: none;" id="reportDamageError" role="alert">
+            </div>
+            <div class="alert alert-danger" style="width:300px; display: none;" id="reportDamageError" role="alert">
+            </div>
+        </form>
+    </div>
+</div>

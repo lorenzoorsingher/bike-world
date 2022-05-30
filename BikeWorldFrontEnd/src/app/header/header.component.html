@@ -1,85 +1,92 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        >
-        <i class="fas fa-bars"></i>
+        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+            data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <a class="navbar-brand mt-2 mt-lg-0" href="#">
-            <img
-            src="../../assets/img/logo.png"
-            height="40"
-            alt="World Bike Logo"
-            loading="lazy"
-            />
-        </a>
-        <!-- Left links -->
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/rentalPoint']"><h4>Punti di noleggio</h4></a>
-            </li> 
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/itinerary']"><h4>Itinerari</h4></a>
-            </li>   
-            <li class="nav-item">
-                <a class="nav-link" *ngIf="checkUsersLogged()" [routerLink]="['/booking']"><h4>Prenotazioni</h4></a>
-            </li>         
-            <li class="nav-item">
-                <a class="nav-link" *ngIf="checkPermissions()" [routerLink]="['/bike']"> <h4>Biciclette</h4></a>
-            </li>
-        </ul>
-        <!-- Left links -->
+                <img src="../../assets/img/logo.png" height="40" alt="World Bike Logo" loading="lazy" />
+            </a>
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/rentalPoint']">
+                        <h4>Punti di noleggio</h4>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/itinerary']">
+                        <h4>Itinerari</h4>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" *ngIf="checkUsersLogged()" [routerLink]="['/booking']">
+                        <h4>Prenotazioni</h4>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" *ngIf="checkPermissions()" [routerLink]="['/bike']">
+                        <h4>Biciclette</h4>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" *ngIf="checkUsersLogged()" [routerLink]="['/reportDamage']">
+                        <h4>Segnala Danni</h4>
+                    </a>
+                </li>
+            </ul>
+            <!-- Left links -->
         </div>
         <!-- Right elements -->
         <div class="d-flex align-items-center">
-            <a class="nav-brand" *ngIf="sessionStorageHeader.getItem('userID') == null; then notLoggedIn else loggedIn"> </a>
+            <a class="nav-brand" *ngIf="sessionStorageHeader.getItem('userID') == null; then notLoggedIn else loggedIn">
+            </a>
         </div>
         <!-- Right elements -->
     </div>
 </nav>
-  
-  
+
+
 <ng-template #notLoggedIn>
     <div class="col">
         <div ngbDropdown class="d-inline-block">
-        <button type="button" class="btn btn-outline-primary" id="login" ngbDropdownToggle>Login</button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <div class="px-0 py-3">
-                <form (submit)="loginFunction($any(username.value), $any(psw.value), $event)">
-                    <div class="mb-3">
-                        <label for="user">Username</label>
-                        <input type="text" class="form-control" id="username" #username placeholder="Username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="psw">Password</label>
-                        <input type="password" class="form-control" id="psw" #psw placeholder="Password" required>
-                    </div>
-                    <div class="alert alert-danger" style="width:300px; display: none;" id="loginErrorMessage" role="alert"></div>    
-                    <button type="submit" class="btn btn-primary">Sign In</button>
-                    <button class="btn btn-primary" [routerLink]="['/signUp']">Sign Up</button>
-                </form>
+            <button type="button" class="btn btn-outline-primary" id="login" ngbDropdownToggle>Login</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <div class="px-0 py-3">
+                    <form (submit)="loginFunction($any(username.value), $any(psw.value), $event)">
+                        <div class="mb-3">
+                            <label for="user">Username</label>
+                            <input type="text" class="form-control" id="username" #username placeholder="Username"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="psw">Password</label>
+                            <input type="password" class="form-control" id="psw" #psw placeholder="Password" required>
+                        </div>
+                        <div class="alert alert-danger" style="width:300px; display: none;" id="loginErrorMessage"
+                            role="alert"></div>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                        <button class="btn btn-primary" [routerLink]="['/signUp']">Sign Up</button>
+                    </form>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 </ng-template>
-  
+
 <ng-template #loggedIn>
-<div class="col">
-    <div ngbDropdown class="d-inline-block">
-    <button type="button" class="btn btn-outline-primary" id="userManagement" ngbDropdownToggle>{{sessionStorageHeader.getItem("username")}}</button>
-    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <a ngbDropdownItem> <button class="btn btn-danger" (click)="logout()">Logout</button></a>
-        <a ngbDropdownItem> <button class="btn btn-info" [routerLink]="['/account']"> Manage account </button></a>
+    <div class="col">
+        <div ngbDropdown class="d-inline-block">
+            <button type="button" class="btn btn-outline-primary" id="userManagement"
+                ngbDropdownToggle>{{sessionStorageHeader.getItem("username")}}</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <a ngbDropdownItem> <button class="btn btn-danger" (click)="logout()">Logout</button></a>
+                <a ngbDropdownItem> <button class="btn btn-info" [routerLink]="['/account']"> Manage account
+                    </button></a>
+            </div>
+        </div>
     </div>
-    </div>
-</div>
 </ng-template>

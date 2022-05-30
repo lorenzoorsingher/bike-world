@@ -45,8 +45,6 @@ export class BikeComponent {
         }
       }
     })));
-    console.log("from getbikes")
-    console.log(this.bikes)
   }
 
   getBike() {
@@ -107,6 +105,7 @@ export class BikeComponent {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
     await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v2/bikes/${this.selectedBikeId}`, { headers: headers }).pipe(map(data => {
 
+
     })));
     this.selectedBikeId = "";
     await this.getBikes();
@@ -154,6 +153,7 @@ export class BikeComponent {
       })));
     } else {
       await this.getBikes();
+
     }
 
   }
