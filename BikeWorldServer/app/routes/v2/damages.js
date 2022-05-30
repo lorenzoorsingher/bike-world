@@ -19,6 +19,10 @@ router.post('', verifyToken, async function (req, res) {
     console.log(req.body.id)
 
     console.log("RICEVUTO")
+    if (!req.body.id) {
+        res.status(400).json({ success: false, message: 'Selezionare una bicicletta' });
+        return;
+    }
     if (!req.body.id || !req.body.description) {
         res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });
         return;
@@ -34,7 +38,7 @@ router.post('', verifyToken, async function (req, res) {
 
     res.status(201).json({
         success: true,
-        message: 'Form received!'
+        message: 'Report ricevuto correttamente!'
     });
 });
 

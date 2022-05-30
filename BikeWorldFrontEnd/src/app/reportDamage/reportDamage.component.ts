@@ -100,7 +100,11 @@ export class ReportDamageComponent {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
     await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/damage`, body, { headers: headers }).pipe(map(data => {
-
+      // @ts-ignore
+      document.getElementById("reportDamageError").style.display = 'block';
+      // @ts-ignore
+      document.getElementById("reportDamageError")?.innerHTML = data.message;
+      return of([]);
     }), catchError(error => {
       // @ts-ignore
       document.getElementById("reportDamageError").style.display = 'block';
