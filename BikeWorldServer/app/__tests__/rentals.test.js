@@ -621,7 +621,7 @@ describe('GET /api/v2/rentals/date', () => {
             const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
             const findBookingMock = jest.spyOn(Booking, "aggregate").mockReturnValueOnce(bookings);
     
-            const date = '2022-05-29';
+            const date = '2022-07-16';
             const { statusCode, body } = await agent.get("/api/v2/rentals/date?date="+date)
                 .send();
     
@@ -670,7 +670,7 @@ describe('GET /api/v2/rentals/date', () => {
             const findMock = jest.spyOn(Rental, "find").mockReturnValueOnce(rentalPayload);
             const findBookingMock = jest.spyOn(Booking, "aggregate").mockReturnValueOnce(bookings);
     
-            const date = '20220529';
+            const date = '20220716';
             const { statusCode, body } = await agent.get("/api/v2/rentals/date?date="+date)
                 .send();
 

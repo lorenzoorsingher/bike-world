@@ -24,7 +24,7 @@ router.post('', verifyToken, async function(req, res) {
     let itinerary = await Itinerary.findById(itineraryId);
     if(itinerary == null){
         res.status(404).json({
-            status: false,
+            success: false,
             message: `Itinerary with id: ${itineraryId} not found.`
         });
         return;
@@ -85,7 +85,7 @@ router.get('', async function(req, res) {
     let itinerary = await Itinerary.findById(itineraryId);
     if(itinerary == null){
         res.status(404).json({
-            status: false,
+            success: false,
             message: `Itinerary with id: ${itineraryId} not found.`
         });
         return;
@@ -123,7 +123,7 @@ router.delete('/:reviewId', verifyToken, async function(req, res) {
     let itinerary = await Itinerary.findById(itineraryId);
     if(itinerary == null){
         res.status(404).json({
-            status: false,
+            success: false,
             message: `Itinerary with id: ${itineraryId} not found.`
         });
         return;
@@ -172,7 +172,7 @@ router.put('/:reviewId', verifyToken, async function(req, res) {
     let itinerary = await Itinerary.findById(itineraryId);
     if(itinerary == null){
         res.status(404).json({
-            status: false,
+            success: false,
             message: `Itinerary with id: ${itineraryId} not found.`
         });
         return;
@@ -198,7 +198,7 @@ router.put('/:reviewId', verifyToken, async function(req, res) {
     let review = await itinerary.reviews.id(reviewId);
     if(review == null){
         res.status(404).json({
-            status: false,
+            success: false,
             message: `Review with id: ${reviewId} not found.`
         });
         return;
@@ -244,7 +244,7 @@ router.get('/:reviewId', async function(req, res) {
     let itinerary = await Itinerary.findById(itineraryId);
     if(itinerary == null){
         res.status(404).json({
-            status: false,
+            success: false,
             message: `Itinerary with id: ${itineraryId} not found.`
         });
         return;
@@ -259,7 +259,7 @@ router.get('/:reviewId', async function(req, res) {
     let review = itinerary.reviews.id(reviewId);
     if(review == null){
         res.status(404).json({
-            status: false,
+            success: false,
             message: `Review with id: ${reviewId} not found.`
         });
         return;
