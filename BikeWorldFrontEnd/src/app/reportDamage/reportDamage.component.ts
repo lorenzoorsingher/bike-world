@@ -18,10 +18,14 @@ export class ReportDamageComponent {
   selectedBikeId: string = "";
   rentalName: string[] | undefined;
   description = ''
+
+  reports: Report[] | undefined;
+  selectedReportId: string = "";
+  selectedReport: Report = new Report("", "", "");
   constructor(private http: HttpClient, private apiloader: MapsAPILoader, private router: Router) {
     console.log("damage")
     this.getBikes();
-
+    this.getReports();
   }
 
   async getBikes() {
@@ -72,14 +76,27 @@ export class ReportDamageComponent {
     return bike;
   }
 
-  selectBike(event: any) {
+  selectReport(event: any) {
     // @ts-ignore
     if (event != undefined) {
-      this.selectedBikeId = event.target.id;
+      this.selectedReportId = event.target.id;
     }
+    console.log(this.selectedReportId)
+    if (this.reports != null) {
+      for (let i = 0; i < this.reports.length; i++) {
+        // @ts-ignore
+        if (this.reports[i]._id == this.selectedReportId) {
+          // @ts-ignore
+          this.selectedReport = this.reports[i];
+        }
+      }
+    }
+
+    // @ts-ignore
+    document.getElementById("reportInfoBox").style.display = 'block';
   }
 
-  deleteInfo(){
+  deleteInfo() {
     // @ts-ignore
     document.getElementById("reportDamageError").style.display = 'none';
     // @ts-ignore
@@ -112,6 +129,25 @@ export class ReportDamageComponent {
     })))
   }
 
+  async getReports() {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/damage`, { headers: headers }).pipe(map(data => {
+      let i;
+      this.reports = new Array(data.length);
+
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          this.reports[i] = new Report(data[i].id, data[i].description, data[i]._id);
+          console.log(data[i].id + " " + data[i].description)
+          let tmpCode = "";
+        }
+      }
+    })));
+
+    console.log(this.reports)
+  }
+
+
 }
 
 class DamageReport {
@@ -139,6 +175,22 @@ class Bike {
     this.type = type;
     this.rentalPointName = rentalPointName;
     this.state = state;
+  }
+
+}
+
+
+class Report {
+  _id: string;
+  id: string;
+  description: string | undefined;
+  code: string | undefined;
+
+  constructor(id: string, description: string, _id: string) {
+    this._id = _id;
+    this.id = id;
+    this.description = description;
+    this.code = "";
   }
 
 }
