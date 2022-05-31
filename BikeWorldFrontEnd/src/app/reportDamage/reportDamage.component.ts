@@ -55,7 +55,6 @@ export class ReportDamageComponent {
     } else {
       await this.getBikes();
     }
-
   }
 
   getBike() {
@@ -75,35 +74,34 @@ export class ReportDamageComponent {
 
   selectBike(event: any) {
     // @ts-ignore
-
-
     if (event != undefined) {
       this.selectedBikeId = event.target.id;
     }
-
-    if (this.selectedBikeId != "") {
-      let bikeInfo = "";
-      let bike = this.getBike();
-      this.selectedBikeId = event.target.id;
-      console.log(this.selectedBikeId)
-      console.log(bike)
-    }
   }
 
-  async newDamageReport(description: string, event: any) {
+  deleteInfo(){
+    // @ts-ignore
+    document.getElementById("reportDamageError").style.display = 'none';
+    // @ts-ignore
+    document.getElementById("reportDamageInfo").style.display = 'none';
+  }
+
+  async newDamageReport(description: string, selectBikeId: string, event: any) {
     event.preventDefault()
 
-    let id = this.selectedBikeId
+    let id = selectBikeId
     const body = { id, description };
     // @ts-ignore
     document.getElementById("reportDamageError").style.display = 'none';
+    // @ts-ignore
+    document.getElementById("reportDamageInfo").style.display = 'none';
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
     await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/damage`, body, { headers: headers }).pipe(map(data => {
+      // @ts-ignore      
+      document.getElementById("reportDamageInfo")?.style.display = 'block';
       // @ts-ignore
-      document.getElementById("reportDamageError").style.display = 'block';
-      // @ts-ignore
-      document.getElementById("reportDamageError")?.innerHTML = data.message;
+      document.getElementById("reportDamageInfo")?.innerHTML = data.message;
       return of([]);
     }), catchError(error => {
       // @ts-ignore
