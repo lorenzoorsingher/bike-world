@@ -127,6 +127,10 @@ export class ReportDamageComponent {
     })));
   }
 
+  checkPermissions(){
+    return sessionStorage.getItem("permissions") != null && sessionStorage.getItem("permissions") == 'true';   
+  }
+
 
 }
 
