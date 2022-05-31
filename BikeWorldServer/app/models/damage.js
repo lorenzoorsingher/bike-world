@@ -3,6 +3,6 @@ var Schema = mongoose.Schema;
 
 // set up a mongoose model
 module.exports = mongoose.model('Damage', new Schema({
-    id: String,
+    bikeCode: String,
     description: String,
 }));

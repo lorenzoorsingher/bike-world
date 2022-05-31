@@ -22,7 +22,7 @@ export class ReportDamageComponent {
   reports: Report[] | undefined;
   selectedReportId: string = "";
   selectedReport: Report = new Report("", "", "");
-  
+
   constructor(private http: HttpClient, private apiloader: MapsAPILoader, private router: Router) {
     this.getBikes();
     this.getReports();
@@ -61,27 +61,11 @@ export class ReportDamageComponent {
     }
   }
 
-  getBike() {
-    let bike = undefined;
-    let id = this.selectedBikeId;
-
-    // @ts-ignore
-    for (let i = 0; i < this.bikes.length; i++) {
-      // @ts-ignore
-      if (this.bikes[i].id == id) {
-        // @ts-ignore
-        bike = this.bikes[i];
-      }
-    }
-    return bike;
-  }
-
   selectReport(event: any) {
     // @ts-ignore
     if (event != undefined) {
       this.selectedReportId = event.target.id;
     }
-    console.log(this.selectedReportId)
     if (this.reports != null) {
       for (let i = 0; i < this.reports.length; i++) {
         // @ts-ignore
@@ -103,23 +87,23 @@ export class ReportDamageComponent {
     document.getElementById("reportDamageInfo").style.display = 'none';
   }
 
-  async newDamageReport(description: string, selectBikeId: string, event: any) {
+  async newDamageReport(description: string, selectBikeCode: string, event: any) {
     event.preventDefault()
 
-    let id = selectBikeId
-    const body = { id, description };
+    let code = selectBikeCode
+    const body = { code, description };
     // @ts-ignore
     document.getElementById("reportDamageError").style.display = 'none';
     // @ts-ignore
     document.getElementById("reportDamageInfo").style.display = 'none';
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/damage`, body, { headers: headers }).pipe(map(data => {
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/damages`, body, { headers: headers }).pipe(map(data => {
       // @ts-ignore      
       document.getElementById("reportDamageInfo")?.style.display = 'block';
       // @ts-ignore
       document.getElementById("reportDamageInfo")?.innerHTML = data.message;
-      return of([]);
+      this.getReports();
     }), catchError(error => {
       // @ts-ignore
       document.getElementById("reportDamageError").style.display = 'block';
@@ -131,15 +115,13 @@ export class ReportDamageComponent {
 
   async getReports() {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/damage`, { headers: headers }).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/damages`, { headers: headers }).pipe(map(data => {
       let i;
       this.reports = new Array(data.length);
 
       if (data.length > 0) {
         for (i = 0; i < data.length; i++) {
-          this.reports[i] = new Report(data[i].id, data[i].description, data[i]._id);
-          console.log(data[i].id + " " + data[i].description)
-          let tmpCode = "";
+          this.reports[i] = new Report(data[i].bikeCode, data[i].description, data[i]._id);
         }
       }
     })));
@@ -170,15 +152,13 @@ class Bike {
 
 class Report {
   _id: string;
-  id: string;
+  bikeCode: string;
   description: string | undefined;
-  code: string | undefined;
 
-  constructor(id: string, description: string, _id: string) {
+  constructor(bikeCode: string, description: string, _id: string) {
     this._id = _id;
-    this.id = id;
+    this.bikeCode = bikeCode;
     this.description = description;
-    this.code = "";
   }
 
 }

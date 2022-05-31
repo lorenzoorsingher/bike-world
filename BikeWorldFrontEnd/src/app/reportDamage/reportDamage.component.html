@@ -18,7 +18,7 @@
         <h4>Segnala un danno</h4>
         <div id="reportInfoBox" style="display: none;">
             <h4>Report</h4>
-            <div id="reportInfo">Bici: {{this.selectedReport.id}} <br>descrizione: {{this.selectedReport.description}}
+            <div id="reportInfo"><b>Bici:</b> {{this.selectedReport.bikeCode}} <br><b>Descrizione:</b> {{this.selectedReport.description}}
             </div>
 
             <br>
@@ -26,7 +26,7 @@
         <h4>Lista Danni</h4>
         <ul class="list-group" *ngFor="let element of reports">
             <li class="list-group-item" style="width:500px;" (click)="selectReport($event)" id="{{element._id}}">
-                Report relativo a: {{element.id}}
+                Report relativo a: {{element.bikeCode}}
             </li>
         </ul>
     </div>

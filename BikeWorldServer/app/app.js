@@ -78,7 +78,7 @@ app.use('/api/v2/itineraries/:itineraryId/reviews', review);
 /** 
 * Manage damage reports
 */
-app.use('/api/v2/damage', damage);
+app.use('/api/v2/damages', damage);
 
 /**
  * Serve front-end static files

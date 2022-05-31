@@ -14,14 +14,24 @@ router.post('', verifyToken, async function (req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
-    if (!req.body.id || !req.body.description) {
+    if (!req.body.code || !req.body.description) {
         res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });
+        return;
+    }
+
+    //Check if bike exists
+    let bike = await Bike.findOne({ code: req.body.code });
+    if(bike == null){
+        res.status(404).json({
+            success: false,
+            message: `Bike with code: ${req.body.code} not found.`
+        });
         return;
     }
 
     //save damage in the db
     const newDamage = await Damage.create({
-        id: req.body.id,
+        bikeCode: req.body.code,
         description: req.body.description,
         state: true
     });
@@ -46,7 +56,7 @@ router.get('', verifyToken, async function (req, res) {
     res.status(200).json(reports.map(reports => {
         return {
             _id: reports._id,
-            id: reports.id,
+            bikeCode: reports.bikeCode,
             description: reports.description
         }
     }));
