@@ -22,8 +22,8 @@ export class ReportDamageComponent {
   reports: Report[] | undefined;
   selectedReportId: string = "";
   selectedReport: Report = new Report("", "", "");
+  
   constructor(private http: HttpClient, private apiloader: MapsAPILoader, private router: Router) {
-    console.log("damage")
     this.getBikes();
     this.getReports();
   }
@@ -143,21 +143,9 @@ export class ReportDamageComponent {
         }
       }
     })));
-
-    console.log(this.reports)
   }
 
 
-}
-
-class DamageReport {
-  code: string | undefined;
-  description: string | undefined;
-
-  constructor(code: string, description: string) {
-    this.code = code;
-    this.description = description;
-  }
 }
 
 class Bike {
