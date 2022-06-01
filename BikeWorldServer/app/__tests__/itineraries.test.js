@@ -317,7 +317,7 @@ describe('PUT /api/v2/itineraries/:id', () => {
 
 });
 
-describe('GET /api/v2/difficulty', () => {
+describe('GET /api/v2/itineraries/difficulty', () => {
 
     describe('given no difficulty as parameter', () => {        
         const difficulty = "";
@@ -386,7 +386,7 @@ describe('GET /api/v2/difficulty', () => {
     
 });
 
-describe('GET /api/v2/zone', () => {
+describe('GET /api/v2/itineraries/zone', () => {
 
     describe('given bad latitude or longitude as parameter', () => {        
         const latitude = "text";
@@ -457,7 +457,7 @@ describe('GET /api/v2/zone', () => {
     
 });
 
-describe('GET /api/v2/length', () => {
+describe('GET /api/v2/itineraries/length', () => {
 
     describe('given bad minLength or maxLength as parameter', () => {        
         const minLength = "text";

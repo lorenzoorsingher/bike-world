@@ -17,6 +17,11 @@ router.post('', verifyToken, async function(req, res) {
 		return;
 	}
 
+	if(req.body.latS < -90 || req.body.latS > 90 || req.body.lngS < -180 || req.body.lngS > 180){
+        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		return;
+    }
+
     // find the itinerary
 	let itineraryAlreadyExists = await Itinerary.findOne({
 		name: req.body.name
@@ -142,6 +147,11 @@ router.put('/:id', verifyToken, async function(req, res) {
 		return;
 	}
 
+	if(req.body.latS < -90 || req.body.latS > 90 || req.body.lngS < -180 || req.body.lngS > 180){
+        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		return;
+    }
+
     //update rental point in the db
 	let result = await Itinerary.updateOne({'_id': req.params.id}, 
 								{$set: {
@@ -212,6 +222,11 @@ router.get('/zone', async function(req, res) {
 		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
 	}
+
+	if(req.body.latitude < -90 || req.body.latitude > 90 || req.body.longitude < -180 || req.body.longitude > 180){
+        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		return;
+    }
 
 	let lat = parseFloat(req.query.latitude);
 	let lng = parseFloat(req.query.longitude);

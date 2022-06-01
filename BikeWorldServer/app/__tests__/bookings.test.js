@@ -11,31 +11,35 @@ const tokenGenerator = require('../utils/tokenGenerator');
 const agent = request.agent(app);
 
 const userId = new mongoose.Types.ObjectId().toString();
+var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
 const bikeId = new mongoose.Types.ObjectId().toString();
 const bikeId2 = new mongoose.Types.ObjectId().toString();
 const rentalId = new mongoose.Types.ObjectId().toString();
 const bookingId = new mongoose.Types.ObjectId().toString();
+const booking1 = {
+    _id: bookingId, 
+    username: "test_username", 
+    date: "16-07-2022", 
+    bikeCode: "Ax26", 
+    releaseBikeCode: 253648, 
+    rentalPointName: "Rental"
+}
 const bookingId2 = new mongoose.Types.ObjectId().toString();
+const booking2 = {
+    _id: bookingId2, 
+    username: "test_username", 
+    date: "17-07-2022", 
+    bikeCode: "Ax26", 
+    releaseBikeCode: 253657, 
+    rentalPointName: "Rental"
+}
 
 
 //Test add new booking
 describe('POST /api/v2/bookings', () => {
     describe("given the date, bikeCode, rentaPointName are valid", () => {
-        it("should return a 201 status code", async () => {            
-            const booking = {
-                _id: bookingId, 
-                username: "test_username", 
-                date: "16-07-2022", 
-                bikeCode: "Ax26", 
-                releaseBikeCode: 253648, 
-                rentalPointName: "Rental"
-            };
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const createMock = jest.spyOn(Booking, "create").mockReturnValueOnce(booking);
-    
+        it("should return a 201 status code", async () => {                
+            const createMock = jest.spyOn(Booking, "create").mockReturnValueOnce(booking1);    
             const { statusCode, body } = await agent.post("/api/v2/bookings").set('x-access-token', _token)
                 .send({ date: "16-07-2022", bikeCode: "Ax26", releaseBikeCode: 253648, rentalPointName: "Rental"});
     
@@ -43,33 +47,20 @@ describe('POST /api/v2/bookings', () => {
         });
         
         it("should return the new rental point created info", async () => {
-            const booking = {
-                _id: bookingId, 
-                username: "test_username", 
-                date: "26-07-2022", 
-                bikeCode: "Ax26", 
-                releaseBikeCode: 253648, 
-                rentalPointName: "Rental"
-            };
-
             const sessionResult = {
                 success: true,
                 message: 'New Booking added!',
                 booking: {
                     _id: bookingId,
                     username: "test_username",
-                    date: "26-07-2022",
+                    date: "16-07-2022",
                     bikeCode: "Ax26",
                     releaseBikeCode: 253648,
                     rentalPointName: "Rental",
                     self: "/api/v2/bookings/" + bookingId
                 }
             }
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const createMock = jest.spyOn(Booking, "create").mockReturnValueOnce(booking);
+            const createMock = jest.spyOn(Booking, "create").mockReturnValueOnce(booking1);
     
             const { statusCode, body } = await agent.post("/api/v2/bookings").set('x-access-token', _token)
                 .send({ date: "16-07-2022", bikeCode: "Ax26", releaseBikeCode: 253648, rentalPointName: "Rental"});
@@ -119,10 +110,6 @@ describe('POST /api/v2/bookings', () => {
 
     describe("given incomplete data", () => {
         it("should return a 400 status code", async () => {
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-    
             const { statusCode, body } = await agent.post("/api/v2/bookings").set('x-access-token', _token)
                 .send();
     
@@ -135,10 +122,6 @@ describe('POST /api/v2/bookings', () => {
                 success: false,
                 message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
             };
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-    
             const { statusCode, body } = await agent.post("/api/v2/bookings").set('x-access-token', _token)
                 .send();
     
@@ -153,26 +136,7 @@ describe('POST /api/v2/bookings', () => {
 describe('GET /api/v2/bookings', () => {
     describe("return the list of all bookings", () => {
         it("should return a 200 status code", async () => {            
-            const booking = [{
-                _id: bookingId, 
-                username: "test_username", 
-                date: "16-07-2022", 
-                bikeCode: "Ax26", 
-                releaseBikeCode: 253648, 
-                rentalPointName: "Rental"
-            },{
-                _id: bookingId2, 
-                username: "test_username2", 
-                date: "17-07-2022", 
-                bikeCode: "Ax26", 
-                releaseBikeCode: 253657, 
-                rentalPointName: "Rental"
-            }];
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: true, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findMock = jest.spyOn(Booking, "find").mockReturnValueOnce(booking);
+            const findMock = jest.spyOn(Booking, "find").mockReturnValueOnce([booking1, booking2]);
     
             const { statusCode, body } = await agent.get("/api/v2/bookings").set('x-access-token', _token)
                 .send();
@@ -181,46 +145,26 @@ describe('GET /api/v2/bookings', () => {
         });
         
         it("should return the list of bookings info", async () => {
-            const booking = [{
-                _id: bookingId, 
-                username: "test_username", 
-                date: "26-07-2022", 
-                bikeCode: "Ax26", 
-                releaseBikeCode: 253648, 
-                rentalPointName: "Rental"
-            },{
-                _id: bookingId2, 
-                username: "test_username2", 
-                date: "27-07-2022", 
-                bikeCode: "Ax26", 
-                releaseBikeCode: 253657, 
-                rentalPointName: "Rental"
-            }];
-
             const sessionResult = [
                 {
                     _id: bookingId,
                     username: "test_username",
-                    date: "26-07-2022",
+                    date: "16-07-2022",
                     bikeCode: "Ax26",
                     releaseBikeCode: 253648,
                     rentalPointName: "Rental",
                     self: "/api/v2/bookings/" + bookingId
                 },{
                     _id: bookingId2,
-                    username: "test_username2",
-                    date: "27-07-2022",
+                    username: "test_username",
+                    date: "17-07-2022",
                     bikeCode: "Ax26",
                     releaseBikeCode: 253657,
                     rentalPointName: "Rental",
                     self: "/api/v2/bookings/" + bookingId2
                 }
             ]
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: true, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findMock = jest.spyOn(Booking, "find").mockReturnValueOnce(booking);
+            const findMock = jest.spyOn(Booking, "find").mockReturnValueOnce([booking1, booking2]);
     
             const { statusCode, body } = await agent.get("/api/v2/bookings").set('x-access-token', _token)
                 .send();
@@ -229,27 +173,8 @@ describe('GET /api/v2/bookings', () => {
     });
 
     describe("return the list of my bookings", () => {
-        it("should return a 200 status code", async () => {            
-            const booking = [{
-                _id: bookingId, 
-                username: "test_username", 
-                date: "16-07-2022", 
-                bikeCode: "Ax26", 
-                releaseBikeCode: 253648, 
-                rentalPointName: "Rental"
-            },{
-                _id: bookingId2, 
-                username: "test_username", 
-                date: "17-07-2022", 
-                bikeCode: "Ax26", 
-                releaseBikeCode: 253657, 
-                rentalPointName: "Rental"
-            }];
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findMock = jest.spyOn(Booking, "find").mockReturnValueOnce(booking);
+        it("should return a 200 status code", async () => { 
+            const findMock = jest.spyOn(Booking, "find").mockReturnValueOnce([booking1, booking2]);
     
             const { statusCode, body } = await agent.get("/api/v2/bookings").set('x-access-token', _token)
                 .send();
@@ -258,27 +183,11 @@ describe('GET /api/v2/bookings', () => {
         });
         
         it("should return the list of bookings info", async () => {
-            const booking = [{
-                _id: bookingId, 
-                username: "test_username", 
-                date: "26-07-2022", 
-                bikeCode: "Ax26", 
-                releaseBikeCode: 253648, 
-                rentalPointName: "Rental"
-            },{
-                _id: bookingId2, 
-                username: "test_username", 
-                date: "27-07-2022", 
-                bikeCode: "Ax26", 
-                releaseBikeCode: 253657, 
-                rentalPointName: "Rental"
-            }];
-
             const sessionResult = [
                 {
                     _id: bookingId,
                     username: "test_username",
-                    date: "26-07-2022",
+                    date: "16-07-2022",
                     bikeCode: "Ax26",
                     releaseBikeCode: 253648,
                     rentalPointName: "Rental",
@@ -286,18 +195,14 @@ describe('GET /api/v2/bookings', () => {
                 },{
                     _id: bookingId2,
                     username: "test_username",
-                    date: "27-07-2022",
+                    date: "17-07-2022",
                     bikeCode: "Ax26",
                     releaseBikeCode: 253657,
                     rentalPointName: "Rental",
                     self: "/api/v2/bookings/" + bookingId2
                 }
             ]
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
-            const findMock = jest.spyOn(Booking, "find").mockReturnValueOnce(booking);
+            const findMock = jest.spyOn(Booking, "find").mockReturnValueOnce([booking1, booking2]);
     
             const { statusCode, body } = await agent.get("/api/v2/bookings").set('x-access-token', _token)
                 .send();
@@ -369,9 +274,6 @@ describe('GET /api/v2/bookings/bikeAvailable', () => {
                 state: true
             } ]
 
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: true, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const findBookingMock = jest.spyOn(Booking, "find").mockReturnValueOnce(booking);
             const findBikeMock = jest.spyOn(Bike, "find").mockReturnValueOnce(bikePayload);
     
@@ -413,10 +315,6 @@ describe('GET /api/v2/bookings/bikeAvailable', () => {
                     self: "/api/v2/bikes/" + bikeId2
                 }
             ]
-            
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: true, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const findBookingMock = jest.spyOn(Booking, "find").mockReturnValueOnce(booking);
             const findBikeMock = jest.spyOn(Bike, "find").mockReturnValueOnce(bikePayload);
     
@@ -504,10 +402,6 @@ describe('DELETE /api/v2/bookings/:id', () => {
             const result = {
                 deletedCount: 1
             }
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: true, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const findBookingMock = jest.spyOn(Booking, "deleteOne").mockReturnValueOnce(result);
     
             const { statusCode, body } = await agent.delete("/api/v2/bookings/"+bikeId).set('x-access-token', _token)
@@ -521,16 +415,10 @@ describe('DELETE /api/v2/bookings/:id', () => {
                 deletedCount: 1
             }
 
-            const sessionResult = 
-                {
-                    success: true,
-                    message: 'Booking deleted!'
-                }
-            
-            
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: true, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
+            const sessionResult = {
+                success: true,
+                message: 'Booking deleted!'
+            }
             const findBookingMock = jest.spyOn(Booking, "deleteOne").mockReturnValueOnce(result);
     
             const { statusCode, body } = await agent.delete("/api/v2/bookings/"+bikeId).set('x-access-token', _token)
@@ -584,9 +472,6 @@ describe('DELETE /api/v2/bookings/:id', () => {
             const result = {
                 deletedCount: 0
             }
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const deleteMock = jest.spyOn(Booking, "deleteOne").mockReturnValueOnce(result);
     
             const { statusCode, body } = await agent.delete("/api/v2/bookings/"+bookingId).set('x-access-token', _token)
@@ -604,10 +489,6 @@ describe('DELETE /api/v2/bookings/:id', () => {
                 success: false,
                 message: 'Booking not found'
             };
-
-            // create a valid token
-            var _token = jwt.sign({ user_id: userId, permissions: false, username: "test_username" }, process.env.TOKEN_SECRET,{expiresIn: 86400} )
-
             const deleteMock = jest.spyOn(Booking, "deleteOne").mockReturnValueOnce(result);
     
             const { statusCode, body } = await agent.delete("/api/v2/bookings/"+bookingId).set('x-access-token', _token)
