@@ -101,20 +101,6 @@ router.get('/code', verifyToken, async function (req, res) {
 	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 	res.setHeader('Access-Control-Allow-Credentials', true);
 
-	// find the bike
-	let bike = await Bike.findOne({ 'code': req.query.code }).exec();
-	res.status(200).json({ bike });
-});
-
-// ---------------------------------------------------------
-// route to get bike searched by code
-// ---------------------------------------------------------
-router.get('/code', verifyToken, async function (req, res) {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-	res.setHeader('Access-Control-Allow-Credentials', true);
-
 	if (!req.query.code) {
 		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });
 		return;
