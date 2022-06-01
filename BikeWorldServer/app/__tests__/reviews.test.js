@@ -315,25 +315,6 @@ describe('DELETE /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
         });
     });
 
-    describe("request without valid token", () => {
-        it("should return a 403 status code", async () => {
-            const { statusCode, body } = await agent.delete(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId1}`).set("x-access-token", "noValidToken")
-                .send();    
-            expect(statusCode).toBe(403);     
-        });
-
-        it("should return the error message", async () => {
-            const sessionResult = {
-                success: false,
-                message: 'Failed to authenticate token.'
-            };
-            const { statusCode, body } = await agent.delete(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId1}`).set("x-access-token", "noValidToken")
-                .send();    
-            
-            expect(body).toEqual(sessionResult);          
-        });
-    });
-
     describe('delete review stored in db', () => {              
 
         it('should return a 200 status code', async () =>{
@@ -425,25 +406,6 @@ describe('PUT /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
 
             const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
             expect(body).toEqual(response);
-        });
-    });
-
-    describe("request without valid token", () => {
-        it("should return a 403 status code", async () => {
-            const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId1}`).set("x-access-token", "noValidToken")
-                .send();    
-            expect(statusCode).toBe(403);     
-        });
-
-        it("should return the error message", async () => {
-            const sessionResult = {
-                success: false,
-                message: 'Failed to authenticate token.'
-            };
-            const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId1}`).set("x-access-token", "noValidToken")
-                .send();    
-            
-            expect(body).toEqual(sessionResult);          
         });
     });
 
