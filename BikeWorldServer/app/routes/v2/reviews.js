@@ -134,8 +134,8 @@ router.delete('/:reviewId', verifyToken, async function(req, res) {
 		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
 		return;
     }
-    
-    const review = await itinerary.reviews.id(reviewId);
+
+    const review = await itinerary.reviews.id(reviewId);  
 
     const loggedUsername = req.loggedUser.username;
     if(loggedUsername != review.author && !req.loggedUser.permissions){
