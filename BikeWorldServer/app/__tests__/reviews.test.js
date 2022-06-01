@@ -9,6 +9,10 @@ const agent = request.agent(app);
 
 const userToken = {username: "test_username", _id: new mongoose.Types.ObjectId().toString(), permissions: true };
 const token = tokenGenerator(userToken);
+const userToken2 = {username: "test_username", _id: new mongoose.Types.ObjectId().toString(), permissions: false };
+const token2 = tokenGenerator(userToken2);
+
+const reviewId = new mongoose.Types.ObjectId().toString();
 
 const reviewId1 = new mongoose.Types.ObjectId().toString();
 const review1 = {
@@ -315,6 +319,23 @@ describe('DELETE /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
         });
     });
 
+    describe('try to delete not owned review', () => {     
+        it('should return a 403 status code', async () =>{
+            jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
+            const { statusCode, body } = await agent.delete(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId2}`).set('x-access-token', token2).send();
+            
+            expect(statusCode).toBe(403);
+        });
+
+        it('should return an error message', async () =>{
+            jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
+            const { statusCode, body } = await agent.delete(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId2}`).set('x-access-token', token2).send();
+
+            const response = { success: false, message: "Unauthorized. You can access only your reviews."};
+            expect(body).toEqual(response);
+        });
+    });
+
     describe('delete review stored in db', () => {              
 
         it('should return a 200 status code', async () =>{
@@ -405,6 +426,64 @@ describe('PUT /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
             const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/dsad`).set('x-access-token', token).send();
 
             const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            expect(body).toEqual(response);
+        });
+    });
+
+    describe('given not existing review id', () => {     
+        it('should return a 404 status code', async () =>{
+            jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
+            const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId}`).set('x-access-token', token).send(reqBody);
+            
+            expect(statusCode).toBe(404);
+        });
+
+        it('should return an error message', async () =>{
+            jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
+            const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId}`).set('x-access-token', token).send(reqBody);
+
+            const response = { success: false, message: `Review with id: ${reviewId} not found.`};
+            expect(body).toEqual(response);
+        });
+    });
+
+    describe('given not valid stars', () => {     
+        const reqBody = { 
+            title: "Commento 1",
+            text: "Bel giro",
+            stars: 20,
+            author: "test_username",
+        };
+
+        it('should return a 400 status code', async () =>{
+            jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
+            const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${review1}`).set('x-access-token', token).send(reqBody);
+            
+            expect(statusCode).toBe(400);
+        });
+
+        it('should return an error message', async () =>{
+            jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
+            const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${review1}`).set('x-access-token', token).send(reqBody);
+
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            expect(body).toEqual(response);
+        });
+    });
+
+    describe('try to update not owned review', () => {     
+        it('should return a 403 status code', async () =>{
+            jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
+            const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId2}`).set('x-access-token', token2).send(reqBody);
+            
+            expect(statusCode).toBe(403);
+        });
+
+        it('should return an error message', async () =>{
+            jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
+            const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId2}`).set('x-access-token', token2).send(reqBody);
+
+            const response = { success: false, message: "Unauthorized. You can access only your reviews."};
             expect(body).toEqual(response);
         });
     });
