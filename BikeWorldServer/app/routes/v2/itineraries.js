@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Itinerary = require('../../models/itinerary');
+const Review = require('../../models/review')
 const verifyToken = require('../../middleware/auth');
 
 // ---------------------------------------------------------

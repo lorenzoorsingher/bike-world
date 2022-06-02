@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const Bike = require('../models/bike');
 const Booking = require('../models/booking');
 const Rental = require('../models/rentalPoint');
+const Damage = require('../models/damage')
 const jwt = require("jsonwebtoken");
 const tokenGenerator = require('../utils/tokenGenerator');
 
@@ -501,8 +502,10 @@ describe('DELETE /api/v2/bikes/:id', () => {
             const findMock = jest.spyOn(Bike, "findById").mockReturnValueOnce(bike1);
             const findRentalMock = jest.spyOn(Rental, "findOne").mockReturnValueOnce(rental);
             const deleteBookingMock = jest.spyOn(Booking, "deleteMany").mockReturnValueOnce(null);
-            const deleteBikeMock = jest.spyOn(Bike, "deleteOne").mockReturnValueOnce(null);            
+            const deleteBikeMock = jest.spyOn(Bike, "deleteOne").mockReturnValueOnce(null);  
+            const deleteReviewMock = jest.spyOn(Damage, "deleteMany").mockReturnValueOnce(null);          
             const updateMock = jest.spyOn(Rental, "updateOne").mockReturnValueOnce(null);
+            
 
             const { statusCode, body } = await agent.delete("/api/v2/bikes/"+bikeId).set('x-access-token', _token)
                 .send();
@@ -521,6 +524,7 @@ describe('DELETE /api/v2/bikes/:id', () => {
             const findRentalMock = jest.spyOn(Rental, "findOne").mockReturnValueOnce(rental);
             const deleteBookingMock = jest.spyOn(Booking, "deleteMany").mockReturnValueOnce(null);
             const deleteBikeMock = jest.spyOn(Bike, "deleteOne").mockReturnValueOnce(null);
+            const deleteReviewMock = jest.spyOn(Damage, "deleteMany").mockReturnValueOnce(null);   
             const updateMock = jest.spyOn(Rental, "updateOne").mockReturnValueOnce(null);
 
             const { statusCode, body } = await agent.delete("/api/v2/bikes/"+bikeId).set('x-access-token', _token)

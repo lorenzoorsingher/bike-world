@@ -35,10 +35,13 @@ export class BookingComponent {
             document.getElementById("errorMessage").innerHTML = data.message;
         }
     })))
+
+    this.bikes = undefined;
     
     // @ts-ignore
     document.getElementById("bookingDeleteErrorMessage").style.display = 'none';
     this.getBookings();
+    this.getBikes();
   }
 
   async getBookings() {
