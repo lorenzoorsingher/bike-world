@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Bike = require('../../models/bike');
-const Booking = require('../../models/booking.js');
-const verifyToken = require('../../middleware/auth');
+const Bike = require('../models/bike');
+const Booking = require('../models/booking.js');
+const verifyToken = require('../middleware/auth');
 
 // ---------------------------------------------------------
 // route to add new booking
