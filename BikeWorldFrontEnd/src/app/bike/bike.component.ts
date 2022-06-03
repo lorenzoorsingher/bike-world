@@ -50,7 +50,7 @@ export class BikeComponent {
   getBike() {
     let bike = undefined;
     let id = this.selectedBikeId;
-
+    console.log(id);
     // @ts-ignore
     for (let i = 0; i < this.bikes.length; i++) {
       // @ts-ignore
@@ -71,7 +71,7 @@ export class BikeComponent {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
     await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/bikes`, body, { headers: headers }).pipe(map(data => {
-      this.updateInfoAdd(code);
+      this.updateInfoAdd(data.bike._id);
     }), catchError(error => {
       // @ts-ignore
       document.getElementById("creationBikeError").style.display = 'block';
@@ -81,9 +81,9 @@ export class BikeComponent {
     })))
   }
 
-  async updateInfoAdd(code: string) {
+  async updateInfoAdd(id: string) {
     await this.getBikes();
-    this.selectedBikeId = code;
+    this.selectedBikeId = id;
     this.selectBike(undefined);
   }
 
@@ -117,7 +117,7 @@ export class BikeComponent {
   selectBike(event: any) {
     // @ts-ignore
     document.getElementById("bikeInfoModule").style.display = 'block';
-
+    
     if (event != undefined) {
       this.selectedBikeId = event.target.id;
     }
@@ -131,7 +131,7 @@ export class BikeComponent {
       // @ts-ignore
       if (bike.state == true) { bikeInfo += "utilizzabile " } else { bikeInfo += "in riparazione " }
       bikeInfo += "<br><b>Nome punto di ritiro:</b> " + bike?.rentalPointName;
-
+      
       // @ts-ignore  
       document.getElementById("bikeInfo").innerHTML = bikeInfo;
     }

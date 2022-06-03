@@ -24,7 +24,7 @@ import { ReportDamageComponent } from './reportDamage/reportDamage.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AgmCoreModule.forRoot({ apiKey: '', libraries: ['places'] }),
+    AgmCoreModule.forRoot({ apiKey: '' }),
     NgbModule, NgxSliderModule
   ],
   providers: [],

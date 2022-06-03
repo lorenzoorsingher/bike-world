@@ -31,11 +31,11 @@ app.use(cors());
 
 const swaggerOptions = {
   swaggerOptions: {
-    url: "/api/v1/api-docs/swagger.json",
+    url: "/api/v2/api-docs/swagger.json",
   }
 };
 
-app.get("/api/v1/api-docs/swagger.json", (req, res) => res.json(swaggerDocument));
+app.get("/api/v2/api-docs/swagger.json", (req, res) => res.json(swaggerDocument));
 app.use(
   "/api/v1/api-docs",
   swaggerUi.serveFiles(null, swaggerOptions),

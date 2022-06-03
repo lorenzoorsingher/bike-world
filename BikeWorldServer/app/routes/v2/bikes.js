@@ -3,8 +3,10 @@ const router = express.Router();
 const Bike = require('../../models/bike');
 const RentalPoint = require('../../models/rentalPoint');
 const Booking = require('../../models/booking.js');
+const Damage = require('../../models/damage')
 const verifyToken = require('../../middleware/auth');
 const { findById } = require('../../models/bike');
+const review = require('../../models/review');
 
 // ---------------------------------------------------------
 // route to add new bike
@@ -193,18 +195,11 @@ router.delete('/:id', verifyToken, async function (req, res) {
 	let rentalPoint = await RentalPoint.findOne({
 		name: rentalPointName
 	});
-	/* non serve poichè il rental point esiste necessariamente se riesco ad associarlo alla bicicletta
-	if(rentalPoint == null){
-		res.status(404).json({
-			success: false,
-			message: 'Rental point not found'
-		});
-		return;
-	}*/
 
 	// remove all booking associated to this rental point
 	await Booking.deleteMany({ bikeCode: bike.code });
 	await Bike.deleteOne({ _id: req.params.id });
+	await Damage.deleteMany({ bikeCode: bike.code})
 
 
 	//remove bike from rental Point
