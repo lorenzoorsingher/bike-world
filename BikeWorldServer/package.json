@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "node index.js",
-    "test": "jest"
+    "test": "jest",
+    "test:debug": "jest --watch"
   },
   "jest": {
     "testEnvironment": "node",

@@ -37,7 +37,7 @@ export class RentalPointComponent {
         type
       };
       const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-      await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/rentals`, body, {headers: headers}).pipe(map(data => {
+      await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/rentals`, body, {headers: headers}).pipe(map(data => {
         this.router.navigate(['/']);    
       }), catchError(error => {
         // @ts-ignore
@@ -57,21 +57,20 @@ export class RentalPointComponent {
     }
   }
 
-  async changeRentalPoint(name: string, address: string, lat: number, lng: number, type: string, event: any) {
+  async changeRentalPoint(address: string, lat: number, lng: number, type: string, event: any) {
     event.preventDefault()
     // @ts-ignore
     document.getElementById("changeRentalPointError")?.style.display = "none";
 
     if(this.checkLatLng(lat, lng) == true){
       const body = {
-        name,
         address,
         lat,
         lng,
         type
       };
       const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-      await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v1/rentals/${this.selectedRentalId}`, body, {headers: headers}).pipe(map(data => {
+      await lastValueFrom(this.http.put<any>(`${environment.apiUrl}/api/v2/rentals/${this.selectedRentalId}`, body, {headers: headers}).pipe(map(data => {
 
       }), catchError(error => {
         // @ts-ignore
@@ -97,7 +96,7 @@ export class RentalPointComponent {
 
   async removeRentalPoint() {    
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/rentals/${this.selectedRentalId}`, { headers: headers }).pipe(map(data => {
+    await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v2/rentals/${this.selectedRentalId}`, { headers: headers }).pipe(map(data => {
 
     }), catchError(error => {
       // @ts-ignore
@@ -112,7 +111,7 @@ export class RentalPointComponent {
   }
 
   async getRentalPoints() {
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals`).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/rentals`).pipe(map(data => {
       let i;
       this.rentalPoints = new Array(data.length);
 
@@ -228,7 +227,7 @@ export class RentalPointComponent {
     if (event.target.value != "") {
       let del = true;
       const params = new HttpParams().set('type', event.target.value)
-      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/type`, { params }).pipe(map(data => {
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/rentals/type`, { params }).pipe(map(data => {
         let i;
         this.rentalPoints = new Array(data.length);
 
@@ -269,7 +268,7 @@ export class RentalPointComponent {
   async filterZoneBased(event: any){
     
     const params = new HttpParams().set('latitude', event.lat).set("longitude", event.lng);
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/zone`, { params }).pipe(map(data => {      
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/rentals/zone`, { params }).pipe(map(data => {      
       let i;
       this.rentalPoints = new Array(data.length);
       if (data.length > 0) {
@@ -292,7 +291,7 @@ export class RentalPointComponent {
     if (event.target.value != "") {
       if(this.checkFutureDate(event.target.value)){
       const params = new HttpParams().set('date', event.target.value)
-      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals/date`, { params }).pipe(map(data => {
+      await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/rentals/date`, { params }).pipe(map(data => {
         
         let i;
         this.rentalPoints = new Array(data.length);

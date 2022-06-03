@@ -41,7 +41,7 @@ export class SignUpComponent {
       };
       const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
       //console.log(params);
-      await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/users/signUp`, body, {headers: headers}).pipe(map( data => { 
+      await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/users/signUp`, body, {headers: headers}).pipe(map( data => { 
           sessionStorage.setItem("username", data.username);
           sessionStorage.setItem("userID", data.id);
           sessionStorage.setItem("permissions", data.permissions);

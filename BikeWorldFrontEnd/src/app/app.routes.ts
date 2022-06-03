@@ -7,17 +7,21 @@ import { RentalPointComponent } from "./rentalPoint/rentalPoint.component";
 import { BikeComponent } from "./bike/bike.component";
 import { BookingComponent } from "./booking/booking.component";
 import { adminGuard } from "./guards/adminGuard.component";
+import { ItineraryComponent } from "./itinerary/itinerary.component";
+import { ReportDamageComponent } from "./reportDamage/reportDamage.component";
 
 
 // @ts-ignore
 export const appRoutes: Routes =  [
   //{ path: "", redirectTo: 'home/:name', pathMatch: 'full' }
-  { path: "signUp", component: SignUpComponent},
-  { path: "account", component: AccountComponent, canActivate: [userLoggedGuard]},
-  { path: "rentalPoint", component: RentalPointComponent},
-  { path: "bike", component: BikeComponent, canActivate: [adminGuard]},
-  { path: "booking", component: BookingComponent, canActivate: [userLoggedGuard]},
-  { path: "", redirectTo: "rentalPoint", pathMatch: "full"}
+  { path: "signUp", component: SignUpComponent },
+  { path: "account", component: AccountComponent, canActivate: [userLoggedGuard] },
+  { path: "rentalPoint", component: RentalPointComponent },
+  { path: "itinerary", component: ItineraryComponent },
+  { path: "bike", component: BikeComponent, canActivate: [adminGuard] },
+  { path: "booking", component: BookingComponent, canActivate: [userLoggedGuard] },
+  { path: "reportDamage", component: ReportDamageComponent, canActivate: [userLoggedGuard] },
+  { path: "", redirectTo: "rentalPoint", pathMatch: "full" }
 ];
 
 @NgModule({

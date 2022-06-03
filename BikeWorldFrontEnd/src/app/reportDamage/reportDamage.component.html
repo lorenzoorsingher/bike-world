@@ -1,0 +1,61 @@
+<style>
+    .sidebar {
+        float: left;
+        margin-left: 1%;
+        width: 49%;
+        height: 100%;
+    }
+
+    .content {
+        float: right;
+        margin-left: 1%;
+        width: 49%;
+    }
+</style>
+
+<div>
+    <div class="sidebar">
+        <h4>Segnala un danno</h4>
+        <form (submit)="newDamageReport($any(description.value), $any(bikeCode.value), $event)">
+            <h4>Lista Biciclette</h4>
+            <div class="bikeList">
+                <h5>Filtra Biciclette</h5>
+                <b>Ricerca bicicletta per codice </b><input type="text" class="form-control" style="width: 400px;"
+                    id="codeSearch" #codeSearch (change)="researchBikeCode($event)"><br>
+
+            </div>
+            <select class="form-select" style="width:400px" name="bikeCode" id="bikeCode" #bikeCode
+                (change)="deleteInfo()">
+                <option value="{{element.code}}" *ngFor="let element of bikes">{{element.code}} {{element.model}}
+                </option>
+            </select>
+            <b>Inserire una breve descrizione: </b> <input type="text" class="form-control"
+                style="width: 400px;height: 100px;" id="description" #description required (change)="deleteInfo()"><br>
+            <div>
+
+            </div>
+            <button class="btn btn-success" type="submit">Invia segnalazione</button>
+
+            <div class="alert alert-danger" style="width:300px; display: none;" id="reportDamageError" role="alert">
+            </div>
+            <div class="alert alert-info" style="width:300px; display: none;" id="reportDamageInfo" role="alert"> </div>
+        </form>
+    </div>
+    <div class="content">
+        <div id="reportInfoBox" style="display: none;">
+            <h4>Report</h4>
+            <div id="reportInfo"><b>Bici:</b> {{this.selectedReport.bikeCode}} <br><b>Descrizione:</b> {{this.selectedReport.description}}
+            </div>
+
+            <br>
+        </div>
+        <div *ngIf="checkPermissions()">
+            <h4>Lista Danni</h4>
+            <ul class="list-group" *ngFor="let element of reports">
+                <li class="list-group-item" style="width:500px;" (click)="selectReport($event)" id="{{element._id}}">
+                    Report relativo a: {{element.bikeCode}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

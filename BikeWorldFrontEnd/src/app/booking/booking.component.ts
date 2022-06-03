@@ -29,22 +29,25 @@ export class BookingComponent {
       rentalPointName
     };
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v1/bookings`, body, {headers: headers}).pipe(map(data => {
+    await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/v2/bookings`, body, {headers: headers}).pipe(map(data => {
         if(data.success == false){
             // @ts-ignore
             document.getElementById("errorMessage").innerHTML = data.message;
         }
     })))
+
+    this.bikes = undefined;
     
     // @ts-ignore
     document.getElementById("bookingDeleteErrorMessage").style.display = 'none';
     this.getBookings();
+    this.getBikes();
   }
 
   async getBookings() {
     // @ts-ignore
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bookings`, {headers: headers}).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/bookings`, {headers: headers}).pipe(map(data => {
       let i;
       this.bookings = new Array(data.length);
 
@@ -57,7 +60,7 @@ export class BookingComponent {
   }
 
   async getRentalPoints() {
-    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/rentals`).pipe(map(data => {
+    await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/rentals`).pipe(map(data => {
       let i;
       this.rentalPoints = new Array(data.length);
 
@@ -85,7 +88,7 @@ export class BookingComponent {
         // @ts-ignore
         const params = new HttpParams().set("rentalPointName", rentalPointName).set("date", date);
         const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-        await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v1/bookings/bikeAvailable`, {params, headers: headers}).pipe(map(data => {
+        await lastValueFrom(this.http.get<any>(`${environment.apiUrl}/api/v2/bookings/bikeAvailable`, {params, headers: headers}).pipe(map(data => {
           let i;
           this.bikes = new Array(data.length);
           
@@ -132,7 +135,7 @@ export class BookingComponent {
     async removeBooking(){ 
         // @ts-ignore
         const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('x-access-token', sessionStorage.getItem('token') ?? "");
-        await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v1/bookings/${this.selectedBookingId}`, {headers: headers} ).pipe(map(data => {
+        await lastValueFrom(this.http.delete<any>(`${environment.apiUrl}/api/v2/bookings/${this.selectedBookingId}`, {headers: headers} ).pipe(map(data => {
             
         }), catchError(error => {
           // @ts-ignore
