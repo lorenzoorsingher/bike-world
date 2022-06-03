@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Bike = require('../models/bike');
-const RentalPoint = require('../models/rentalPoint');
-const Booking = require('../models/booking.js');
-const verifyToken = require('../middleware/auth');
-const { findById } = require('../models/bike');
+const Bike = require('../../models/bike');
+const RentalPoint = require('../../models/rentalPoint');
+const Booking = require('../../models/booking.js');
+const verifyToken = require('../../middleware/auth');
+const { findById } = require('../../models/bike');
 
 // ---------------------------------------------------------
 // route to add new bike
