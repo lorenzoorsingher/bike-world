@@ -139,7 +139,7 @@ router.delete('/:reviewId', verifyToken, async function(req, res) {
 
     const loggedUsername = req.loggedUser.username;
     if(loggedUsername != review.author && !req.loggedUser.permissions){
-        return res.status(403).json({
+        return res.status(401).json({
 			success: false,
 			message: "Unauthorized. You can access only your reviews."
 		});
@@ -206,7 +206,7 @@ router.put('/:reviewId', verifyToken, async function(req, res) {
 
     const loggedUsername = req.loggedUser.username;
     if(loggedUsername != review.author){
-        return res.status(403).json({
+        return res.status(401).json({
 			success: false,
 			message: "Unauthorized. You can access only your reviews."
 		});

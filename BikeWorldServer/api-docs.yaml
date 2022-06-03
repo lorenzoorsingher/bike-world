@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   title: bike-world API
-  version: '1.0'
+  version: '2.0'
   
 servers:
   - url: https://bike-world-ids.herokuapp.com/
@@ -1748,6 +1748,3112 @@ paths:
                   message: 
                     type: string
                     example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+                    
+  ###################
+  # route users
+  ###################
+  /api/v2/users/login:
+    post:
+      summary: Authenticate and get a new token.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: 'user1'
+                password:
+                  type: string
+                  example: 'user_password'
+      responses:
+        '200':
+          description: Token sucessfully created
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: 'Token sucessfully created'
+                  token: 
+                    type: string
+                    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+                  permissions: 
+                    type: boolean
+                    example: false
+                  username: 
+                    type: string
+                    example: 'user1'
+                  id: 
+                    type: string
+                    example: '627fb15a85bebd50ab3197a5'
+                  self: 
+                    type: string
+                    example: '/api/v2/users/627fb15a85bebd50ab3197a5'
+        '400':
+          description: User not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string  
+                    example: 'Authentication failed. Wrong username or password.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+        '400':
+          description: Wrong username or password.
+          content: 
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Authentication failed. Wrong username or password.' 
+
+  /api/v2/users/signUp:
+    post:
+      summary: Creates a new bike-world accont.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: 'user1'
+                email:
+                  type: string
+                  example: 'user1@domain.com'
+                password:
+                  type: string
+                  example: 'user_password'
+                target:
+                  type: string
+                  example: 'principiante'
+      responses:
+        '201':
+          description: Account successfully created.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: 'Signup completed!'
+                  token: 
+                    type: string
+                    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+                  permissions: 
+                    type: boolean
+                    example: false
+                  username: 
+                    type: string
+                    example: 'user1'
+                  id: 
+                    type: string
+                    example: '627fb15a85bebd50ab3197a5'
+                  self: 
+                    type: string
+                    example: '/api/v2/users/627fb15a85bebd50ab3197a5'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+        '409':
+          description: Signup failed. User already exists.
+          content: 
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Signup failed. User already exists.' 
+
+  /api/v2/users/{id}:
+    get:
+      summary: Get User info.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: string
+            example: '627fb15a85bebd50ab3197a5'
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      responses:
+        '200':
+          description: Get User info.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  self: 
+                    type: string
+                    example: '/api/v2/users/627fb15a85bebd50ab3197a5'
+                  id: 
+                    type: string
+                    example: '627fb15a85bebd50ab3197a5'
+                  username: 
+                    type: string
+                    example: 'user1'
+                  email: 
+                    type: string
+                    example: 'user1@domain.com'
+                  target: 
+                    type: string
+                    example: 'user1'
+                  permissions: 
+                    type: boolean
+                    example: false
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+        '403':
+          description: Unauthorized. You can access only your informations.
+          content: 
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Unauthorized. You can access only your informations.' 
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'                    
+ 
+  /api/v2/users/{id}:
+    put:
+      summary: Update User info.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the user to update.
+          schema:
+            type: string
+            example: '627fb15a85bebd50ab3197a5'
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      responses:
+        '200':
+          description: Get User info.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: 'Information updated!'
+                  token: 
+                    type: string
+                    description: The new token, since the user changed.
+                    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+                  permissions: 
+                    type: boolean
+                    example: false
+                  username: 
+                    type: string
+                    example: 'user1'
+                  id: 
+                    type: string
+                    example: '627fb15a85bebd50ab3197a5'
+                  self: 
+                    type: string
+                    example: '/api/v2/users/627fb15a85bebd50ab3197a5'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+        '403':
+          description: Unauthorized. You can update only your informations.
+          content: 
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Unauthorized. You can access only your informations.' 
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'                    
+
+  ###################
+  # route bikes
+  ###################
+  /api/v2/bikes:
+    post:
+      summary: Add a new bike.
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: 'COD01'
+                model:
+                  type: string
+                  example: 'Modello 1'
+                type:
+                  type: string
+                  example: 'Tipo 1'
+                rentalPointName:
+                  type: string
+                  example: 'Punto Ritiro Trento nord'
+      responses:
+        '201':
+          description: Bike added successfully.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: 'New Bike added'
+                  bike:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        example: "628548c22119863b28fb368f"
+                      code:
+                        type: string
+                        example: "Ax26"
+                      model:
+                        type: string
+                        example: "Bianchi"
+                      type:
+                        type: string
+                        example: "E-bike"
+                      rentalPointName:
+                        type: string
+                        example: "Nord Milano2"
+                      state:
+                        type: boolean
+                        example: true
+                      self: 
+                        type: string
+                        example: "/api/v2/bikes/628548c22119863b28fb368f"
+        '409':
+          description: Conflict. Bike already exists.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Creation bike failed. Bike already exists.'
+        '404':
+          description: Rental point don't exists.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Creation bike failed. Rental Point not found'
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+
+  /api/v2/bikes:
+    get:
+      summary: Get bikes.
+      parameters:  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      responses:
+        '200':
+          description: List of the bikes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "628548c22119863b28fb368f"
+                    code:
+                      type: string
+                      example: "Ax26"
+                    model:
+                      type: string
+                      example: "Bianchi"
+                    type:
+                      type: string
+                      example: "E-bike"
+                    rentalPointName:
+                      type: string
+                      example: "Nord Milano2"
+                    state:
+                      type: boolean
+                      example: true
+                    self: 
+                      type: string
+                      example: "/api/v2/bikes/628548c22119863b28fb368f"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+  
+  /api/v2/bikes/code:
+    get:
+      summary: Get bike searched by code.
+      parameters:  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+        - name: code
+          in: path
+          required: true
+          description: The code of the bike to return.
+          schema:
+            type: string
+            example: 'Ax26'
+      responses:
+        '200':
+          description: Bike with the specific code.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id: 
+                    type: string
+                    example: "628548c22119863b28fb368f"
+                  code:
+                    type: string
+                    example: "Ax26"
+                  model:
+                    type: string
+                    example: "Bianchi"
+                  type:
+                    type: string
+                    example: "E-bike"
+                  rentalPointName:
+                    type: string
+                    example: "Nord Milano2"
+                  state:
+                    type: boolean
+                    example: true
+                  self: 
+                    type: string
+                    example: "/api/v2/bikes/628548c22119863b28fb368f"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+        '404':
+          description: Bike not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bike not found' 
+                  
+  /api/v2/bikes/{id}:
+    get:
+      summary: Get bike searched by id.
+      parameters:  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+        - name: id
+          in: path
+          required: true
+          description: The id of the bike to return.
+          schema:
+            type: string
+            example: '628548c22119863b28fb368f'
+      responses:
+        '200':
+          description: Bike with the specific id.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id: 
+                    type: string
+                    example: "628548c22119863b28fb368f"
+                  code:
+                    type: string
+                    example: "Ax26"
+                  model:
+                    type: string
+                    example: "Bianchi"
+                  type:
+                    type: string
+                    example: "E-bike"
+                  rentalPointName:
+                    type: string
+                    example: "Nord Milano2"
+                  state:
+                    type: boolean
+                    example: true
+                  self: 
+                    type: string
+                    example: "/api/v2/bikes/628548c22119863b28fb368f"
+        '404':
+          description: Bike not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Bike not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+
+  /api/v2/bikes:
+    delete:
+      summary: Remove bike.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the bike to delete.
+          schema:
+            type: string
+            example: '628548c22119863b28fb368f'  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'            
+      responses:
+        '200':
+          description: Bike deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Bike deleted!"
+        '404':
+          description: Bike not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Bike not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'     
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+
+  /api/v2/bikes:
+    patch:
+      summary: Repare a bike.
+      description: Based on the status of a bike, puts or removes it from repair.
+      parameters:  
+        - name: id
+          in: path
+          required: true
+          description: The id of the bike to put/remove from reparation.
+          schema:
+            type: string
+            example: '628548c22119863b28fb368f'  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      responses:
+        '200':
+          description: Bike status changed to reparation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Bike put in reparation!"
+        '200':
+          description: Bike status changed to repared.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Bike repared!"
+        '404':
+          description: Bike not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Bike not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'   
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+  ###################
+  # route rental
+  ###################
+  /api/v2/rentals:
+    post:
+      summary: Add a new rental point.
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'Est Milano'
+                address:
+                  type: string
+                  example: 'Via San Giovanni'
+                lat:
+                  type: number
+                  example: 44.9654219
+                lng:
+                  type: number
+                  example:  9.1859243
+                type:
+                  type: string
+                  example: "Negozio"
+      responses:
+        '200':
+          description: Rental Point added successfully.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: 'New Rental Point added!'
+                  rental: 
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        example: "627fb874a991e0a164e063ac"
+                      name:
+                        type: string
+                        example: "Est Milano"
+                      address:
+                        type: string
+                        example: "Via San Giovanni"
+                      lat: 
+                        type: number
+                        example: 45.4654219
+                      lng: 
+                        type: number
+                        example: 10.1859243
+                      type:
+                        type: string
+                        example: "Negozio"
+                      bikeNumber:
+                        type: integer
+                        example: 0
+                      self:
+                        type: string
+                        example: "/api/v2/rentals/627fb874a991e0a164e063ac"
+        '409':
+          description: Conflict. Rental Point already exists.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Creation rental point failed. Rental point already exists.'
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+
+  /api/v2/rentals:
+    get:
+      summary: Get rental points with bikeNumber > 0.
+      responses:
+        '200':
+          description: List of the rental points.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: "Est Milano"
+                    address:
+                      type: string
+                      example: "ds"
+                    lat: 
+                      type: number
+                      example: 45.4654219
+                    lng: 
+                      type: number
+                      example: 10.1859243
+                    type:
+                      type: string
+                      example: "Negozio"
+                    bikeNumber:
+                      type: integer
+                      example: 0
+                    self:
+                      type: string
+                      example: "/api/v2/rentals/627fb874a991e0a164e063ac"                      
+
+  /api/v2/rentals/name:
+    get:
+      summary: Get rental points names.
+      responses:
+        '200':
+          description: List of the rental point names.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: "Est Milano"
+
+  /api/v2/rentals/{id}:
+    delete:
+      summary: Remove a rental point.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the rental point to delete.
+          schema:
+            type: string
+            example: '627fb874a991e0a164e063ac'
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      responses:
+        '200':
+          description: Rental point deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Rental Point deleted!"
+        '404':
+          description: Rental not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Rental Point not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+
+  /api/v2/rentals/{id}:
+    put:
+      summary: Update a rental point.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the rental point to update.
+          schema:
+            type: string
+            example: '627fb874a991e0a164e063ac'
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'Est Milano'
+                address:
+                  type: string
+                  example: 'ds'
+                lat:
+                  type: number
+                  example: 44.9654219
+                lng:
+                  type: number
+                  example:  9.1859243
+                type:
+                  type: string
+                  example: "Negozio"
+      responses:
+        '200':
+          description: Rental point updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Rental point info updated!"
+        '404':
+          description: Rental not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Rental Point not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+
+  /api/v2/rentals/type:
+    get:
+      summary: Get rental point by type.
+      parameters:
+        - name: type
+          in: query
+          required: true
+          description: The type of the rental points to return.
+          schema:
+            type: string
+            example: 'Negozio'
+      responses:
+        '200':
+          description: List of the rental points with a specific type.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: "Est Milano"
+                    address:
+                      type: string
+                      example: "ds"
+                    lat: 
+                      type: number
+                      example: 45.4654219
+                    lng: 
+                      type: number
+                      example: 10.1859243
+                    type:
+                      type: string
+                      example: "Negozio"
+                    bikeNumber:
+                      type: integer
+                      example: 0
+                    self:
+                      type: string
+                      example: "/api/v2/rentals/627fb874a991e0a164e063ac"  
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+  /api/v2/rentals/zone:
+    get:
+      summary: Get rental point by zone.
+      parameters:
+        - name: latitude
+          in: query
+          required: true
+          description: The latitude of the rental points to return.
+          schema:
+            type: number
+            example: 45.4654219
+        - name: longitude
+          in: query
+          required: true
+          description: The longitude of the rental points to return.
+          schema:
+            type: number
+            example: 10.1859243
+      responses:
+        '200':
+          description: List of the rental points with a specific type.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: "Est Milano"
+                    address:
+                      type: string
+                      example: "ds"
+                    lat: 
+                      type: number
+                      example: 45.4654219
+                    lng: 
+                      type: number
+                      example: 10.1859243
+                    type:
+                      type: string
+                      example: "Negozio"
+                    bikeNumber:
+                      type: integer
+                      example: 0
+                    self:
+                      type: string
+                      example: "/api/v2/rentals/627fb874a991e0a164e063ac"  
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+  /api/v2/rentals/date:
+    get:
+      summary: Get rental point based on the bike availability.
+      parameters:
+        - name: date
+          in: query
+          required: true
+          description: The date used to check the bike availability.
+          schema:
+            type: string
+            example: '2022-05-20'
+      responses:
+        '200':
+          description: List of the rental points that are available in a specific date.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: "Est Milano"
+                    address:
+                      type: string
+                      example: "ds"
+                    lat: 
+                      type: number
+                      example: 45.4654219
+                    lng: 
+                      type: number
+                      example: 10.1859243
+                    type:
+                      type: string
+                      example: "Negozio"
+                    bikeNumber:
+                      type: integer
+                      example: 0
+                    self:
+                      type: string
+                      example: "/api/v2/rentals/627fb874a991e0a164e063ac"  
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+  ###################
+  # route bookings
+  ###################
+  /api/v2/bookings:
+    post:
+      summary: Add a new booking.
+      parameters:  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  example: '2022-05-20'
+                rentalPointName:
+                  type: string
+                  example: 'Est Milano'
+                username:
+                  type: string
+                  example: 'User1'
+                bikeCode:
+                  type: string
+                  example: 'Ax26'
+      responses:
+        '200':
+          description: Booking added successfully.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: 'New Booking added!'
+                  booking:
+                    type: object 
+                    properties:
+                      _id: 
+                        type: string
+                        example: "628548d32119863b28fb369d"
+                      username: 
+                        type: string
+                        example: "admin"
+                      date: 
+                        type: string
+                        example: "2022-05-26T00:00:00.000Z"
+                      bikeCode: 
+                        type: string
+                        example: "Ax26"
+                      releaseBikeCode:
+                        type: integer
+                        example: 727786
+                      rentalPointName: 
+                        type: string
+                        example: "Nord Milano2"
+                      self: 
+                        type: string
+                        example: "/api/v2/bookings/628548d32119863b28fb369d"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+
+  /api/v2/bookings:
+    get:
+      summary: Get bookings of a specific user (all if admin).
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'  
+      responses:
+        '200':
+          description: List of the bookings.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "628548d32119863b28fb369d"
+                    username: 
+                      type: string
+                      example: "admin"
+                    date: 
+                      type: string
+                      example: "2022-05-26T00:00:00.000Z"
+                    bikeCode: 
+                      type: string
+                      example: "Ax26"
+                    releaseBikeCode:
+                      type: integer
+                      example: 727786
+                    rentalPointName: 
+                      type: string
+                      example: "Nord Milano2"
+                    self: 
+                      type: string
+                      example: "/api/v2/bookings/628548d32119863b28fb369d"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+
+  /api/v2/bookings/bikeAvaiable:
+    get:
+      summary: Get bikes of a rentalPoint available in a day
+      parameters:
+        - name: rentalPointName
+          in: query
+          required: true
+          description: The rental point name.
+          schema:
+            type: string
+            example: 'Est Milano'
+        - name: date
+          in: query
+          required: true
+          description: The date.
+          schema:
+            type: string
+            example: '2022-05-20' 
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      responses:
+        '200':
+          description: List of the bikes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "628548c22119863b28fb368f"
+                    code:
+                      type: string
+                      example: "Ax26"
+                    model:
+                      type: string
+                      example: "Bianchi"
+                    type:
+                      type: string
+                      example: "E-bike"
+                    rentalPointName:
+                      type: string
+                      example: "Nord Milano2"
+                    state:
+                      type: boolean
+                      example: true
+                    self: 
+                      type: string
+                      example: "/api/v2/bikes/628548d32119863b28fb369d"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+
+
+  /api/v2/bookings/{id}:
+    delete:
+      summary: Remove a booking.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id to delete.
+          schema:
+            type: string
+            example: '627fb874a991e0a164e063ac'
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      responses:
+        '200':
+          description: Booking deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Booking deleted!"
+        '404':
+          description: Booking not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Booking not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                   
+  ###################
+  # route itinerary
+  ###################
+  /api/v2/itineraries:
+    post:
+      summary: Add a new itinerary
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'Giro dei laghi'
+                addressStarting:
+                  type: string
+                  example: 'Trento'
+                latS:
+                  type: number
+                  example: 44.9654219
+                lngS:
+                  type: number
+                  example:  9.1859243
+                description:
+                  type: string
+                  example: "Giro molto bello"
+                difficulty:
+                  type: string
+                  example: "Principiante"
+                length: 
+                  type: number
+                  example: 8.2 
+      responses:
+        '201':
+          description: Itinerary added successfully.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: 'New itinerary added!'
+                  rental: 
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        example: "627fb874a991e0a164e063ac"
+                      name:
+                        type: string
+                        example: 'Giro dei laghi'
+                      addressStarting:
+                        type: string
+                        example: 'Trento'
+                      latS: 
+                        type: number
+                        example: 45.4654219
+                      lngS: 
+                        type: number
+                        example: 10.1859243
+                      description:
+                        type: string
+                        example: "Giro molto bello"
+                      difficulty:
+                        type: string
+                        example: "Principiante"
+                      length:
+                        type: number
+                        example: 8.2
+                      self:
+                        type: string
+                        example: "/api/v2/itineraries/627fb874a991e0a164e063ac"
+        '409':
+          description: Conflict. Itinerary already exists.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Creation itinerary failed. Itinerary already exists.'
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
+
+  /api/v2/itineraries:
+    get:
+      summary: Get itineraries
+      responses:
+        '200':
+          description: List of the itineraries.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: 'Giro dei laghi'
+                    addressStarting:
+                      type: string
+                      example: 'Trento'
+                    latS: 
+                      type: number
+                      example: 45.4654219
+                    lngS: 
+                      type: number
+                      example: 10.1859243
+                    description:
+                      type: string
+                      example: "Giro molto bello"
+                    difficulty:
+                      type: string
+                      example: "Principiante"
+                    length:
+                      type: number
+                      example: 8.2
+                    self:
+                      type: string
+                      example: "/api/v2/itineraries/627fb874a991e0a164e063ac"                  
+
+  /api/v2/itineraries/name:
+    get:
+      summary: Get itineraries names.
+      responses:
+        '200':
+          description: List of the itinerary names.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: "Giro dei Laghi"
+
+  /api/v2/itineraries/{id}:
+    delete:
+      summary: Remove an itinerary
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the iitinerary to delete.
+          schema:
+            type: string
+            example: '627fb874a991e0a164e063ac'
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      responses:
+        '200':
+          description: Itinerary deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Itinerary deleted!"
+        '404':
+          description: Itinerary not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Itinerary not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
+
+  /api/v2/itineraries/{id}:
+    put:
+      summary: Update an itinerary.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the rental point to update.
+          schema:
+            type: string
+            example: '627fb874a991e0a164e063ac'
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                addressStarting:
+                  type: string
+                  example: 'Trento'
+                latS: 
+                  type: number
+                  example: 45.4654219
+                lngS: 
+                  type: number
+                  example: 10.1859243
+                description:
+                  type: string
+                  example: "Giro molto bello"
+                difficulty:
+                  type: string
+                  example: "Principiante"
+                length:
+                  type: number
+                  example: 8.2
+      responses:
+        '200':
+          description: Itinerary updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Itinerary info updated!"
+        '404':
+          description: Itinerary not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Itinerary not found"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
+
+  /api/v2/itineraries/difficulty:
+    get:
+      summary: Get itineraries by difficulty.
+      parameters:
+        - name: type
+          in: query
+          required: true
+          description: The difficulty of the itinerary to return.
+          schema:
+            type: string
+            example: 'Principiante'
+      responses:
+        '200':
+          description: List of the itineraries with a specific difficulty.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: 'Giro dei laghi'
+                    addressStarting:
+                      type: string
+                      example: 'Trento'
+                    latS: 
+                      type: number
+                      example: 45.4654219
+                    lngS: 
+                      type: number
+                      example: 10.1859243
+                    description:
+                      type: string
+                      example: "Giro molto bello"
+                    difficulty:
+                      type: string
+                      example: "Principiante"
+                    length:
+                      type: number
+                      example: 8.2
+                    self:
+                      type: string
+                      example: "/api/v2/itineraries/627fb874a991e0a164e063ac"   
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
+  /api/v2/itineraries/zone:
+    get:
+      summary: Get itineraries by zone.
+      parameters:
+        - name: latitude
+          in: query
+          required: true
+          description: The latitude of the itineraries to return.
+          schema:
+            type: number
+            example: 45.4654219
+        - name: longitude
+          in: query
+          required: true
+          description: The longitude of the itineraries to return.
+          schema:
+            type: number
+            example: 10.1859243
+      responses:
+        '200':
+          description: List of the itineraries in a specific zone.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: 'Giro dei laghi'
+                    addressStarting:
+                      type: string
+                      example: 'Trento'
+                    latS: 
+                      type: number
+                      example: 45.4654219
+                    lngS: 
+                      type: number
+                      example: 10.1859243
+                    description:
+                      type: string
+                      example: "Giro molto bello"
+                    difficulty:
+                      type: string
+                      example: "Principiante"
+                    length:
+                      type: number
+                      example: 8.2
+                    self:
+                      type: string
+                      example: "/api/v2/itineraries/627fb874a991e0a164e063ac"   
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
+  /api/v2/itineraries/length:
+    get:
+      summary: Get itineraries based on the length.
+      parameters:
+        - name: minLength
+          in: query
+          required: true
+          description: The minLength used to check the length of the itinerary.
+          schema:
+            type: number
+            example: 5
+        - name: maxLength
+          in: query
+          required: true
+          description: The maxLength used to check the length of the itinerary.
+          schema:
+            type: number
+            example: 50
+      responses:
+        '200':
+          description: List of the itineraries that are in a specific range of length.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    name:
+                      type: string
+                      example: 'Giro dei laghi'
+                    addressStarting:
+                      type: string
+                      example: 'Trento'
+                    latS: 
+                      type: number
+                      example: 45.4654219
+                    lngS: 
+                      type: number
+                      example: 10.1859243
+                    description:
+                      type: string
+                      example: "Giro molto bello"
+                    difficulty:
+                      type: string
+                      example: "Principiante"
+                    length:
+                      type: number
+                      example: 8.2
+                    self:
+                      type: string
+                      example: "/api/v2/itineraries/627fb874a991e0a164e063ac"   
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
+  ###################
+  # route damages
+  ###################
+  /api/v2/damages:
+    post:
+      summary: Add a new damage.
+      parameters:  
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: 'bike1'
+                description:
+                  type: string
+                  example: 'Che danno'
+      responses:
+        '201':
+          description: Damage added successfully.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: 'Report ricevuto correttamente!'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+        '404':
+          description: Invalid bike code
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bike with code: <bikeCode> not found.'
+  /api/v2/damages:
+    get:
+      summary: Get all damages
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'  
+      responses:
+        '200':
+          description: List of the damages.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "628548d32119863b28fb369d"
+                    bikeCode: 
+                      type: string
+                      example: "bike1"
+                    description: 
+                      type: string
+                      example: "Che danno"
+
+  ###################
+  # route reviews
+  ###################
+  /api/v2/itineraries/{itineraryId}/reviews:
+    post:
+      summary: Add a new review
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+        - name: itineraryId
+          in: path
+          required: true
+          description: Itinerary Id 
+          schema:
+            type: string
+            example: 627fb874a991e0a164e063ac
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Bellissimo"
+                text:
+                  type: string
+                  example: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                stars:
+                  type: integer
+                  example: 4
+      responses:
+        '201':
+          description: Review added successfully.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message: 
+                    type: string
+                    example: 'New review added!'
+                  review: 
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        example: "627fb874a991e0a164e063ac"
+                      title:
+                        type: string
+                        example: 'Bellissimo'
+                      text:
+                        type: string
+                        example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+                      stars: 
+                        type: integer
+                        example: 4
+                      author:
+                        type: string
+                        example: 'user'
+                      self:
+                        type: string
+                        example: "/api/v2/itineraries/627fb874a991e0a164e063ac/reviews/627fb874a991e0a164e063ac"
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+        '404':
+          description: Itinerary with id {itineraryId} not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Itinerary with id: {itineraryId} not found.'
+
+  /api/v2/itineraries/{itineraryId}/reviews:
+    get:
+      summary: Get Reviews
+      parameters:
+        - name: itineraryId
+          in: path
+          required: true
+          description: Itinerary Id 
+          schema:
+            type: string
+            example: 627fb874a991e0a164e063ac
+      responses:
+        '200':
+          description: List of the reviews.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id: 
+                      type: string
+                      example: "627fb874a991e0a164e063ac"
+                    title:
+                      type: string
+                      example: 'Bellissimo'
+                    text:
+                      type: string
+                      example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+                    stars: 
+                      type: integer
+                      example: 4
+                    author:
+                      type: string
+                      example: 'user'
+                    self:
+                      type: string
+                      example: "/api/v2/itineraries/627fb874a991e0a164e063ac/reviews/627fb874a991e0a164e063ac"                
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+        '404':
+          description: Itinerary with id {itineraryId} not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Itinerary with id: {itineraryId} not found.'
+
+  /api/v2/itineraries/{itineraryId}/reviews/{reviewId}:
+    get:
+      summary: Get a review
+      parameters:
+        - name: itineraryId
+          in: path
+          required: true
+          description: Itinerary Id 
+          schema:
+            type: string
+            example: 627fb874a991e0a164e063ac
+        - name: reviewId
+          in: path
+          required: true
+          description: Review Id 
+          schema:
+            type: string
+            example: 627fb874a991e0a164e063ac
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      responses:
+        '200':
+          description: The review.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id: 
+                    type: string
+                    example: "627fb874a991e0a164e063ac"
+                  title:
+                    type: string
+                    example: 'Bellissimo'
+                  text:
+                    type: string
+                    example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+                  stars: 
+                    type: integer
+                    example: 4
+                  author:
+                    type: string
+                    example: 'user'
+                  self:
+                    type: string
+                    example: "/api/v2/itineraries/627fb874a991e0a164e063ac/reviews/627fb874a991e0a164e063ac"
+        '404':
+          description: Itinerary with id {itineraryId} not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Itinerary with id: {itineraryId} not found.'
+        '404':
+          description: Review with id {reviewId} not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Review with id: {reviewId} not found.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
+  /api/v2/itineraries/{itineraryId}/reviews/{reviewId}:
+    delete:
+      summary: Remove a review
+      parameters:
+        - name: itineraryId
+          in: path
+          required: true
+          description: Itinerary Id 
+          schema:
+            type: string
+            example: 627fb874a991e0a164e063ac
+        - name: reviewId
+          in: path
+          required: true
+          description: Review Id 
+          schema:
+            type: string
+            example: 627fb874a991e0a164e063ac
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      responses:
+        '200':
+          description: Review deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Review deleted!"
+        '404':
+          description: Itinerary with id {itineraryId} not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Itinerary with id: {itineraryId} not found.'
+        '404':
+          description: Review with id {reviewId} not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Review with id: {reviewId} not found.'
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '401':
+          description: Unauthorized. You can access only your reviews.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Unauthorized. You can access only your reviews.'
+        '400':
+          description: Bad Request. Check docs for required parameters. /api/v1/api-docs
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Bad Request. Check docs for required parameters. /api/v1/api-docs'
+
+  /api/v2/itineraries/{itineraryId}/reviews/{reviewId}:
+    put:
+      summary: Update a Review.
+      parameters:
+        - name: itineraryId
+          in: path
+          required: true
+          description: Itinerary Id 
+          schema:
+            type: string
+            example: 627fb874a991e0a164e063ac
+        - name: reviewId
+          in: path
+          required: true
+          description: Review Id 
+          schema:
+            type: string
+            example: 627fb874a991e0a164e063ac
+        - name: x-access-token
+          in: header
+          required: true
+          description: The jwt of the session.
+          schema:
+            type: string
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Bellissimo"
+                text:
+                  type: string
+                  example: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                stars:
+                  type: integer
+                  example: 4
+      responses:
+        '200':
+          description: Review updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Review info updated!"
+        '404':
+          description: Itinerary with id {itineraryId} not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Itinerary with id: {itineraryId} not found.'
+        '404':
+          description: Review with id {reviewId} not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Review with id: {reviewId} not found.'
+        '401':
+          description: Unauthorized. No token provided.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'No token provided.'
+        '403':
+          description: Forbidden. Failed to authenticate token.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Failed to authenticate token.'
+        '401':
+          description: Unauthorized. You can access only your reviews.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  success: 
+                    type: boolean
+                    example: false
+                  message: 
+                    type: string
+                    example: 'Unauthorized. You can access only your reviews.'
         '400':
           description: Bad Request. Check docs for required parameters. /api/v1/api-docs
           content:
