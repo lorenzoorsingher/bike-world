@@ -23,7 +23,7 @@ const YAML = require('yamljs');
 const swaggerDocument = YAML.load(path.join(__dirname, '../api-docs.yaml'));
 
 /**
- * Configure Express.js parsing middleware
+ * Configure Express.js parsing the middleware
  */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
