@@ -153,7 +153,7 @@ describe('POST /api/v2/rentals', () => {
         it("should return an error message", async () => {
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs' 
             };
             const { statusCode, body } = await agent.post("/api/v2/rentals").set('x-access-token', _token)
                 .send();
@@ -443,7 +443,7 @@ describe('PUT /api/v2/rentals/id', () => {
         it("should return an error message", async () => {
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs' 
             };
             const { statusCode, body } = await agent.post("/api/v2/rentals").set('x-access-token', _token)
                 .send();
@@ -508,7 +508,7 @@ describe('GET /api/v2/rentals/type', () => {
         it("should return an error message", async () => {  
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs' 
             }
     
             const { statusCode, body } = await agent.get("/api/v2/rentals/type")
@@ -575,7 +575,7 @@ describe('GET /api/v2/rentals/zone', () => {
         it("should return an error message", async () => {  
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs' 
             }
     
             const { statusCode, body } = await agent.get("/api/v2/rentals/zone")
@@ -691,7 +691,7 @@ describe('GET /api/v2/rentals/date', () => {
         it("should return a valid token and user info", async () => {  
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs' 
             }
     
             const { statusCode, body } = await agent.get("/api/v2/rentals/date")

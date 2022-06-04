@@ -56,7 +56,7 @@ describe('POST /api/v2/itineraries', () => {
         it('should return an error message', async () =>{
             const { statusCode, body } = await agent.post("/api/v2/itineraries").set('x-access-token', token).send(reqBody);
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' };
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' };
             expect(body).toEqual(response);
         });
     });
@@ -331,7 +331,7 @@ describe('GET /api/v2/itineraries/difficulty', () => {
         it('should return an error message', async () =>{
             const { statusCode, body } = await agent.get(`/api/v2/itineraries/difficulty?difficulty=${difficulty}`).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' };
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' };
             expect(body).toEqual(response);
         });
     });
@@ -401,7 +401,7 @@ describe('GET /api/v2/itineraries/zone', () => {
         it('should return an error message', async () =>{
             const { statusCode, body } = await agent.get(`/api/v2/itineraries/zone?latitude=${latitude}&longitude=${longitude}`).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' };
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' };
             expect(body).toEqual(response);
         });
     });
@@ -472,7 +472,7 @@ describe('GET /api/v2/itineraries/length', () => {
         it('should return an error message', async () =>{
             const { statusCode, body } = await agent.get(`/api/v2/itineraries/length?minLength=${minLength}&maxLength=${maxLength}`).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' };
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' };
             expect(body).toEqual(response);
         });
     });

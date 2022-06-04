@@ -97,7 +97,7 @@ describe('POST /api/v2/itineraries/:itineraryId/reviews', () => {
             jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);      
             const { statusCode, body } = await agent.post(`/api/v2/itineraries/${itineraryId1}/reviews`).set('x-access-token', token).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' };
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' };
             expect(body).toEqual(response);
         });
     });
@@ -113,7 +113,7 @@ describe('POST /api/v2/itineraries/:itineraryId/reviews', () => {
         it('should return an error message', async () =>{
             const { statusCode, body } = await agent.post(`/api/v2/itineraries/sad48sa9/reviews`).set('x-access-token', token).send(reqBody);
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs'};
             expect(body).toEqual(response);
         });
     });
@@ -155,7 +155,7 @@ describe('POST /api/v2/itineraries/:itineraryId/reviews', () => {
             jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
             const { statusCode, body } = await agent.post(`/api/v2/itineraries/${itineraryId1}/reviews`).set('x-access-token', token).send(reqBody);
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs'};
             expect(body).toEqual(response);
         });
     });
@@ -224,7 +224,7 @@ describe('GET /api/v2/itineraries/:itineraryId/reviews', () => {
         it('should return an error message', async () =>{
             const { statusCode, body } = await agent.get(`/api/v2/itineraries/sad48sa9/reviews`).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs'};
             expect(body).toEqual(response);
         });
     });
@@ -297,7 +297,7 @@ describe('DELETE /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
         it('should return an error message', async () =>{
             const { statusCode, body } = await agent.delete(`/api/v2/itineraries/sad48sa9/reviews/${reviewId1}`).set('x-access-token', token).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs'};
             expect(body).toEqual(response);
         });
     });
@@ -314,7 +314,7 @@ describe('DELETE /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
             jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
             const { statusCode, body } = await agent.delete(`/api/v2/itineraries/${itineraryId1}/reviews/dsad`).set('x-access-token', token).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs'};
             expect(body).toEqual(response);
         });
     });
@@ -374,7 +374,7 @@ describe('PUT /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
             jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
             const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId1}`).set('x-access-token', token).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' };
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' };
             expect(body).toEqual(response);
         });
     });
@@ -408,7 +408,7 @@ describe('PUT /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
         it('should return an error message', async () =>{
             const { statusCode, body } = await agent.put(`/api/v2/itineraries/sad48sa9/reviews/${reviewId1}`).set('x-access-token', token).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs'};
             expect(body).toEqual(response);
         });
     });
@@ -425,7 +425,7 @@ describe('PUT /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
             jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
             const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/dsad`).set('x-access-token', token).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs'};
             expect(body).toEqual(response);
         });
     });
@@ -466,7 +466,7 @@ describe('PUT /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
             jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
             const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${review1}`).set('x-access-token', token).send(reqBody);
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs'};
             expect(body).toEqual(response);
         });
     });
@@ -544,7 +544,7 @@ describe('GET /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
         it('should return an error message', async () =>{
             const { statusCode, body } = await agent.get(`/api/v2/itineraries/sad48sa9/reviews/${reviewId1}`).set('x-access-token', token).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs'};
             expect(body).toEqual(response);
         });
     });
@@ -581,7 +581,7 @@ describe('GET /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
             jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
             const { statusCode, body } = await agent.get(`/api/v2/itineraries/${itineraryId1}/reviews/dsadsa`).set('x-access-token', token).send();
 
-            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'};
+            const response = { success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs'};
             expect(body).toEqual(response);
         });
     });

@@ -1823,7 +1823,7 @@ paths:
                     type: string  
                     example: 'Authentication failed. Wrong username or password.'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -1834,7 +1834,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
         '400':
           description: Wrong username or password.
           content: 
@@ -1900,7 +1900,7 @@ paths:
                     type: string
                     example: '/api/v2/users/627fb15a85bebd50ab3197a5'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -1911,7 +1911,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
         '409':
           description: Signup failed. User already exists.
           content: 
@@ -1971,7 +1971,7 @@ paths:
                     type: boolean
                     example: false
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -1982,7 +1982,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
         '403':
           description: Unauthorized. You can access only your informations.
           content: 
@@ -2072,7 +2072,7 @@ paths:
                     type: string
                     example: '/api/v2/users/627fb15a85bebd50ab3197a5'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -2083,7 +2083,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
         '403':
           description: Unauthorized. You can update only your informations.
           content: 
@@ -2247,7 +2247,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -2258,7 +2258,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
 
   /api/v2/bikes:
@@ -2404,7 +2404,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -2415,7 +2415,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
         '404':
           description: Bike not found
           content:
@@ -2517,7 +2517,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -2528,7 +2528,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
 
   /api/v2/bikes:
@@ -2603,7 +2603,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'     
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -2614,7 +2614,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
 
   /api/v2/bikes:
@@ -2703,7 +2703,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'   
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -2714,7 +2714,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
   ###################
   # route rental
@@ -2832,7 +2832,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -2843,7 +2843,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
 
   /api/v2/rentals:
@@ -2976,7 +2976,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -2987,7 +2987,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
 
   /api/v2/rentals/{id}:
@@ -3083,7 +3083,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -3094,7 +3094,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
 
   /api/v2/rentals/type:
@@ -3143,7 +3143,7 @@ paths:
                       type: string
                       example: "/api/v2/rentals/627fb874a991e0a164e063ac"  
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -3154,7 +3154,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
   /api/v2/rentals/zone:
     get:
@@ -3209,7 +3209,7 @@ paths:
                       type: string
                       example: "/api/v2/rentals/627fb874a991e0a164e063ac"  
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -3220,7 +3220,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
   /api/v2/rentals/date:
     get:
@@ -3268,7 +3268,7 @@ paths:
                       type: string
                       example: "/api/v2/rentals/627fb874a991e0a164e063ac"  
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -3279,7 +3279,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
   ###################
   # route bookings
@@ -3378,7 +3378,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -3389,7 +3389,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
 
   /api/v2/bookings:
@@ -3544,7 +3544,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -3555,7 +3555,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
 
 
   /api/v2/bookings/{id}:
@@ -3630,7 +3630,7 @@ paths:
                     type: string
                     example: 'Failed to authenticate token.'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -3641,7 +3641,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
                    
   ###################
   # route itinerary
@@ -4280,7 +4280,7 @@ paths:
                     type: string
                     example: 'Report ricevuto correttamente!'
         '400':
-          description: Bad Request. Check docs for required parameters. /api/v2/api-docs
+          description: Bad Request. Check docs for required parameters. /api/api-docs
           content:
             application/json:
               schema: 
@@ -4291,7 +4291,7 @@ paths:
                     example: false
                   message: 
                     type: string
-                    example: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                    example: 'Bad Request. Check docs for required parameters. /api/api-docs'
         '404':
           description: Invalid bike code
           content:

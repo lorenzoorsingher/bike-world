@@ -120,7 +120,7 @@ describe('POST /api/v2/bookings', () => {
 
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs' 
             };
             const { statusCode, body } = await agent.post("/api/v2/bookings").set('x-access-token', _token)
                 .send();
@@ -380,7 +380,7 @@ describe('GET /api/v2/bookings/bikeAvailable', () => {
 
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs' 
             };
 
             // create a valid token

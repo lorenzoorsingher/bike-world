@@ -15,7 +15,7 @@ router.post('', verifyToken, async function (req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
     if (!req.body.code || !req.body.description) {
-        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });
+        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });
         return;
     }
 

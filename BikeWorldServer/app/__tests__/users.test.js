@@ -171,7 +171,7 @@ describe('POST /api/v2/users/login', () => {
         it("should return the error message", async () => {
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs'
             };
     
             const { statusCode, body } = await agent.post("/api/v2/users/login")
@@ -617,7 +617,7 @@ describe('PUT /api/v2/users/:id', () => {
             const hash = await bcrypt.hash("test_password", 10);
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs'
             };
 
             // create a valid token

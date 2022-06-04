@@ -14,7 +14,7 @@ router.post('/login', async function(req, res) {
 	const { username, password } = req.body;
 
 	if(!username || !password){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 	
@@ -55,7 +55,7 @@ router.post('/signUp', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if(!req.body.username || !req.body.password || !req.body.email || !req.body.target){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 
@@ -100,7 +100,7 @@ router.get('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	if(!req.params.id){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 
@@ -134,7 +134,7 @@ router.put('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	if(!req.params.id || !req.body.password || !req.body.email || !req.body.target){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 

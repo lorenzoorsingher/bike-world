@@ -18,7 +18,7 @@ router.post('', verifyToken, async function (req, res) {
 	res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if (!req.body.code || !req.body.model || !req.body.type || !req.body.rentalPointName) {
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });
 		return;
 	}
 
@@ -104,7 +104,7 @@ router.get('/code', verifyToken, async function (req, res) {
 	res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if (!req.query.code) {
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });
 		return;
 	}
 
@@ -139,7 +139,7 @@ router.get('/:id', verifyToken, async function (req, res) {
 	res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if (!req.params.id) {
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });
 		return;
 	}
 
@@ -175,7 +175,7 @@ router.delete('/:id', verifyToken, async function (req, res) {
 	res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if (!req.params.id) {
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });
 		return;
 	}
 
@@ -221,7 +221,7 @@ router.patch('/:id', verifyToken, async function (req, res) {
 	res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if (!req.params.id) {
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });
 		return;
 	}
 

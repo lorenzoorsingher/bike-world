@@ -186,7 +186,7 @@ describe('POST /api/v2/bikes', () => {
 
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs' 
             };
             const { statusCode, body } = await agent.post("/api/v2/bikes").set('x-access-token', _token)
                 .send();
@@ -387,7 +387,7 @@ describe('GET /api/v2/bikes/code', () => {
             
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs'
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs'
             };
             const { statusCode, body } = await agent.get("/api/v2/bikes/code").set('x-access-token', _token)
                 .send();

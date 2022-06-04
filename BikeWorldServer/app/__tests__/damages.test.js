@@ -94,7 +94,7 @@ describe('POST /api/v2/damages', () => {
 
             const sessionResult = {
                 success: false,
-                message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' 
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs' 
             };
             const { statusCode, body } = await agent.post("/api/v2/damages").set('x-access-token', _token)
                 .send();

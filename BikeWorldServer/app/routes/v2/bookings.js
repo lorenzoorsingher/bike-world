@@ -14,7 +14,7 @@ router.post('', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
     if(!req.body.date || !req.body.bikeCode || !req.body.rentalPointName){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 
@@ -92,7 +92,7 @@ router.get('/bikeAvailable', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
     if(!req.query.rentalPointName || !req.query.date){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
     
@@ -130,7 +130,7 @@ router.delete('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
     if(!req.params.id){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 

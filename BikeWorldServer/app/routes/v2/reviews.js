@@ -17,7 +17,7 @@ router.post('', verifyToken, async function(req, res) {
     
     const itineraryId =  req.params.itineraryId;
     if(!isObjectIdValid(itineraryId)){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -31,13 +31,13 @@ router.post('', verifyToken, async function(req, res) {
     }
         
 	if(!req.body.title || !req.body.text || isNaN(parseInt(req.body.stars))){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 
     const stars = req.body.stars;
     if(stars < 0 || stars > 5){
-        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -78,7 +78,7 @@ router.get('', async function(req, res) {
     
     const itineraryId =  req.params.itineraryId;
     if(!isObjectIdValid(itineraryId)){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -116,7 +116,7 @@ router.delete('/:reviewId', verifyToken, async function(req, res) {
 
     const itineraryId =  req.params.itineraryId;
     if(!isObjectIdValid(itineraryId)){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -131,7 +131,7 @@ router.delete('/:reviewId', verifyToken, async function(req, res) {
 
     const reviewId = req.params.reviewId;
     if(!isObjectIdValid(reviewId)){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -165,7 +165,7 @@ router.put('/:reviewId', verifyToken, async function(req, res) {
 	
     const itineraryId =  req.params.itineraryId;
     if(!isObjectIdValid(itineraryId)){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -179,19 +179,19 @@ router.put('/:reviewId', verifyToken, async function(req, res) {
     }
 
     if(!req.body.title || !req.body.text || isNaN(parseInt(req.body.stars))){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 
     const stars = req.body.stars;
     if(stars < 0 || stars > 5){
-        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
     const reviewId = req.params.reviewId;
     if(!isObjectIdValid(reviewId)){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -237,7 +237,7 @@ router.get('/:reviewId', async function(req, res) {
 	
     const itineraryId =  req.params.itineraryId;
     if(!isObjectIdValid(itineraryId)){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -252,7 +252,7 @@ router.get('/:reviewId', async function(req, res) {
 
     const reviewId = req.params.reviewId;
     if(!isObjectIdValid(reviewId)){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 

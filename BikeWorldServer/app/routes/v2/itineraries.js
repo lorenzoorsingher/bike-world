@@ -14,12 +14,12 @@ router.post('', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if(!req.body.name || !req.body.addressStarting || isNaN(parseFloat(req.body.latS)) || isNaN(parseFloat(req.body.lngS)) || !req.body.description || !req.body.difficulty || isNaN(parseFloat(req.body.length))){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 
 	if(req.body.latS < -90 || req.body.latS > 90 || req.body.lngS < -180 || req.body.lngS > 180){
-        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -113,7 +113,7 @@ router.delete('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if(!req.params.id){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 
@@ -144,12 +144,12 @@ router.put('/:id', verifyToken, async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
     if(!req.params.id || !req.body.addressStarting || isNaN(parseFloat(req.body.latS)) || isNaN(parseFloat(req.body.lngS)) || !req.body.description || !req.body.difficulty || isNaN(parseFloat(req.body.length))){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 
 	if(req.body.latS < -90 || req.body.latS > 90 || req.body.lngS < -180 || req.body.lngS > 180){
-        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -187,7 +187,7 @@ router.get('/difficulty', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	if(!req.query.difficulty){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 	
@@ -220,12 +220,12 @@ router.get('/zone', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 	
 	if(isNaN(parseFloat(req.query.latitude)) || isNaN(parseFloat(req.query.longitude))){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 
 	if(req.body.latitude < -90 || req.body.latitude > 90 || req.body.longitude < -180 || req.body.longitude > 180){
-        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+        res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
     }
 
@@ -265,7 +265,7 @@ router.get('/length', async function(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
 	if(isNaN(parseFloat(req.query.minLength)) || isNaN(parseFloat(req.query.maxLength))){
-		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/v2/api-docs' });	
+		res.status(400).json({ success: false, message: 'Bad Request. Check docs for required parameters. /api/api-docs' });	
 		return;
 	}
 
