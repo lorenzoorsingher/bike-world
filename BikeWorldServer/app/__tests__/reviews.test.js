@@ -320,11 +320,11 @@ describe('DELETE /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
     });
 
     describe('try to delete not owned review', () => {     
-        it('should return a 403 status code', async () =>{
+        it('should return a 401 status code', async () =>{
             jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
             const { statusCode, body } = await agent.delete(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId2}`).set('x-access-token', token2).send();
             
-            expect(statusCode).toBe(403);
+            expect(statusCode).toBe(401);
         });
 
         it('should return an error message', async () =>{
@@ -472,11 +472,11 @@ describe('PUT /api/v2/itineraries/:itineraryId/reviews/:reviewId', () => {
     });
 
     describe('try to update not owned review', () => {     
-        it('should return a 403 status code', async () =>{
+        it('should return a 401 status code', async () =>{
             jest.spyOn(Itinerary, "findById").mockReturnValueOnce(itinerary1);
             const { statusCode, body } = await agent.put(`/api/v2/itineraries/${itineraryId1}/reviews/${reviewId2}`).set('x-access-token', token2).send(reqBody);
             
-            expect(statusCode).toBe(403);
+            expect(statusCode).toBe(401);
         });
 
         it('should return an error message', async () =>{

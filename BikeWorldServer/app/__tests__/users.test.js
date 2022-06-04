@@ -25,19 +25,10 @@ describe('POST /api/v2/users/login', () => {
                 permissions: false,
                 target: "principiante"
             };
-            const sessionResult = {
-                success: true,
-                message: 'Token sucessfully created',
-                token: tokenGenerator(userPayload),
-                permissions: false,
-                username: "test_username",
-                id: userId,
-                self: "/api/v1/users/" + userId
-            };
 
             const loginMock = jest.spyOn(User, "findOne").mockReturnValueOnce(userPayload);
     
-            const { statusCode, body } = await agent.post("/api/v1/users/login")
+            const { statusCode, body } = await agent.post("/api/v2/users/login")
                 .send({ username: "test_username", password: "test_password" });
     
             expect(statusCode).toBe(200);     
@@ -60,12 +51,12 @@ describe('POST /api/v2/users/login', () => {
                 permissions: false,
                 username: "test_username",
                 id: userId,
-                self: "/api/v1/users/" + userId
+                self: "/api/v2/users/" + userId
             };
 
             const loginMock = jest.spyOn(User, "findOne").mockReturnValueOnce(userPayload);
     
-            const { statusCode, body } = await agent.post("/api/v1/users/login")
+            const { statusCode, body } = await agent.post("/api/v2/users/login")
                 .send({ username: "test_username", password: "test_password" });
             
             expect(body).toEqual(sessionResult);          
@@ -219,23 +210,45 @@ describe('POST /api/v2/users/signUp', () => {
             };
             const sessionResult = {
                 success: true,
-                message: 'Token sucessfully created',
-                token: tokenGenerator(userPayload),
+                message: 'Signup completed!',
+                token: expect.any(String),
                 permissions: false,
                 username: "test_username",
                 id: userId,
-                self: "/api/v1/users/" + userId
+                self: "/api/v2/users/" + userId
             };
 
-            const loginMock = jest.spyOn(User, "findOne").mockReturnValueOnce(userPayload);
+            const findUserMock = jest.spyOn(User, "findOne").mockReturnValueOnce(null);
+            const signUpMock = jest.spyOn(User, "create").mockReturnValueOnce(userPayload);
     
-            const { statusCode, body } = await agent.post("/api/v1/users/login")
-                .send({ username: "test_username", password: "wrong_password" });
+            const { statusCode, body } = await agent.post("/api/v2/users/signUp")
+                .send({ username: "test_username", password: "test_password", target: "principiante", email: "test_username@domain.com" });  
+            
+            expect(body).toEqual(sessionResult);          
+        });
+    });
+
+    describe("given the username already existing", () => {
+        it("should return a 409 status code", async () => {
+            const hash = await bcrypt.hash("test_password", 10);
+            const userPayload = {
+                _id: userId,
+                username: "test_username",
+                email: "test_username@domain.com",
+                psw_hash: hash,
+                permissions: false,
+                target: "principiante"
+            };
+
+            const findUserMock = jest.spyOn(User, "findOne").mockReturnValueOnce(userPayload);
     
-            expect(statusCode).toBe(400);     
+            const { statusCode, body } = await agent.post("/api/v2/users/signUp")
+                .send({ username: "test_username", password: "wrong_password", target: "principiante", email: "test_username@domain.com" });
+    
+            expect(statusCode).toBe(409);     
         });
 
-        it("should return the user payload", async () => {
+        it("should return the error message", async () => {
             const hash = await bcrypt.hash("test_password", 10);
             const userPayload = {
                 _id: userId,
@@ -247,10 +260,10 @@ describe('POST /api/v2/users/signUp', () => {
             };
             const sessionResult = {
                 success: false,
-                message: 'Authentication failed. Wrong username or password.'
+                message: 'Signup failed. User already exists.'
             };
 
-            const loginMock = jest.spyOn(User, "findOne").mockReturnValueOnce(userPayload);
+            const findUserMock = jest.spyOn(User, "findOne").mockReturnValueOnce(userPayload);
     
             const { statusCode, body } = await agent.post("/api/v2/users/signUp")
                 .send({ username: "test_username", password: "wrong_password", target: "principiante", email: "test_username@domain.com" });
@@ -265,6 +278,19 @@ describe('POST /api/v2/users/signUp', () => {
         
             const { statusCode, body } = await agent.post("/api/v2/users/signUp")
                 .send({ username: "test_username", password: "wrong_password" });
+    
+            expect(statusCode).toBe(400);     
+        });
+
+        it("should return the error message", async () => {
+            const hash = await bcrypt.hash("test_password", 10);
+            const sessionResult = {
+                success: false,
+                message: 'Bad Request. Check docs for required parameters. /api/api-docs'
+            };
+    
+            const { statusCode, body } = await agent.post("/api/v2/users/signUp")
+                .send({ username: "test_username", password: "wrong_password", target: "principiante" });
             
             expect(body).toEqual(sessionResult);          
         });
