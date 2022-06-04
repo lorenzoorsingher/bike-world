@@ -41,7 +41,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@maps": "^3.43.3",
+    "@types/googlemaps": "^3.43.3",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "jasmine-core": "~4.0.0",
